@@ -1,3 +1,4 @@
+var socket = io.connect('http://localhost:8080');
 
 var dir = 0;
 
@@ -8,8 +9,8 @@ imageObj.src = './sprites/dino-green/dino-sprite.png';
 imageObj.onload = function() {
   var stage = new Kinetic.Stage({
     container: 'container',
-    width: 600,
-    height: 600
+    width: window.outerWidth,
+    height: window.outerHeight
   });
 
   var layer = new Kinetic.Layer();
