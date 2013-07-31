@@ -3,6 +3,7 @@
   <head>
     <link rel="stylesheet" type="text/css" href="./src/style.css" />
     <script src="/socket.io/socket.io.js"></script>  
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="./lib/kinetic-v4.5.5.min.js"></script>
     <script src="./lib/mousetrap.js"></script>
     <script src="./src/actor.js"></script>
@@ -12,5 +13,18 @@
   </head>
   <body>
     <div id="container"></div>
+    <script>
+      $('#container').bind('resize', function(){
+        var w = $(window).width();
+        var h = $(window).height();
+
+        $("#container").css("width", w + "px");
+        $("#container").css("height", h + "px");
+      });
+
+      $(window).resize(function(){
+         $('#container').resize();
+      });
+    </script>
   </body>
 </html>
