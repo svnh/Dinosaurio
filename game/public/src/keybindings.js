@@ -1,7 +1,5 @@
 var keyBindings = function(DinoClass, dinoinstance, run, left, right, attack, roar){
 
-  // DinoClass keyboard bindings
-
   Mousetrap.bind(run, function(){
     DinoClass.running = false;
     dinoinstance.setAnimation('paused_'+DinoClass.directions[dir]);
@@ -51,7 +49,5 @@ var keyBindings = function(DinoClass, dinoinstance, run, left, right, attack, ro
     }
     DinoClass.roaring = true;
   }, 'keydown');
-
-  // RedDino keyboard bindings
 
 };
