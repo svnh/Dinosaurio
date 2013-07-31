@@ -2,11 +2,31 @@ var socket = io.connect('http://localhost:8080');
 
 var dir = 0;
 
-// Load sprite
-var imageObj = new Image();
-imageObj.src = './sprites/dino-green/dino-sprite.png';
+var sources = {
+  dino: '/dino-green/dino-sprite.png'
+};
+var images;
+var loadImages = function(sources, callback) {
+  var assetDir = './sprites';
+  images = {};
 
-imageObj.onload = function() {
+  var loadedImages = 0;
+  var numImages = 0;
+  for (var src in sources) {
+    numImages++;
+  }
+  for (src in sources) {
+    images[src] = new Image();
+    images[src].onload = function() {
+      if (++loadedImages >= numImages) {
+        callback(images);
+      }
+    };
+    images[src].src = assetDir + sources[src];
+  }
+};
+
+var loadStage = function(images) {
   var stage = new Kinetic.Stage({
     container: 'container',
     width: window.outerWidth,
@@ -20,17 +40,20 @@ imageObj.onload = function() {
   layer.add(dino);
 
   // add the layer to the stage
+  // this is where the canvas is added as well
   stage.add(layer);
+
+  // var c = layer.get('canvas')
+  // console.log(c)
+  // console.log(c.width)
+
 
   // start sprite animation
   dino.start();
 
-  bindScreenSizeHandlers();
-
   keyBindings();
 
   gameLoop = function(){
-    GreenDino.checkBoundaries();
     GreenDino.update();
     requestAnimationFrame(gameLoop);
   };
@@ -38,6 +61,7 @@ imageObj.onload = function() {
   gameLoop();
 
 };
+loadImages(sources, loadStage);
 
 // Convert a direction into radians
 var getRadians = function(direction) {

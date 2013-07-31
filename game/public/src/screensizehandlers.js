@@ -9,8 +9,8 @@ var bindScreenSizeHandlers = function() {
     $("#container").css("width", w + "px");
     $("#container").css("height", h + "px");
 
-    cnvs.css("width", w + "px");
-    cnvs.css("height", h + "px");
+    cnvs.width = w;
+    cnvs.height = h;
   });
 
   $(window).resize(function(){

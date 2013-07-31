@@ -46,17 +46,24 @@ var GreenDino = function(){
   dino = new Kinetic.Sprite({
     x: 200-64,
     y: 200-64,
-    image: imageObj,
+    image: images.dino,
     animation: 'running_n',
     animations: actor.animations,
     frameRate: 12,
     index: 0
   });
 
+  dino.on('mouseover', function() {
+    console.log('Mouseover dino');
+  });
+  //mouseover bushes, set dino cord, when dino reaches cord, chomp, bush changes anim
+
+
 };
 
 GreenDino.update = function(){
   if (this.running) {
+    GreenDino.checkBoundaries();
     var radians = getRadians(dir);
     var pos = dino.getPosition();
 
@@ -76,6 +83,3 @@ GreenDino.checkBoundaries = function(){
     dino.setPosition(dinoX, dinoY-20)
   }
 };
-
-
-
