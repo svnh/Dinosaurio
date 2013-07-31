@@ -78,8 +78,12 @@ GreenDino.checkBoundaries = function(){
   var windowHeight = window.outerHeight;
 
   if (dinoX >= windowWidth - 120){
-    dino.setPosition(dinoX-20, dinoY)
+    dino.setPosition(dinoX-20, dinoY);
   } else if (dinoY >= windowHeight - 200){
-    dino.setPosition(dinoX, dinoY-20)
+    dino.setPosition(dinoX, dinoY-20);
+  } else if (dinoX <= 5){
+    dino.setPosition(dinoX+20, dinoY);
+  } else if (dinoY <= 5){
+    dino.setPosition(dinoX, dinoY+20);
   }
 };
