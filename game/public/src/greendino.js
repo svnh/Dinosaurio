@@ -1,4 +1,4 @@
-var dino;
+var greendino;
 var GreenDino = function(){
 
   this.running = false;
@@ -43,20 +43,20 @@ var GreenDino = function(){
   actor(this.animationDefs);
 
 // Create a new sprite
-  dino = new Kinetic.Sprite({
+  greendino = new Kinetic.Sprite({
     x: 200-64,
     y: 200-64,
-    image: images.dino,
+    image: images.greendino,
     animation: 'running_n',
     animations: actor.animations,
     frameRate: 12,
     index: 0
   });
 
-  dino.on('mouseover', function() {
-    console.log('Mouseover dino');
+  greendino.on('mouseover', function() {
+    console.log('Mouseover greendino');
   });
-  //mouseover bushes, set dino cord, when dino reaches cord, chomp, bush changes anim
+  //mouseover bushes, set greendino cord, when greendino reaches cord, chomp, bush changes anim
 
 
 };
@@ -65,25 +65,25 @@ GreenDino.update = function(){
   if (this.running) {
     GreenDino.checkBoundaries();
     var radians = getRadians(dir);
-    var pos = dino.getPosition();
+    var pos = greendino.getPosition();
 
-    dino.setPosition(pos.x+Math.cos(radians)*1, pos.y+Math.sin(radians)*1);
+    greendino.setPosition(pos.x+Math.cos(radians)*1, pos.y+Math.sin(radians)*1);
   }
 };
 
 GreenDino.checkBoundaries = function(){
-  var dinoX = dino.getPosition().x;
-  var dinoY = dino.getPosition().y;
+  var greendinoX = greendino.getPosition().x;
+  var greendinoY = greendino.getPosition().y;
   var windowWidth = window.outerWidth;
   var windowHeight = window.outerHeight;
 
-  if (dinoX >= windowWidth - 120){
-    dino.setPosition(dinoX-20, dinoY);
-  } else if (dinoY >= windowHeight - 200){
-    dino.setPosition(dinoX, dinoY-20);
-  } else if (dinoX <= 5){
-    dino.setPosition(dinoX+20, dinoY);
-  } else if (dinoY <= 5){
-    dino.setPosition(dinoX, dinoY+20);
+  if (greendinoX >= windowWidth - 120){
+    greendino.setPosition(greendinoX-20, greendinoY);
+  } else if (greendinoY >= windowHeight - 200){
+    greendino.setPosition(greendinoX, greendinoY-20);
+  } else if (greendinoX <= 5){
+    greendino.setPosition(greendinoX+20, greendinoY);
+  } else if (greendinoY <= 5){
+    greendino.setPosition(greendinoX, greendinoY+20);
   }
 };

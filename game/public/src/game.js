@@ -3,7 +3,8 @@ var socket = io.connect('http://localhost:8080');
 var dir = 0;
 
 var sources = {
-  dino: '/dino-green/dino-sprite.png'
+  greendino: '/dino-green/dino-sprite.png',
+  reddino: '/dino-red/dino-sprite.png'
 };
 var images;
 var loadImages = function(sources, callback) {
@@ -36,8 +37,10 @@ var loadStage = function(images) {
   var layer = new Kinetic.Layer();
 
   GreenDino();
+  RedDino();
   // add the shape to the layer
-  layer.add(dino);
+  layer.add(greendino);
+  layer.add(reddino);
 
   // add the layer to the stage
   // this is where the canvas is added as well
@@ -49,12 +52,14 @@ var loadStage = function(images) {
 
 
   // start sprite animation
-  dino.start();
-
-  keyBindings();
+  greendino.start();
+  keyBindings(GreenDino, greendino, 'up', 'left', 'right', 'space', '/');
+  reddino.start();
+  keyBindings(RedDino, reddino, 'w', 'a', 'd', 'c', 'q');
 
   gameLoop = function(){
     GreenDino.update();
+    RedDino.update();
     requestAnimationFrame(gameLoop);
   };
 

@@ -1,53 +1,57 @@
-var keyBindings = function(){
+var keyBindings = function(DinoClass, dinoinstance, run, left, right, attack, roar){
 
-  Mousetrap.bind('up', function(){
-    GreenDino.running = false;
-    dino.setAnimation('paused_'+actor.directions[dir]);
+  // DinoClass keyboard bindings
+
+  Mousetrap.bind(run, function(){
+    DinoClass.running = false;
+    dinoinstance.setAnimation('paused_'+actor.directions[dir]);
   }, 'keyup');
-  Mousetrap.bind('up', function(){
-    if (!GreenDino.running) {
-      dino.setAnimation('running_'+actor.directions[dir]);
+  Mousetrap.bind(run, function(){
+    if (!DinoClass.running) {
+      dinoinstance.setAnimation('running_'+actor.directions[dir]);
     }
-    GreenDino.running = true;
+    DinoClass.running = true;
   }, 'keydown');
 
-  Mousetrap.bind('left', function(){
+  Mousetrap.bind(left, function(){
     dir = dir === 0 ? 7 : dir -1;
-    if (GreenDino.running)
-      dino.setAnimation('running_'+actor.directions[dir]);
+    if (DinoClass.running)
+      dinoinstance.setAnimation('running_'+actor.directions[dir]);
     else
-      dino.setAnimation('paused_'+actor.directions[dir]);
+      dinoinstance.setAnimation('paused_'+actor.directions[dir]);
   });
-  Mousetrap.bind('right', function(){
+  Mousetrap.bind(right, function(){
     dir = dir === 7 ? 0 : dir+1;
-    if (GreenDino.running)
-      dino.setAnimation('running_'+actor.directions[dir]);
+    if (DinoClass.running)
+      dinoinstance.setAnimation('running_'+actor.directions[dir]);
     else
-      dino.setAnimation('paused_'+actor.directions[dir]);
+      dinoinstance.setAnimation('paused_'+actor.directions[dir]);
   });
 
-  Mousetrap.bind('space', function(){
-    GreenDino.attacking = false;
-    dino.setAnimation('paused_'+actor.directions[dir]);
+  Mousetrap.bind(attack, function(){
+    DinoClass.attacking = false;
+    dinoinstance.setAnimation('paused_'+actor.directions[dir]);
   }, 'keyup');
-  Mousetrap.bind('space', function(){
-    GreenDino.running = false;
-    if (!GreenDino.attacking) {
-      dino.setAnimation('attacking_'+actor.directions[dir]);
+  Mousetrap.bind(attack, function(){
+    DinoClass.running = false;
+    if (!DinoClass.attacking) {
+      dinoinstance.setAnimation('attacking_'+actor.directions[dir]);
     }
-    GreenDino.attacking = true;
+    DinoClass.attacking = true;
   }, 'keydown');
 
-  Mousetrap.bind('/', function(){
-    GreenDino.roaring = false;
-    dino.setAnimation('paused_'+actor.directions[dir]);
+  Mousetrap.bind(roar, function(){
+    DinoClass.roaring = false;
+    dinoinstance.setAnimation('paused_'+actor.directions[dir]);
   }, 'keyup');
-  Mousetrap.bind('/', function(){
-    GreenDino.running = false;
-    if (!GreenDino.roaring) {
-      dino.setAnimation('roaring_'+actor.directions[dir]);
+  Mousetrap.bind(roar, function(){
+    DinoClass.running = false;
+    if (!DinoClass.roaring) {
+      dinoinstance.setAnimation('roaring_'+actor.directions[dir]);
     }
-    GreenDino.roaring = true;
+    DinoClass.roaring = true;
   }, 'keydown');
+
+  // RedDino keyboard bindings
 
 };
