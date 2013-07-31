@@ -31,6 +31,7 @@ var keyBindings = function(){
     dino.setAnimation('paused_'+actor.directions[dir]);
   }, 'keyup');
   Mousetrap.bind('space', function(){
+    GreenDino.running = false;
     if (!GreenDino.attacking) {
       dino.setAnimation('attacking_'+actor.directions[dir]);
     }
@@ -42,6 +43,7 @@ var keyBindings = function(){
     dino.setAnimation('paused_'+actor.directions[dir]);
   }, 'keyup');
   Mousetrap.bind('/', function(){
+    GreenDino.running = false;
     if (!GreenDino.roaring) {
       dino.setAnimation('roaring_'+actor.directions[dir]);
     }
