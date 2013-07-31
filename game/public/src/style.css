@@ -7,3 +7,15 @@ body {
   background-image:url('http://img0.joyreactor.com/pics/post/full/art-space-TylerCreatesWorlds-774020.jpeg');
   display: inline-block;
 }
+
+/*#fullScreen {
+  border:1px solid white;
+  background-color: black;
+  color: white;
+  font-size:20px;
+  width:300px;
+  top:20px;
+  left:30px;
+  position: absolute;
+}
+*/
