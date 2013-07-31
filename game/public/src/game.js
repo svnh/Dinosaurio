@@ -25,9 +25,15 @@ imageObj.onload = function() {
   // start sprite animation
   dino.start();
 
+  bindScreenSizeHandlers();
+
+  var cnvs = document.getElementsByTagName('canvas');
+  console.log(cnvs[0])
+
   keyBindings();
 
   gameLoop = function(){
+    GreenDino.checkBoundaries();
     GreenDino.update();
     requestAnimationFrame(gameLoop);
   };
