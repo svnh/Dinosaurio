@@ -43,10 +43,9 @@ var RedDino = function(){
 
   getAnimArray(this.animationDefs, RedDino);
 
-// Create a new sprite
   reddino = new Kinetic.Sprite({
-    x: 200-64,
-    y: 200-64,
+    x: 200,
+    y: 200,
     image: images.reddino,
     animation: 'running_n',
     animations: RedDino.animations,
@@ -62,10 +61,8 @@ var RedDino = function(){
 
 RedDino.update = function(){
   if (this.running) {
-    RedDino.checkBoundaries();
     var radians = getRadians(dir);
     var pos = reddino.getPosition();
-
     reddino.setPosition(pos.x+Math.cos(radians)*2, pos.y+Math.sin(radians)*2);
   }
 };

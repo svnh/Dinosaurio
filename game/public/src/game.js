@@ -1,5 +1,6 @@
 var socket = io.connect('http://localhost:8080');
-var dir = 0;
+
+var dir = 0; //this needs to be independent to each dino
 
 var sources = {
   greendino: '/dino-green/dino-sprite.png',
@@ -45,11 +46,6 @@ var loadStage = function(images) {
   // this is where the canvas is added as well
   stage.add(layer);
 
-  // var c = layer.get('canvas')
-  // console.log(c)
-  // console.log(c.width)
-
-
   // start sprite animation
   greendino.start();
   keyBindings(GreenDino, greendino, 'up', 'left', 'right', 'space', '/');
@@ -57,6 +53,8 @@ var loadStage = function(images) {
   keyBindings(RedDino, reddino, 'w', 'a', 'd', 'c', 'q');
 
   gameLoop = function(){
+    RedDino.checkBoundaries();
+    GreenDino.checkBoundaries();
     collisionHandler();
     GreenDino.update();
     RedDino.update();

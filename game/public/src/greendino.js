@@ -43,7 +43,6 @@ var GreenDino = function(){
 
   getAnimArray(this.animationDefs, GreenDino);
 
-// Create a new sprite
   greendino = new Kinetic.Sprite({
     x: 200-64,
     y: 200-64,
@@ -57,17 +56,13 @@ var GreenDino = function(){
   greendino.on('mouseover', function() {
     console.log('Mouseover greendino');
   });
-  //mouseover bushes, set greendino cord, when greendino reaches cord, chomp, bush changes anim
-
 
 };
 
 GreenDino.update = function(){
   if (this.running) {
-    GreenDino.checkBoundaries();
     var radians = getRadians(dir);
     var pos = greendino.getPosition();
-
     greendino.setPosition(pos.x+Math.cos(radians)*2, pos.y+Math.sin(radians)*2);
   }
 };
