@@ -63,3 +63,19 @@ GreenDino.update = function(){
     dino.setPosition(pos.x+Math.cos(radians)*1, pos.y+Math.sin(radians)*1);
   }
 };
+
+GreenDino.checkBoundaries = function(){
+  var dinoX = dino.getPosition().x;
+  var dinoY = dino.getPosition().y;
+  var windowWidth = window.outerWidth;
+  var windowHeight = window.outerHeight;
+
+  if (dinoX >= windowWidth - 120){
+    dino.setPosition(dinoX-20, dinoY)
+  } else if (dinoY >= windowHeight - 200){
+    dino.setPosition(dinoX, dinoY-20)
+  }
+};
+
+
+

@@ -27,9 +27,6 @@ imageObj.onload = function() {
 
   bindScreenSizeHandlers();
 
-  var cnvs = document.getElementsByTagName('canvas');
-  console.log(cnvs[0])
-
   keyBindings();
 
   gameLoop = function(){
