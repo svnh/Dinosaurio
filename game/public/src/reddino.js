@@ -41,7 +41,7 @@ var RedDino = function(){
     }
   };
 
-  actor(this.animationDefs);
+  getAnimArray(this.animationDefs, RedDino);
 
 // Create a new sprite
   reddino = new Kinetic.Sprite({
@@ -49,7 +49,7 @@ var RedDino = function(){
     y: 200-64,
     image: images.reddino,
     animation: 'running_n',
-    animations: actor.animations,
+    animations: RedDino.animations,
     frameRate: 12,
     index: 0
   });
@@ -57,8 +57,6 @@ var RedDino = function(){
   reddino.on('mouseover', function() {
     console.log('Mouseover reddino');
   });
-  //mouseover bushes, set reddino cord, when reddino reaches cord, chomp, bush changes anim
-
 
 };
 
@@ -68,7 +66,7 @@ RedDino.update = function(){
     var radians = getRadians(dir);
     var pos = reddino.getPosition();
 
-    reddino.setPosition(pos.x+Math.cos(radians)*1, pos.y+Math.sin(radians)*1);
+    reddino.setPosition(pos.x+Math.cos(radians)*2, pos.y+Math.sin(radians)*2);
   }
 };
 

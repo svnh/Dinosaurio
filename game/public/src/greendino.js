@@ -41,7 +41,7 @@ var GreenDino = function(){
     }
   };
 
-  actor(this.animationDefs);
+  getAnimArray(this.animationDefs, GreenDino);
 
 // Create a new sprite
   greendino = new Kinetic.Sprite({
@@ -49,7 +49,7 @@ var GreenDino = function(){
     y: 200-64,
     image: images.greendino,
     animation: 'running_n',
-    animations: actor.animations,
+    animations: GreenDino.animations,
     frameRate: 12,
     index: 0
   });
@@ -68,7 +68,7 @@ GreenDino.update = function(){
     var radians = getRadians(dir);
     var pos = greendino.getPosition();
 
-    greendino.setPosition(pos.x+Math.cos(radians)*1, pos.y+Math.sin(radians)*1);
+    greendino.setPosition(pos.x+Math.cos(radians)*2, pos.y+Math.sin(radians)*2);
   }
 };
 

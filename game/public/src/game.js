@@ -88,17 +88,17 @@ var theyAreColliding = function(greendino, reddino) {
 
 var collisionHandler = function(){
   if(theyAreColliding(greendino, reddino)){
-    if (greendino.getAnimation() === 'attacking_'+actor.directions[dir]){
+    if (greendino.getAnimation() === 'attacking_'+GreenDino.directions[dir]){
       if (!RedDino.hit) {
         RedDino.hit = true;
-        reddino.setAnimation('hit_'+actor.directions[dir]);
+        reddino.setAnimation('hit_'+RedDino.directions[dir]);
       }
     }
-    if (reddino.getAnimation() === 'attacking_'+actor.directions[dir]){
+    if (reddino.getAnimation() === 'attacking_'+RedDino.directions[dir]){
       if (!GreenDino.hit) {
         GreenDino.hit = true;
         console.log(GreenDino.hit);
-        greendino.setAnimation('hit_'+actor.directions[dir]);
+        greendino.setAnimation('hit_'+GreenDino.directions[dir]);
       }
     }
   } else {

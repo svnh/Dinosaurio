@@ -1,8 +1,8 @@
-var actor = function(dinoAnimationDefs, dino){
-  actor.animations = {};
+var getAnimArray = function(dinoAnimationDefs, DinoClass){
+  DinoClass.animations = {};
 
   // Directions encoded order
-  actor.directions = [
+  DinoClass.directions = [
     'n',  // 0
     'ne', // 1
     'e',  // 2
@@ -36,7 +36,7 @@ var actor = function(dinoAnimationDefs, dino){
 
       // Create an array to hold sprite positions
       // Store it in the animations object
-      var animArray = actor.animations[prop+'_'+direction] = [];
+      var animArray = DinoClass.animations[prop+'_'+direction] = [];
 
       // For each of the frames of the animation
       for (var j = 0; j < animInfo.frames; j++) {
