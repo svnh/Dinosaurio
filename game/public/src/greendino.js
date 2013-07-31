@@ -4,6 +4,7 @@ var GreenDino = function(){
   this.running = false;
   this.roaring = false;
   this.attacking = false;
+  this.hit = false;
 
   this.animationDefs = {
     running: {

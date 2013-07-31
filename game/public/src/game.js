@@ -1,5 +1,4 @@
 var socket = io.connect('http://localhost:8080');
-
 var dir = 0;
 
 var sources = {
@@ -58,6 +57,7 @@ var loadStage = function(images) {
   keyBindings(RedDino, reddino, 'w', 'a', 'd', 'c', 'q');
 
   gameLoop = function(){
+    collisionHandler();
     GreenDino.update();
     RedDino.update();
     requestAnimationFrame(gameLoop);
@@ -66,9 +66,40 @@ var loadStage = function(images) {
   gameLoop();
 
 };
+
 loadImages(sources, loadStage);
 
 // Convert a direction into radians
 var getRadians = function(direction) {
   return Math.PI*2 / (8/direction) - Math.PI/2;
 };
+
+var theyAreColliding = function(greendino, reddino) {
+  greenX = greendino.attrs.x;
+  greenY = greendino.attrs.y;
+  redX = reddino.attrs.x;
+  redY = reddino.attrs.y;
+
+  return( !(greenX > redX + 64 ||  //
+   greenX + 64 < redX ||  // 
+   greenY > redY + 64 ||   //
+   greenY + 64 < redY));  //
+};
+
+var collisionHandler = function(){
+  if(theyAreColliding(greendino, reddino)){
+    if (!RedDino.hit) {
+      RedDino.hit = true;
+      reddino.setAnimation('hit_'+actor.directions[dir]);
+    }
+    if (!GreenDino.hit) {
+      GreenDino.hit = true;
+      greendino.setAnimation('hit_'+actor.directions[dir]);
+    }
+  } else {
+    RedDino.hit = false;
+    GreenDino.hit = false;
+  }
+};
+
+
