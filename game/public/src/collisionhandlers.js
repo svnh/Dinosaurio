@@ -1,8 +1,8 @@
-var theyAreColliding = function(greendino, reddino) {
-  greenX = greendino.attrs.x;
-  greenY = greendino.attrs.y;
-  redX = reddino.attrs.x;
-  redY = reddino.attrs.y;
+var theyAreColliding = function(GreenDino, RedDino) {
+  greenX = GreenDino.attrs.x;
+  greenY = GreenDino.attrs.y;
+  redX = RedDino.attrs.x;
+  redY = RedDino.attrs.y;
 
   return( !(greenX > redX + 64 ||  //
    greenX + 64 < redX ||  // 
