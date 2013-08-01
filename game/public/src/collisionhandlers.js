@@ -11,18 +11,17 @@ var theyAreColliding = function(greendino, reddino) {
 };
 
 var collisionHandler = function(){
-  if(theyAreColliding(greendino, reddino)){
-    if (greendino.getAnimation() === 'attacking_'+GreenDino.directions[GreenDino.dir]){
+  if(theyAreColliding(GreenDino.greenDinoObj, RedDino.redDinoObj)){
+    if (GreenDino.greenDinoObj.getAnimation() === 'attacking_'+GreenDino.directions[GreenDino.dir]){
       if (!RedDino.hit) {
         RedDino.hit = true;
-        reddino.setAnimation('hit_'+RedDino.directions[RedDino.dir]);
+        RedDino.redDinoObj.setAnimation('hit_'+RedDino.directions[RedDino.dir]);
       }
     }
-    if (reddino.getAnimation() === 'attacking_'+RedDino.directions[RedDino.dir]){
+    if (RedDino.redDinoObj.getAnimation() === 'attacking_'+RedDino.directions[RedDino.dir]){
       if (!GreenDino.hit) {
         GreenDino.hit = true;
-        console.log(GreenDino.hit);
-        greendino.setAnimation('hit_'+GreenDino.directions[GreenDino.dir]);
+        GreenDino.greenDinoObj.setAnimation('hit_'+GreenDino.directions[GreenDino.dir]);
       }
     }
   } else {

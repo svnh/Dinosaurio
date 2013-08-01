@@ -1,4 +1,3 @@
-var greendino;
 var GreenDino = function(){
 
   this.running = false;
@@ -43,7 +42,7 @@ var GreenDino = function(){
 
   getAnimArray(this.animationDefs, GreenDino);
 
-  greendino = new Kinetic.Sprite({
+  GreenDino.greenDinoObj = new Kinetic.Sprite({
     x: 200-64,
     y: 200-64,
     image: images.greendino,
@@ -52,34 +51,36 @@ var GreenDino = function(){
     frameRate: 12,
     index: 0
   });
-
-  greendino.on('mouseover', function() {
+  GreenDino.greenDinoObj.on('mouseover', function() {
     console.log('Mouseover greendino');
   });
-
 };
+
+GreenDino.prototype = Object.create(GreenDino.prototype);
+GreenDino.prototype.constructor = GreenDino;
+GreenDino.prototype.constructor = GreenDino;
 
 GreenDino.update = function(){
   if (this.running) {
     var radians = getRadians(GreenDino.dir);
-    var pos = greendino.getPosition();
-    greendino.setPosition(pos.x+Math.cos(radians)*2, pos.y+Math.sin(radians)*2);
+    var pos = this.greenDinoObj.getPosition();
+    this.greenDinoObj.setPosition(pos.x+Math.cos(radians)*2, pos.y+Math.sin(radians)*2);
   }
 };
 
 GreenDino.checkBoundaries = function(){
-  var greendinoX = greendino.getPosition().x;
-  var greendinoY = greendino.getPosition().y;
+  var greendinoX = this.greenDinoObj.getPosition().x;
+  var greendinoY = this.greenDinoObj.getPosition().y;
   var windowWidth = window.outerWidth;
   var windowHeight = window.outerHeight;
 
   if (greendinoX >= windowWidth - 120){
-    greendino.setPosition(greendinoX-20, greendinoY);
+    this.greenDinoObj.setPosition(greendinoX-20, greendinoY);
   } else if (greendinoY >= windowHeight - 200){
-    greendino.setPosition(greendinoX, greendinoY-20);
+    this.greenDinoObj.setPosition(greendinoX, greendinoY-20);
   } else if (greendinoX <= 5){
-    greendino.setPosition(greendinoX+20, greendinoY);
+    this.greenDinoObj.setPosition(greendinoX+20, greendinoY);
   } else if (greendinoY <= 5){
-    greendino.setPosition(greendinoX, greendinoY+20);
+    this.greenDinoObj.setPosition(greendinoX, greendinoY+20);
   }
 };

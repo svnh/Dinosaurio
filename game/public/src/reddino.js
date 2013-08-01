@@ -1,4 +1,3 @@
-var reddino;
 var RedDino = function(){
 
   this.running = false;
@@ -43,7 +42,7 @@ var RedDino = function(){
 
   getAnimArray(this.animationDefs, RedDino);
 
-  reddino = new Kinetic.Sprite({
+  RedDino.redDinoObj = new Kinetic.Sprite({
     x: 200,
     y: 200,
     image: images.reddino,
@@ -53,7 +52,7 @@ var RedDino = function(){
     index: 0
   });
 
-  reddino.on('mouseover', function() {
+  RedDino.redDinoObj.on('mouseover', function() {
     console.log('Mouseover reddino');
   });
 
@@ -62,24 +61,24 @@ var RedDino = function(){
 RedDino.update = function(){
   if (this.running) {
     var radians = getRadians(RedDino.dir);
-    var pos = reddino.getPosition();
-    reddino.setPosition(pos.x+Math.cos(radians)*2, pos.y+Math.sin(radians)*2);
+    var pos = RedDino.redDinoObj.getPosition();
+    RedDino.redDinoObj.setPosition(pos.x+Math.cos(radians)*2, pos.y+Math.sin(radians)*2);
   }
 };
 
 RedDino.checkBoundaries = function(){
-  var reddinoX = reddino.getPosition().x;
-  var reddinoY = reddino.getPosition().y;
+  var reddinoX = RedDino.redDinoObj.getPosition().x;
+  var reddinoY = RedDino.redDinoObj.getPosition().y;
   var windowWidth = window.outerWidth;
   var windowHeight = window.outerHeight;
 
   if (reddinoX >= windowWidth - 120){
-    reddino.setPosition(reddinoX-20, reddinoY);
+    RedDino.redDinoObj.setPosition(reddinoX-20, reddinoY);
   } else if (reddinoY >= windowHeight - 200){
-    reddino.setPosition(reddinoX, reddinoY-20);
+    RedDino.redDinoObj.setPosition(reddinoX, reddinoY-20);
   } else if (reddinoX <= 5){
-    reddino.setPosition(reddinoX+20, reddinoY);
+    RedDino.redDinoObj.setPosition(reddinoX+20, reddinoY);
   } else if (reddinoY <= 5){
-    reddino.setPosition(reddinoX, reddinoY+20);
+    RedDino.redDinoObj.setPosition(reddinoX, reddinoY+20);
   }
 };

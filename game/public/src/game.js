@@ -27,7 +27,7 @@ var loadImages = function(sources, callback) {
 };
 
 var loadStage = function(images) {
-  var stage = new Kinetic.Stage({
+  window.stage = new Kinetic.Stage({
     container: 'container',
     width: window.innerWidth,
     height: window.innerHeight-25
@@ -38,20 +38,26 @@ var loadStage = function(images) {
   GreenDino();
   RedDino();
   // add the shape to the layer
-  layer.add(greendino);
-  layer.add(reddino);
+  layer.add(GreenDino.greenDinoObj);
+  layer.add(RedDino.redDinoObj);
 
   // add the layer to the stage
-  // this is where the canvas is added as well
+  // This is where the canvas is added as well
   stage.add(layer);
 
   // start sprite animation
-  greendino.start();
-  keyBindings(GreenDino, greendino, 'up', 'left', 'right', 'space', '/');
-  reddino.start();
-  keyBindings(RedDino, reddino, 'w', 'a', 'd', 'c', 'q');
+  GreenDino.greenDinoObj.start();
+  keyBindings(GreenDino, GreenDino.greenDinoObj, 'up', 'left', 'right', 'space', '/');
+  RedDino.redDinoObj.start();
+  keyBindings(RedDino, RedDino.redDinoObj, 'w', 'a', 'd', 'c', 'q');
+  $('canvas').addClass('gameCanvas');
+  gameLoop();
 
-  gameLoop = function(){
+};
+
+loadImages(sources, loadStage);
+
+var gameLoop = function(){
     RedDino.checkBoundaries();
     GreenDino.checkBoundaries();
     collisionHandler();
@@ -59,12 +65,6 @@ var loadStage = function(images) {
     RedDino.update();
     requestAnimationFrame(gameLoop);
   };
-
-  gameLoop();
-
-};
-
-loadImages(sources, loadStage);
 
 // Convert a direction into radians
 var getRadians = function(direction) {
