@@ -27,6 +27,7 @@ var loadImages = function(sources, callback) {
 };
 
 var loadStage = function(images) {
+  console.log(window.innerWidth, window.innerHeight)
   window.stage = new Kinetic.Stage({
     container: 'container',
     width: window.innerWidth,
@@ -39,9 +40,9 @@ var loadStage = function(images) {
   var image = new Kinetic.Image({
     x: 0,
     y: 0,
-    image: images.ground,
-    width: 1024,
-    height: 1024
+    fillPatternImage: images.ground,
+    width: 2048,
+    height: 2048
   });
 
   layer.add(image)
@@ -60,8 +61,8 @@ var loadStage = function(images) {
   // start sprite animation
   GreenDino.greenDinoObj.start();
   keyBindings(GreenDino, GreenDino.greenDinoObj, 'up', 'left', 'right', 'space', '/');
-  // RedDino.redDinoObj.start();
-  // keyBindings(RedDino, RedDino.redDinoObj, 'w', 'a', 'd', 'c', 'q');
+  RedDino.redDinoObj.start();
+  keyBindings(RedDino, RedDino.redDinoObj, 'w', 'a', 'd', 'c', 'q');
   $('canvas').addClass('gameCanvas');
   gameLoop();
 
@@ -69,12 +70,13 @@ var loadStage = function(images) {
 
 loadImages(sources, loadStage);
 
+
 var gameLoop = function(time){
-  // RedDino.checkBoundaries();
-  GreenDino.checkBoundaries();
-  // collisionHandler();
+  RedDino.checkBoundaries();
+  collisionHandler();
   GreenDino.update(time);
-  // RedDino.update();
+  GreenDino.checkBoundaries();
+  RedDino.update();
   requestAnimationFrame(gameLoop);
 };
 

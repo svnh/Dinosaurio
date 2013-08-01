@@ -43,8 +43,8 @@ var RedDino = function(){
   getAnimArray(this.animationDefs, RedDino);
 
   RedDino.redDinoObj = new Kinetic.Sprite({
-    x: 200,
-    y: 200,
+    x: 1024,
+    y: 1024,
     image: images.reddino,
     animation: 'running_n',
     animations: RedDino.animations,
