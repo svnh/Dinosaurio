@@ -2,7 +2,8 @@ var socket = io.connect('http://localhost:8080');
 
 var sources = {
   greendino: '/dino-green/dino-sprite.png',
-  reddino: '/dino-red/dino-sprite.png'
+  reddino: '/dino-red/dino-sprite.png',
+  ground: '/ground.jpg'
 };
 var images;
 var loadImages = function(sources, callback) {
@@ -29,10 +30,22 @@ var loadStage = function(images) {
   window.stage = new Kinetic.Stage({
     container: 'container',
     width: window.innerWidth,
-    height: window.innerHeight-25
+    height: window.innerHeight
   });
 
   var layer = new Kinetic.Layer();
+
+
+  var image = new Kinetic.Image({
+    x: 0,
+    y: 0,
+    image: images.ground,
+    width: 1024,
+    height: 1024
+  });
+
+  layer.add(image)
+
 
   GreenDino();
   RedDino();
@@ -47,8 +60,8 @@ var loadStage = function(images) {
   // start sprite animation
   GreenDino.greenDinoObj.start();
   keyBindings(GreenDino, GreenDino.greenDinoObj, 'up', 'left', 'right', 'space', '/');
-  RedDino.redDinoObj.start();
-  keyBindings(RedDino, RedDino.redDinoObj, 'w', 'a', 'd', 'c', 'q');
+  // RedDino.redDinoObj.start();
+  // keyBindings(RedDino, RedDino.redDinoObj, 'w', 'a', 'd', 'c', 'q');
   $('canvas').addClass('gameCanvas');
   gameLoop();
 
@@ -56,14 +69,14 @@ var loadStage = function(images) {
 
 loadImages(sources, loadStage);
 
-var gameLoop = function(){
-    RedDino.checkBoundaries();
-    GreenDino.checkBoundaries();
-    collisionHandler();
-    GreenDino.update();
-    RedDino.update();
-    requestAnimationFrame(gameLoop);
-  };
+var gameLoop = function(time){
+  // RedDino.checkBoundaries();
+  GreenDino.checkBoundaries();
+  // collisionHandler();
+  GreenDino.update(time);
+  // RedDino.update();
+  requestAnimationFrame(gameLoop);
+};
 
 // Convert a direction into radians
 var getRadians = function(direction) {

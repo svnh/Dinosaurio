@@ -4,6 +4,7 @@ var GreenDino = function(){
   this.roaring = false;
   this.attacking = false;
   this.hit = false;
+  this.lastTime = 0;
 
   this.animationDefs = {
     running: {
@@ -60,27 +61,48 @@ GreenDino.prototype = Object.create(GreenDino.prototype);
 GreenDino.prototype.constructor = GreenDino;
 GreenDino.prototype.constructor = GreenDino;
 
-GreenDino.update = function(){
+GreenDino.update = function(time){
   if (this.running) {
+    var timeDiff = (time-this.lastTime)/4;
     var radians = getRadians(GreenDino.dir);
     var pos = this.greenDinoObj.getPosition();
-    this.greenDinoObj.setPosition(pos.x+Math.cos(radians)*2, pos.y+Math.sin(radians)*2);
+    this.greenDinoObj.setPosition(pos.x+Math.cos(radians)*timeDiff, pos.y+Math.sin(radians)*timeDiff);
   }
+  this.lastTime = time;
 };
 
 GreenDino.checkBoundaries = function(){
-  var greendinoX = this.greenDinoObj.getPosition().x;
-  var greendinoY = this.greenDinoObj.getPosition().y;
+  var stagePosition = stage.getPosition();
+  var greendinoX = this.greenDinoObj.getPosition().x + stagePosition.x + 128;
+  var greendinoY = this.greenDinoObj.getPosition().y + stagePosition.y + 128;
   var windowWidth = window.outerWidth;
   var windowHeight = window.outerHeight;
 
-  if (greendinoX >= windowWidth - 120){
-    this.greenDinoObj.setPosition(greendinoX-20, greendinoY);
-  } else if (greendinoY >= windowHeight - 200){
-    this.greenDinoObj.setPosition(greendinoX, greendinoY-20);
-  } else if (greendinoX <= 5){
-    this.greenDinoObj.setPosition(greendinoX+20, greendinoY);
-  } else if (greendinoY <= 5){
-    this.greenDinoObj.setPosition(greendinoX, greendinoY+20);
+  var stageMoveX = 0;
+  var stageMoveY = 0;
+  if (greendinoX >= windowWidth/2){
+    stageMoveX = (greendinoX - windowWidth/2)*-1;
   }
+  if (greendinoY >= windowHeight/2){
+    stageMoveY = (greendinoY - windowHeight/2)*-1;
+  }
+
+  if (greendinoX >= 0){
+    stageMoveX = (greendinoX - windowWidth/2)*-1;
+  }
+  if (greendinoY >= 0){
+    stageMoveY = (greendinoY - windowHeight/2)*-1;
+  }
+
+  if (stageMoveX || stageMoveY) {
+    stage.move(stageMoveX, stageMoveY);
+  }
+
+  // } else if (greendinoY >= windowHeight - 200){
+  //   this.greenDinoObj.setPosition(greendinoX, greendinoY-20);
+  // } else if (greendinoX <= 5){
+  //   this.greenDinoObj.setPosition(greendinoX+20, greendinoY);
+  // } else if (greendinoY <= 5){
+  //   this.greenDinoObj.setPosition(greendinoX, greendinoY+20);
+  // }
 };

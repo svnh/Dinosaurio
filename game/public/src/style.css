@@ -1,21 +1,31 @@
 body {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
 }
 
 #container {
-  background-image:url('http://img0.joyreactor.com/pics/post/full/art-space-TylerCreatesWorlds-774020.jpeg');
-  display: inline-block;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+.kineticjs-content {
+  display: block !important;
 }
 
-/*#fullScreen {
-  border:1px solid white;
-  background-color: black;
-  color: white;
-  font-size:20px;
-  width:300px;
-  top:20px;
-  left:30px;
+.fullScreen {
   position: absolute;
+  z-index: 2;
+  top: 20px;
+  left: 30px;
+  width: 300px;
+
+  border: 1px solid white;
+
+  background-color: black;
+
+  color: white;
+  font-size: 20px;
 }
-*/
