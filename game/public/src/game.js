@@ -1,6 +1,5 @@
 var socket = io.connect('http://localhost:8080');
 
-
 var sources = {
   greendino: '/dino-green/dino-sprite.png',
   reddino: '/dino-red/dino-sprite.png'
