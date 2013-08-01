@@ -1,22 +1,12 @@
-//$("canvas").addClass("gameCanvas");
-// var nodelist = document.getElementsByTagName('canvas');
-// var cnvs = nodelist[0];
+// Rate limit how often we repaint/reflow the DOM
+var resizer = _.throttle(function() {
+  var newWidth = document.documentElement.clientWidth;
+  var newHeight = document.documentElement.clientHeight;
+  stage.setSize(newWidth, newHeight);
+}, 75);
 
-$('#container').bind('resize', function(){
-  var w = $(window).width();
-  var h = $(window).height();
+$(window).resize(resizer);
 
-  $("#container").css("width", w + "px");
-  $("#container").css("height", h + "px");
-
-  // cnvs.width = w;
-  // cnvs.height = h;
-});
-
-$(window).resize(function(){
-   $('#container').resize();
-   cnvs.resize();
-});
 var goFullScreen = function(){
   var elem = document.getElementById("container");
   if (elem.requestFullscreen) {
