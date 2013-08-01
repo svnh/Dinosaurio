@@ -61,7 +61,7 @@ var GreenDino = function(){
 
 GreenDino.update = function(){
   if (this.running) {
-    var radians = getRadians(dir);
+    var radians = getRadians(GreenDino.dir);
     var pos = greendino.getPosition();
     greendino.setPosition(pos.x+Math.cos(radians)*2, pos.y+Math.sin(radians)*2);
   }

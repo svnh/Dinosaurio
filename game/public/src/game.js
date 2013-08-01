@@ -1,6 +1,5 @@
 var socket = io.connect('http://localhost:8080');
 
-var dir = 0; //this needs to be independent to each dino
 
 var sources = {
   greendino: '/dino-green/dino-sprite.png',
@@ -30,8 +29,8 @@ var loadImages = function(sources, callback) {
 var loadStage = function(images) {
   var stage = new Kinetic.Stage({
     container: 'container',
-    width: window.outerWidth,
-    height: window.outerHeight
+    width: window.innerWidth,
+    height: window.innerHeight-25
   });
 
   var layer = new Kinetic.Layer();

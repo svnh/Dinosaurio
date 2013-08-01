@@ -1,4 +1,5 @@
 var getAnimArray = function(dinoAnimationDefs, DinoClass){
+  DinoClass.dir = 0;
   DinoClass.animations = {};
 
   // Directions encoded order

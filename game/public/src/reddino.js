@@ -61,7 +61,7 @@ var RedDino = function(){
 
 RedDino.update = function(){
   if (this.running) {
-    var radians = getRadians(dir);
+    var radians = getRadians(RedDino.dir);
     var pos = reddino.getPosition();
     reddino.setPosition(pos.x+Math.cos(radians)*2, pos.y+Math.sin(radians)*2);
   }
