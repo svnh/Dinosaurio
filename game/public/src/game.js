@@ -2,6 +2,7 @@ var socket = io.connect('http://localhost:8080');
 
 var sources = {
   greendino: '/dino-green/dino-sprite.png',
+  chicken: '/chicken/chicken-sprite.png',
   reddino: '/dino-red/dino-sprite.png',
   ground: '/ground.jpg'
 };
@@ -36,8 +37,7 @@ var loadStage = function(images) {
 
   var layer = new Kinetic.Layer();
 
-
-  var image = new Kinetic.Image({
+  var groundImage = new Kinetic.Image({
     x: 0,
     y: 0,
     fillPatternImage: images.ground,
@@ -45,38 +45,77 @@ var loadStage = function(images) {
     height: 2048
   });
 
-  layer.add(image)
-
+  layer.add(groundImage)
 
   GreenDino();
-  RedDino();
-  // add the shape to the layer
   layer.add(GreenDino.greenDinoObj);
-  layer.add(RedDino.redDinoObj);
 
-  // add the layer to the stage
-  // This is where the canvas is added as well
+  Chicken();
+  layer.add(Chicken.chickenObj);
+
+  // RedDino();
+  // layer.add(RedDino.redDinoObj);
+
+  // add the layer and canvas to the stage
   stage.add(layer);
+  $('canvas').addClass('gameCanvas');
 
   // start sprite animation
+  Chicken.chickenObj.start();
   GreenDino.greenDinoObj.start();
   keyBindings(GreenDino, GreenDino.greenDinoObj, 'up', 'left', 'right', 'space', '/');
-  RedDino.redDinoObj.start();
-  keyBindings(RedDino, RedDino.redDinoObj, 'w', 'a', 'd', 'c', 'q');
-  $('canvas').addClass('gameCanvas');
+  // RedDino.redDinoObj.start();
+  // keyBindings(RedDino, RedDino.redDinoObj, 'w', 'a', 'd', 'c', 'q');
+
   gameLoop();
 
 };
 
 loadImages(sources, loadStage);
 
+var checkBoundaries = function(){
+  var dinoX = GreenDino.greenDinoObj.getPosition().x + 128/2;
+  var dinoY = GreenDino.greenDinoObj.getPosition().y + 128/2;
+  var width = window.outerWidth;
+  var height = window.outerHeight;
+
+  var sizeX = 2048;
+  var sizeY = 2048;
+
+  var stageOffsetX = 0;
+  var stageOffsetY = 0;
+
+  if (dinoX + width/2 > sizeX) {
+    stageOffsetX = (sizeX - width);
+  }
+  else if (dinoX > width/2) {
+    stageOffsetX = (dinoX - width/2);
+  }
+
+  if (dinoY + height/2 > sizeY) {
+    stageOffsetY = (sizeY - height);
+  }
+  else if (dinoY > height/2) {
+    stageOffsetY = (dinoY - height/2);
+  }
+
+  stage.setOffsetX(stageOffsetX);
+  stage.setOffsetY(stageOffsetY);
+};
+
+// var throttleupdate = _.throttle(function(time){
+//   GreenDino.update(time);
+// }, 20);
 
 var gameLoop = function(time){
-  RedDino.checkBoundaries();
-  collisionHandler();
+  // RedDino.checkBoundaries();
+  // RedDino.update();
+
+  // collisionHandler();
   GreenDino.update(time);
-  GreenDino.checkBoundaries();
-  RedDino.update();
+
+  // throttleupdate(time);
+  checkBoundaries();
   requestAnimationFrame(gameLoop);
 };
 

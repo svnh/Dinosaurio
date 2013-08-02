@@ -1,4 +1,30 @@
-var getAnimArray = function(dinoAnimationDefs, DinoClass){
+var Chicken = function(){
+
+  this.hit = false;
+  this.lastTime = 0;
+
+  this.animationDefs = {
+    picking: {
+      start: 0,
+      frames: 9
+    },
+  };
+
+  chickenAnimArray(this.animationDefs, Chicken);
+
+  Chicken.chickenObj = new Kinetic.Sprite({
+    x: 1020,
+    y: 1020,
+    image: images.chicken,
+    animation: 'picking_n',
+    animations: Chicken.animations,
+    frameRate: 12,
+    index: 0
+  });
+};
+
+var chickenAnimArray = function(dinoAnimationDefs, DinoClass){
+  console.log('chickenarray')
   DinoClass.dir = 0;
   DinoClass.animations = {};
 
@@ -41,17 +67,17 @@ var getAnimArray = function(dinoAnimationDefs, DinoClass){
       // For each of the frames of the animation
       for (var j = 0; j < animInfo.frames; j++) {
         // Calculate the offset in the sprite based on the direction
-        var directionOffset = i*animInfo.frames*128;
+        var directionOffset = i*animInfo.frames*64;
 
         // Calculate the offset in the sprite based on the frame #
-        var frameOffset = j*128;
+        var frameOffset = j*64;
 
         // Add a frame descriptor to the animation array
         animArray.push({
-          x: animInfo.start*128 + directionOffset + frameOffset,
+          x: animInfo.start*64 + directionOffset + frameOffset,
           y: 0,
-          width: 128,
-          height: 128
+          width: 64,
+          height: 64
         });
       }
     }

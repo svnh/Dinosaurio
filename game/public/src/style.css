@@ -19,13 +19,13 @@ body {
   position: fixed;
   z-index: 2;
   top: 20px;
-  left: 30px;
-  width: 300px;
+  left: 20px;
+  width: 105px;
 
   border: 1px solid white;
 
-  background-color: black;
+  background-color: transparent;
 
   color: white;
-  font-size: 20px;
+  font-size: 15px;
 }
