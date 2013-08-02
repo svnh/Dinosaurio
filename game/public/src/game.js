@@ -50,8 +50,24 @@ var loadStage = function(images) {
   GreenDino();
   layer.add(GreenDino.greenDinoObj);
 
-  Chicken();
-  layer.add(Chicken.chickenObj);
+
+// var randomX = Math.floor((Math.random()*2048)+1);
+// var randomY = Math.floor((Math.random()*2048)+1);
+
+//   Chicken(randomX, randomY);
+//   layer.add(Chicken.chickenObj);
+// var randomX = Math.floor((Math.random()*2048)+1);
+// var randomY = Math.floor((Math.random()*2048)+1);
+
+//   Chicken(randomX, randomY);
+//   layer.add(Chicken.chickenObj);
+// var randomX = Math.floor((Math.random()*2048)+1);
+// var randomY = Math.floor((Math.random()*2048)+1);
+
+//   Chicken(randomX, randomY);
+//   layer.add(Chicken.chickenObj);
+// var randomX = Math.floor((Math.random()*2048)+1);
+// var randomY = Math.floor((Math.random()*2048)+1);
 
   // RedDino();
   // layer.add(RedDino.redDinoObj);
@@ -103,20 +119,24 @@ var checkBoundaries = function(){
   stage.setOffsetY(stageOffsetY);
 };
 
-// var throttleupdate = _.throttle(function(time){
-//   GreenDino.update(time);
-// }, 20);
+var throttleupdate = _.throttle(function(time){
+  GreenDino.update(time);
+  requestAnimationFrame(gameLoop);
+}, 20);
 
 var gameLoop = function(time){
   // RedDino.checkBoundaries();
   // RedDino.update();
 
   // collisionHandler();
-  GreenDino.update(time);
+  Chicken.update(time);
 
-  // throttleupdate(time);
-  checkBoundaries();
+  GreenDino.update(time);
   requestAnimationFrame(gameLoop);
+
+  throttleupdate(time);
+  checkBoundaries(); 
+
 };
 
 // Convert a direction into radians

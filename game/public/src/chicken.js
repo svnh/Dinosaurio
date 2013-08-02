@@ -1,4 +1,4 @@
-var Chicken = function(){
+var Chicken = function(randomX, randomY){
 
   this.hit = false;
   this.lastTime = 0;
@@ -21,8 +21,8 @@ var Chicken = function(){
   chickenAnimArray(this.animationDefs, Chicken);
 
   Chicken.chickenObj = new Kinetic.Sprite({
-    x: 1020,
-    y: 1020,
+    x: randomX,
+    y: randomY,
     image: images.chicken,
     animation: 'walking_n',
     animations: Chicken.animations,
@@ -31,13 +31,22 @@ var Chicken = function(){
   });
 };
 
-var chickenAnimArray = function(dinoAnimationDefs, DinoClass){
-  console.log('chickenarray')
-  DinoClass.dir = 0;
-  DinoClass.animations = {};
+Chicken.update = function(time){
+  // console.log('updating chicken');
+  var timeDiff = (time-this.lastTime)/20;
+  var radians = getRadians(Chicken.dir);
+  var pos = this.chickenObj.getPosition();
+  this.chickenObj.setPosition(pos.x + .008, pos.y);
+  this.lastTime = time;
+  return;
+};
+
+var chickenAnimArray = function(chickenAnimationDefs, Chicken){
+  Chicken.dir = 0;
+  Chicken.animations = {};
 
   // Directions encoded order
-  DinoClass.directions = [
+  Chicken.directions = [
     'n',  // 0
     'ne', // 1
     'e',  // 2
@@ -60,8 +69,8 @@ var chickenAnimArray = function(dinoAnimationDefs, DinoClass){
     'w'
   ];
   // For each defined animation
-  for (var prop in dinoAnimationDefs) {
-    var animInfo = dinoAnimationDefs[prop];
+  for (var prop in chickenAnimationDefs) {
+    var animInfo = chickenAnimationDefs[prop];
 
     // In each of possible directions
     for (var i = 0; i < 8; i++) {
@@ -70,7 +79,7 @@ var chickenAnimArray = function(dinoAnimationDefs, DinoClass){
 
       // Create an array to hold sprite positions
       // Store it in the animations object
-      var animArray = DinoClass.animations[prop+'_'+direction] = [];
+      var animArray = Chicken.animations[prop+'_'+direction] = [];
 
       // For each of the frames of the animation
       for (var j = 0; j < animInfo.frames; j++) {

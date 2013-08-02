@@ -55,8 +55,9 @@ var GreenDino = function(){
 };
 
 GreenDino.update = function(time){
-    console.log('updating');
+    // console.log('updating');
   if (this.running) {
+    console.log(pos);
     var timeDiff = (time-this.lastTime)/4;
     var radians = getRadians(GreenDino.dir);
     var pos = this.greenDinoObj.getPosition();
