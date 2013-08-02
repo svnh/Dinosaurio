@@ -26,6 +26,8 @@ var loadImages = function(sources, callback) {
   }
 };
 
+var chickens = [];
+
 var loadStage = function(images) {
   console.log(window.innerWidth, window.innerHeight)
 
@@ -48,14 +50,13 @@ var loadStage = function(images) {
   GreenDino();
   layer.add(GreenDino.greenDinoObj);
 
-
-// var randomX = Math.floor((Math.random()*2048)+1);
-// var randomY = Math.floor((Math.random()*2048)+1);
-
-//   Chicken(randomX, randomY);
-//   layer.add(Chicken.chickenObj);
-// var randomX = Math.floor((Math.random()*2048)+1);
-// var randomY = Math.floor((Math.random()*2048)+1);
+  for (var i = 0; i < 1; i++) {
+    var randomX = Math.floor((Math.random()*2048)+1);
+    var randomY = Math.floor((Math.random()*2048)+1);
+    Chicken(randomX, randomY);
+    layer.add(Chicken.chickenObj);
+    chickens.push(Chicken.chickenObj)
+  }
 
   // RedDino();
   // layer.add(RedDino.redDinoObj);
@@ -63,11 +64,16 @@ var loadStage = function(images) {
   // add the layer and canvas to the stage
   stage.add(layer);
 
+  for (var i = 0; i < chickens.length; i++) {
+    chickens[i].start();
+  }
+
   // start sprite animation
   GreenDino.greenDinoObj.start();
   keyBindings(GreenDino, GreenDino.greenDinoObj, 'up', 'left', 'right', 'space', '/');
   // RedDino.redDinoObj.start();
   // keyBindings(RedDino, RedDino.redDinoObj, 'w', 'a', 'd', 'c', 'q');
+  console.log(chickens)
 
   gameLoop();
 
@@ -79,8 +85,8 @@ var translateScreen = function(){
   var dinoX = GreenDino.greenDinoObj.getPosition().x + 128/2;
   var dinoY = GreenDino.greenDinoObj.getPosition().y + 128/2;
 
-  var width = window.outerWidth;
-  var height = window.outerHeight;
+  var width = window.innerWidth;
+  var height = window.innerHeight;
 
   var backgroundWidth = document.getElementById('background').offsetWidth;
   var backgroundHeight = document.getElementById('background').offsetHeight;
@@ -114,8 +120,12 @@ var checkBoundaries = function(){
   var dinoY = GreenDino.greenDinoObj.getPosition().y;
 
   var sizeX = 1935;
-  var sizeY = 1875;
+  var sizeY = 1950;
   // console.log(dinoX,dinoY)
+  var backgroundWidth = document.getElementById('background').offsetHeight;
+  // console.log(backgroundWidth)
+  // console.log(dinoY)
+
 
   if (dinoY >= sizeY){
     GreenDino.greenDinoObj.setPosition(dinoX, sizeY);
@@ -141,7 +151,7 @@ var checkBoundaries = function(){
   if (dinoX <= -15 && dinoY >= sizeY){
     GreenDino.greenDinoObj.setPosition(-15, sizeY);
   }
-}
+};
 
 var frames = 0;
 var gameLoop = function(time){
@@ -154,7 +164,11 @@ var gameLoop = function(time){
   // RedDino.update();
 
   // collisionHandler();
-  // Chicken.update(time);
+
+  for (var i = 0; i < chickens.length; i++) {
+    var pos = chickens[i].getPosition();
+    chickens[i].setPosition(pos.x+1, pos.y-1);
+  }
 
   GreenDino.update(time);
 
