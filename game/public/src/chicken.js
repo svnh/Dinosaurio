@@ -8,6 +8,14 @@ var Chicken = function(){
       start: 0,
       frames: 9
     },
+    walking: {
+      start: 81,
+      frames: 7
+    },
+    hit: {
+      start: 136,
+      frames: 8
+    }
   };
 
   chickenAnimArray(this.animationDefs, Chicken);
@@ -16,7 +24,7 @@ var Chicken = function(){
     x: 1020,
     y: 1020,
     image: images.chicken,
-    animation: 'picking_n',
+    animation: 'walking_n',
     animations: Chicken.animations,
     frameRate: 12,
     index: 0
