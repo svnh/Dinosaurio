@@ -13,7 +13,7 @@ var resizer = _.throttle(function() {
 $(window).resize(resizer);
 
 var goFullScreen = function(){
-  var elem = document.getElementById("game");
+  var elem = document.getElementById("container");
   if (elem.requestFullscreen) {
     elem.requestFullscreen();
   } else if (elem.mozRequestFullScreen) {
