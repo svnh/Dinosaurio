@@ -2,13 +2,18 @@
 var resizer = _.throttle(function() {
   var newWidth = window.innerWidth;
   var newHeight = window.innerHeight;
-  stage.setSize(newWidth, newHeight);
+
+  var background = document.getElementById('background');
+
+  background.style.width=newWidth;
+  background.style.height=newHeight;
+
 }, 75);
 
 $(window).resize(resizer);
 
 var goFullScreen = function(){
-  var elem = document.getElementById("container");
+  var elem = document.getElementById("game");
   if (elem.requestFullscreen) {
     elem.requestFullscreen();
   } else if (elem.mozRequestFullScreen) {

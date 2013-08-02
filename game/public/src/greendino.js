@@ -44,8 +44,8 @@ var GreenDino = function(){
   getAnimArray(this.animationDefs, GreenDino);
 
   GreenDino.greenDinoObj = new Kinetic.Sprite({
-    x: 1048,
-    y: 1048,
+    x: 200,
+    y: 200,
     image: images.greendino,
     animation: 'paused_n',
     animations: GreenDino.animations,
@@ -57,7 +57,6 @@ var GreenDino = function(){
 GreenDino.update = function(time){
     // console.log('updating');
   if (this.running) {
-    console.log(pos);
     var timeDiff = (time-this.lastTime)/4;
     var radians = getRadians(GreenDino.dir);
     var pos = this.greenDinoObj.getPosition();
