@@ -75,7 +75,7 @@ var loadStage = function(images) {
 
 loadImages(sources, loadStage);
 
-var checkBoundaries = function(){
+var translateScreen = function(){
   var dinoX = GreenDino.greenDinoObj.getPosition().x + 128/2;
   var dinoY = GreenDino.greenDinoObj.getPosition().y + 128/2;
 
@@ -109,6 +109,40 @@ var checkBoundaries = function(){
   background.style.webkitTransform = 'translate3d('+Math.floor(translateLeft*-1)+'px, '+Math.floor(translateTop*-1)+'px, 0)';
 };
 
+var checkBoundaries = function(){
+  var dinoX = GreenDino.greenDinoObj.getPosition().x;
+  var dinoY = GreenDino.greenDinoObj.getPosition().y;
+
+  var sizeX = 1935;
+  var sizeY = 1875;
+  // console.log(dinoX,dinoY)
+
+  if (dinoY >= sizeY){
+    GreenDino.greenDinoObj.setPosition(dinoX, sizeY);
+  }
+  if (dinoY <= -20){
+    GreenDino.greenDinoObj.setPosition(dinoX, -20);
+  }
+  if (dinoX >= sizeX){
+    GreenDino.greenDinoObj.setPosition(sizeX, dinoY);
+  }
+  if (dinoX <= -15){
+    GreenDino.greenDinoObj.setPosition(-15, dinoY);
+  }
+  if (dinoX <= -15 && dinoY <= -20){
+    GreenDino.greenDinoObj.setPosition(-15, -20);
+  }
+  if (dinoX >= sizeX && dinoY >= sizeY){
+    GreenDino.greenDinoObj.setPosition(sizeX, sizeY);
+  }
+  if (dinoX >= sizeX && dinoY <= -20){
+    GreenDino.greenDinoObj.setPosition(sizeX, -20);
+  }
+  if (dinoX <= -15 && dinoY >= sizeY){
+    GreenDino.greenDinoObj.setPosition(-15, sizeY);
+  }
+}
+
 var frames = 0;
 var gameLoop = function(time){
   frames++;
@@ -124,7 +158,9 @@ var gameLoop = function(time){
 
   GreenDino.update(time);
 
-  checkBoundaries(); 
+  checkBoundaries();
+
+  translateScreen(); 
 
   requestAnimationFrame(gameLoop);
 };
