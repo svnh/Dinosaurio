@@ -27,7 +27,6 @@ var loadImages = function(sources, callback) {
 };
 
 var chickens = [];
-var chickenAttrs = [];
 
 var loadStage = function(images) {
 
@@ -44,17 +43,17 @@ var loadStage = function(images) {
   GreenDino();
   layer.add(GreenDino.greenDinoObj);
 
-  for (var i = 0; i < 50; i++) {
+  for (var i = 0; i < 30; i++) {
     var randomX = Math.floor((Math.random()*2048)+1);
     var randomY = Math.floor((Math.random()*2048)+1);
     Chicken(randomX, randomY);
     layer.add(Chicken.chickenObj);
     chickens.push(Chicken.chickenObj)
   }
-
+  console.log(chickens)
   stage.add(layer);
 
-  for (var i = 0; i < chickens.length; i++) {
+  for (var i = 0; i < chickens.length-1; i++) {
     chickens[i].start();
   }
 
@@ -67,14 +66,37 @@ var loadStage = function(images) {
 
 loadImages(sources, loadStage);
 
-var gameLoop = function(time){
+var chickenAttrs = [];
 
+var updateChickens = _.throttle(function(){
+  chickenAttrs = [];
   for (var i = 0; i < chickens.length; i++) {
+    var random = Math.random()*50;
     var radians = getRadians(Chicken.dir);
     var pos = chickens[i].getPosition();
     chickenAttrs.push(pos);
-    chickens[i].setPosition(pos.x+Math.cos(radians), pos.y+Math.sin(radians));
+      if(chickenAttrs[i].y < 20  || chickenAttrs[i].y > 2048 || chickenAttrs[i].x < 20 || chickenAttrs[i].x > 2048) {
+        Chicken.dir = Chicken.dir === 7 ? 0 : Chicken.dir+1
+        console.log('changdir')
+        radians = getRadians(Chicken.dir);
+        pos = chickens[i].getPosition();
+        Chicken.chickenObj.setAnimation('running_'+Chicken.directions[Chicken.dir]);
+        chickens[i].setPosition(pos.x+Math.cos(radians)*random, pos.y+Math.sin(radians)*random);
+      } else {
+        chickens[i].setPosition(pos.x+Math.cos(radians)*5, pos.y+Math.sin(radians)*5);
+      }
   }
+}, 200); 
+
+var frames = 0;
+var gameLoop = function(time){
+  frames++;
+  // if (frames % 100 === 0) {
+  //   console.log(frames / (time/1000));
+  // }
+
+  // collisionHandler();
+  updateChickens();
 
   GreenDino.update(time);
   checkBoundaries();

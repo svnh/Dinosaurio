@@ -50,13 +50,14 @@ var GreenDino = function(){
     animation: 'paused_n',
     animations: GreenDino.animations,
     frameRate: 12,
-    index: 0
+    index: 0,
+    dir:0
   });
 
   GreenDino.update = function(time){
     if (this.running) {
       var timeDiff = (time-this.lastTime)/4;
-      var radians = getRadians(GreenDino.dir);
+      var radians = getRadians(GreenDino.greenDinoObj.attrs.dir);
       var pos = this.greenDinoObj.getPosition();
       this.greenDinoObj.setPosition(pos.x+Math.cos(radians)*timeDiff, pos.y+Math.sin(radians)*timeDiff);
     }
