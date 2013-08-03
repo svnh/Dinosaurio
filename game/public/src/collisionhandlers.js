@@ -4,10 +4,10 @@ var theyAreColliding = function(GreenDino, chickenInstance) {
   chickenInstanceX = chickenInstance.x;
   chickenInstanceY = chickenInstance.y;
 
-  return( !(greenX > chickenInstanceX + 50 ||  //
-   greenX + 50 < chickenInstanceX ||  // 
-   greenY > chickenInstanceY + 50 ||   //
-   greenY + 50 < chickenInstanceY));  //
+  return( !(greenX > chickenInstanceX + 40 ||  //
+   greenX + 60 < chickenInstanceX ||  // 
+   greenY > chickenInstanceY + 40 ||   //
+   greenY + 60 < chickenInstanceY));  //
 };
 
 var collisionHandler = function(GreenDino, chickens, stage){
@@ -18,6 +18,7 @@ var collisionHandler = function(GreenDino, chickens, stage){
         if (!chickenInstance.hit) {
           chickenInstance.hit = true;
           chickens[i].hide();
+          changeCounter();
         }
       }
    } else {
@@ -26,6 +27,10 @@ var collisionHandler = function(GreenDino, chickens, stage){
   }
 };
 
+var changeCounter = function(){
+  counter++;
+  $('.chickenCounter').text('CHICKENS: ' + counter)
+}
 
 // var theyAreColliding = function(GreenDino, RedDino) {
 //   greenX = GreenDino.attrs.x;

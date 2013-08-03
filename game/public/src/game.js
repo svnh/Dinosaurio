@@ -27,6 +27,13 @@ var loadImages = function(sources, callback) {
 };
 
 var chickens = [];
+var counter = 0;
+
+var changeCounter = function(){
+  counter++;
+  $('.chickenCounter').text('CHICKENS: ' + counter)
+  console.log($('.chickenCounter').text())
+}
 
 var loadStage = function(images) {
 
@@ -39,6 +46,17 @@ var loadStage = function(images) {
   });
 
   var layer = new Kinetic.Layer();
+
+  // var chickenCounter = new Kinetic.Text({
+  //   x: stage.getWidth() / 2,
+  //   y: 25,
+  //   text: 'CHICKENS: 0',
+  //   fontSize: 20,
+  //   fontFamily: 'Calibri',
+  //   fill: 'white'
+  // });
+
+  // layer.add(chickenCounter);
 
   GreenDino();
   layer.add(GreenDino.greenDinoObj);

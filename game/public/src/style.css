@@ -52,3 +52,20 @@ body {
   color: white;
   font-size: 15px;
 }
+
+.chickenCounter {
+  position: fixed;
+  z-index: 2;
+  top: 22px;
+  left: 130px;
+  width: 105px;
+  padding: 3px;
+  text-align: center;
+
+  background-color: transparent;
+
+  color: white;
+  font-size: 15px;
+  font-family: helvetica; 
+}  
+}
