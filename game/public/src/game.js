@@ -71,22 +71,21 @@ var chickenAttrs = [];
 var updateChickens = _.throttle(function(){
   chickenAttrs = [];
   for (var i = 0; i < chickens.length; i++) {
-    var random = Math.random()*50;
-    var radians = getRadians(Chicken.dir);
+    var random = Math.random()*10;
+    var radians = getRadians(chickens[i].attrs.dir);
     var pos = chickens[i].getPosition();
     chickenAttrs.push(pos);
       if(chickenAttrs[i].y < 20  || chickenAttrs[i].y > 2048 || chickenAttrs[i].x < 20 || chickenAttrs[i].x > 2048) {
-        Chicken.dir = Chicken.dir === 7 ? 0 : Chicken.dir+1
-        console.log('changdir')
-        radians = getRadians(Chicken.dir);
+        chickens[i].attrs.dir = chickens[i].attrs.dir === 7 ? 0 : chickens[i].attrs.dir+1
         pos = chickens[i].getPosition();
-        Chicken.chickenObj.setAnimation('running_'+Chicken.directions[Chicken.dir]);
+        radians = getRadians(chickens[i].attrs.dir);
+        chickens[i].setAnimation('running_'+Chicken.directions[chickens[i].attrs.dir]);
         chickens[i].setPosition(pos.x+Math.cos(radians)*random, pos.y+Math.sin(radians)*random);
       } else {
-        chickens[i].setPosition(pos.x+Math.cos(radians)*5, pos.y+Math.sin(radians)*5);
+        chickens[i].setPosition(pos.x+Math.cos(radians)*random, pos.y+Math.sin(radians)*random);
       }
   }
-}, 200); 
+}, 50); 
 
 var frames = 0;
 var gameLoop = function(time){

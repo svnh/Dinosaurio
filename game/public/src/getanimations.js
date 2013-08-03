@@ -1,5 +1,5 @@
 var getAnimArray = function(animationDefs, ClassName, imgSize){
-  ClassName.dir = 0;
+  // ClassName.dir = 0;
   ClassName.animations = {};
 
   // Directions encoded order

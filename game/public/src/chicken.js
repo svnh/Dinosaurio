@@ -32,7 +32,6 @@ var Chicken = function(randomX, randomY){
     index: 0,
     dir:0
   });
-  console.log(Chicken.chickenObj.attrs.dir)
 };
 
 // Chicken.setAction = function(action){
