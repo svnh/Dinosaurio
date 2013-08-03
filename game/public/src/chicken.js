@@ -42,8 +42,9 @@ Chicken.update = _.throttle(function(time){
     var pos = chickens[i].getPosition();
     var possibAnims = ['running_'+Chicken.directions[chickenInstance.dir],'running_'+Chicken.directions[chickenInstance.dir], 'picking_'+Chicken.directions[chickenInstance.dir]];
 
-      if(chickenInstance.y < 20  || chickenInstance.y > 2048 || chickenInstance.x < 20 || chickenInstance.x > 2048) {
-        chickenInstance.dir = chickenInstance.dir === 7 ? 0 : chickenInstance.dir+1
+      if(chickenInstance.y < -20 || chickenInstance.y > 2055 || chickenInstance.x < -20 || chickenInstance.x > 2055) {
+        chickenInstance.dir = chickenInstance.dir === 7 ? 0 : chickenInstance.dir+1;
+        chickenInstance.turnedRight = true;
 
         chickenInstance.x = chickenInstance.x + 20;
         chickenInstance.y = chickenInstance.y + 20;
