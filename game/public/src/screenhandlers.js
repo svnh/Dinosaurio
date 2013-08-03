@@ -38,11 +38,7 @@ var checkBoundaries = function(){
 
   var sizeX = 1935;
   var sizeY = 1950;
-  // console.log(dinoX,dinoY)
   var backgroundWidth = document.getElementById('background').offsetHeight;
-  // console.log(backgroundWidth)
-  // console.log(dinoY)
-
 
   if (dinoY >= sizeY){
     GreenDino.greenDinoObj.setPosition(dinoX, sizeY);
