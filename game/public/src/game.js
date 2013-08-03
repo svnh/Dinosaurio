@@ -73,7 +73,7 @@ var gameLoop = function(time){
   //   console.log(frames / (time/1000));
   // }
 
-  // collisionHandler();
+  collisionHandler(GreenDino, chickens);
   Chicken.update(time);
   GreenDino.update(time);
   checkBoundaries();

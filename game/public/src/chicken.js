@@ -28,7 +28,8 @@ var Chicken = function(randomX, randomY){
     frameRate: 12,
     index: 0,
     dir:0,
-    lastUpdate: 0
+    lastUpdate: 0,
+    hit: false
   });
 
 };
