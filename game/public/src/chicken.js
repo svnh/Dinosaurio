@@ -1,9 +1,6 @@
 var Chicken = function(randomX, randomY){
 
   this.hit = false;
-  this.lastTime = 0;
-  this.actionDuration = 0;
-  this.lastActionChange = 0;
 
   this.animationDefs = {
     picking: {
@@ -30,9 +27,48 @@ var Chicken = function(randomX, randomY){
     animations: Chicken.animations,
     frameRate: 12,
     index: 0,
-    dir:0
+    dir:0,
+    lastUpdate: 0
   });
 };
+
+Chicken.update = _.throttle(function(time){
+
+  for (var i = 0; i < chickens.length; i++) {
+
+    var chickenInstance = chickens[i].attrs;
+    var random = Math.random()*5;
+    var radians = getRadians(chickens[i].attrs.dir);
+    var pos = chickens[i].getPosition();
+    var possibAnims = ['running_'+Chicken.directions[chickenInstance.dir],'running_'+Chicken.directions[chickenInstance.dir], 'picking_'+Chicken.directions[chickenInstance.dir]];
+
+      if(chickenInstance.y < 20  || chickenInstance.y > 2048 || chickenInstance.x < 20 || chickenInstance.x > 2048) {
+        chickenInstance.dir = chickenInstance.dir === 7 ? 0 : chickenInstance.dir+1
+
+        chickenInstance.x = chickenInstance.x + 20;
+        chickenInstance.y = chickenInstance.y + 20;
+
+        radians = getRadians(chickenInstance.dir);
+        chickens[i].setAnimation('running_'+Chicken.directions[chickenInstance.dir]);
+        chickens[i].setPosition(pos.x+Math.cos(radians)*random, pos.y+Math.sin(radians)*random);
+
+      } else if (time - chickenInstance.lastUpdate > 3000){
+        chickenInstance.lastUpdate = time;
+
+        var randomChoice = Math.floor((Math.random()*3));
+        chickens[i].setAnimation(possibAnims[randomChoice]);
+
+        if(randomChoice === 0 || randomChoice === 2){
+          chickens[i].setPosition(pos.x+Math.cos(radians)*random, pos.y+Math.sin(radians)*random);
+        }
+
+      } else if (chickenInstance.animation === 'running_'+Chicken.directions[chickenInstance.dir] ) {
+          chickens[i].setPosition(pos.x+Math.cos(radians)*random, pos.y+Math.sin(radians)*random);
+      }
+
+  }
+}, 30); 
+
 
 // Chicken.setAction = function(action){
 //   this.lastActionChange = this.lastUpdate;

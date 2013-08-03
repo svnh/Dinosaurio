@@ -43,17 +43,17 @@ var loadStage = function(images) {
   GreenDino();
   layer.add(GreenDino.greenDinoObj);
 
-  for (var i = 0; i < 30; i++) {
+  for (var i = 0; i < 10; i++) {
     var randomX = Math.floor((Math.random()*2048)+1);
     var randomY = Math.floor((Math.random()*2048)+1);
     Chicken(randomX, randomY);
     layer.add(Chicken.chickenObj);
     chickens.push(Chicken.chickenObj)
   }
-  console.log(chickens)
+
   stage.add(layer);
 
-  for (var i = 0; i < chickens.length-1; i++) {
+  for (var i = 0; i < chickens.length; i++) {
     chickens[i].start();
   }
 
@@ -66,27 +66,6 @@ var loadStage = function(images) {
 
 loadImages(sources, loadStage);
 
-var chickenAttrs = [];
-
-var updateChickens = _.throttle(function(){
-  chickenAttrs = [];
-  for (var i = 0; i < chickens.length; i++) {
-    var random = Math.random()*10;
-    var radians = getRadians(chickens[i].attrs.dir);
-    var pos = chickens[i].getPosition();
-    chickenAttrs.push(pos);
-      if(chickenAttrs[i].y < 20  || chickenAttrs[i].y > 2048 || chickenAttrs[i].x < 20 || chickenAttrs[i].x > 2048) {
-        chickens[i].attrs.dir = chickens[i].attrs.dir === 7 ? 0 : chickens[i].attrs.dir+1
-        pos = chickens[i].getPosition();
-        radians = getRadians(chickens[i].attrs.dir);
-        chickens[i].setAnimation('running_'+Chicken.directions[chickens[i].attrs.dir]);
-        chickens[i].setPosition(pos.x+Math.cos(radians)*random, pos.y+Math.sin(radians)*random);
-      } else {
-        chickens[i].setPosition(pos.x+Math.cos(radians)*random, pos.y+Math.sin(radians)*random);
-      }
-  }
-}, 50); 
-
 var frames = 0;
 var gameLoop = function(time){
   frames++;
@@ -95,8 +74,7 @@ var gameLoop = function(time){
   // }
 
   // collisionHandler();
-  updateChickens();
-
+  Chicken.update(time);
   GreenDino.update(time);
   checkBoundaries();
   translateScreen(); 
