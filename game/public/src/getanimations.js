@@ -1,9 +1,9 @@
-var getAnimArray = function(dinoAnimationDefs, DinoClass){
-  DinoClass.dir = 0;
-  DinoClass.animations = {};
+var getAnimArray = function(animationDefs, ClassName, imgSize){
+  ClassName.dir = 0;
+  ClassName.animations = {};
 
   // Directions encoded order
-  DinoClass.directions = [
+  ClassName.directions = [
     'n',  // 0
     'ne', // 1
     'e',  // 2
@@ -26,8 +26,8 @@ var getAnimArray = function(dinoAnimationDefs, DinoClass){
     'w'
   ];
   // For each defined animation
-  for (var prop in dinoAnimationDefs) {
-    var animInfo = dinoAnimationDefs[prop];
+  for (var prop in animationDefs) {
+    var animInfo = animationDefs[prop];
 
     // In each of possible directions
     for (var i = 0; i < 8; i++) {
@@ -36,22 +36,22 @@ var getAnimArray = function(dinoAnimationDefs, DinoClass){
 
       // Create an array to hold sprite positions
       // Store it in the animations object
-      var animArray = DinoClass.animations[prop+'_'+direction] = [];
+      var animArray = ClassName.animations[prop+'_'+direction] = [];
 
       // For each of the frames of the animation
       for (var j = 0; j < animInfo.frames; j++) {
         // Calculate the offset in the sprite based on the direction
-        var directionOffset = i*animInfo.frames*128;
+        var directionOffset = i*animInfo.frames*imgSize;
 
         // Calculate the offset in the sprite based on the frame #
-        var frameOffset = j*128;
+        var frameOffset = j*imgSize;
 
         // Add a frame descriptor to the animation array
         animArray.push({
-          x: animInfo.start*128 + directionOffset + frameOffset,
+          x: animInfo.start*imgSize + directionOffset + frameOffset,
           y: 0,
-          width: 128,
-          height: 128
+          width: imgSize,
+          height: imgSize
         });
       }
     }

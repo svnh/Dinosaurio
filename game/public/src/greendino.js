@@ -41,7 +41,7 @@ var GreenDino = function(){
     }
   };
 
-  getAnimArray(this.animationDefs, GreenDino);
+  getAnimArray(this.animationDefs, GreenDino, 128);
 
   GreenDino.greenDinoObj = new Kinetic.Sprite({
     x: 200,
@@ -52,19 +52,19 @@ var GreenDino = function(){
     frameRate: 12,
     index: 0
   });
+
+  GreenDino.update = function(time){
+    if (this.running) {
+      var timeDiff = (time-this.lastTime)/4;
+      var radians = getRadians(GreenDino.dir);
+      var pos = this.greenDinoObj.getPosition();
+      this.greenDinoObj.setPosition(pos.x+Math.cos(radians)*timeDiff, pos.y+Math.sin(radians)*timeDiff);
+    }
+    this.lastTime = time;
+    return;
+  };
 };
 
-GreenDino.update = function(time){
-    // console.log('updating');
-  if (this.running) {
-    var timeDiff = (time-this.lastTime)/4;
-    var radians = getRadians(GreenDino.dir);
-    var pos = this.greenDinoObj.getPosition();
-    this.greenDinoObj.setPosition(pos.x+Math.cos(radians)*timeDiff, pos.y+Math.sin(radians)*timeDiff);
-  }
-  this.lastTime = time;
-  return;
-};
 
 // GreenDino.checkBoundaries = function(){
 //   var stagePosition = stage.getPosition();

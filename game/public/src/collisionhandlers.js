@@ -31,3 +31,5 @@ var collisionHandler = function(){
     GreenDino.hit = false;
   }
 };
+
+

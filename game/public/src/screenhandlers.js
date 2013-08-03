@@ -1,24 +1,71 @@
-// Rate limit how often we repaint/reflow the DOM
-var resizer = _.throttle(function() {
-  var newWidth = window.innerWidth;
-  var newHeight = window.innerHeight;
+var translateScreen = function(){
+  var dinoX = GreenDino.greenDinoObj.getPosition().x + 128/2;
+  var dinoY = GreenDino.greenDinoObj.getPosition().y + 128/2;
 
-  var background = document.getElementById('background');
+  var width = window.innerWidth;
+  var height = window.innerHeight;
 
-  background.style.width=newWidth;
-  background.style.height=newHeight;
+  var backgroundWidth = document.getElementById('background').offsetWidth;
+  var backgroundHeight = document.getElementById('background').offsetHeight;
 
-}, 75);
+  var sizeX = 2048;
+  var sizeY = 2048;
 
-$(window).resize(resizer);
+  var translateLeft = 0;
+  var translateTop = 0;
 
-var goFullScreen = function(){
-  var elem = document.getElementById("container");
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.mozRequestFullScreen) {
-    elem.mozRequestFullScreen();
-  } else if (elem.webkitRequestFullscreen) {
-    elem.webkitRequestFullscreen();
+  if (dinoX + width/2 > sizeX) {
+    translateLeft = (sizeX - width);
+  }
+  else if (dinoX > width/2) {
+    translateLeft = (dinoX - width/2);
+  }
+
+  if (dinoY + height/2 > sizeY) {
+    translateTop = (sizeY - height);
+  }
+  else if (dinoY > height/2) {
+    translateTop = (dinoY - height/2);
+  }
+  stage.setOffsetX(translateLeft);
+  stage.setOffsetY(translateTop);
+  background.style.webkitTransform = 'translate3d('+Math.floor(translateLeft*-1)+'px, '+Math.floor(translateTop*-1)+'px, 0)';
+};
+
+var checkBoundaries = function(){
+  var dinoX = GreenDino.greenDinoObj.getPosition().x;
+  var dinoY = GreenDino.greenDinoObj.getPosition().y;
+
+  var sizeX = 1935;
+  var sizeY = 1950;
+  // console.log(dinoX,dinoY)
+  var backgroundWidth = document.getElementById('background').offsetHeight;
+  // console.log(backgroundWidth)
+  // console.log(dinoY)
+
+
+  if (dinoY >= sizeY){
+    GreenDino.greenDinoObj.setPosition(dinoX, sizeY);
+  }
+  if (dinoY <= -20){
+    GreenDino.greenDinoObj.setPosition(dinoX, -20);
+  }
+  if (dinoX >= sizeX){
+    GreenDino.greenDinoObj.setPosition(sizeX, dinoY);
+  }
+  if (dinoX <= -15){
+    GreenDino.greenDinoObj.setPosition(-15, dinoY);
+  }
+  if (dinoX <= -15 && dinoY <= -20){
+    GreenDino.greenDinoObj.setPosition(-15, -20);
+  }
+  if (dinoX >= sizeX && dinoY >= sizeY){
+    GreenDino.greenDinoObj.setPosition(sizeX, sizeY);
+  }
+  if (dinoX >= sizeX && dinoY <= -20){
+    GreenDino.greenDinoObj.setPosition(sizeX, -20);
+  }
+  if (dinoX <= -15 && dinoY >= sizeY){
+    GreenDino.greenDinoObj.setPosition(-15, sizeY);
   }
 };
