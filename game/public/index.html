@@ -15,8 +15,12 @@
     <script src="./src/keybindings.js"></script>
     <script src="./src/collisionhandlers.js"></script>
     <script src="./src/screenhandlers.js"></script>
+    <script src="./src/gameload.js"></script>
     <script src="./src/game.js"></script>
   </head>
+  <script>
+    window.onload = init();
+  </script>
 
   <body>
     <button class="fullScreen" onclick="goFullScreen();">FULLSCREEN</button>
