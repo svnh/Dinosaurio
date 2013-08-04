@@ -1,6 +1,3 @@
-var chickens = [];
-var counter = 0;
-
 var Game = function() {
   this.sources = {
     greendino: '/dino-green/dino-sprite.png',
@@ -44,7 +41,7 @@ Game.prototype.loadStage = function(images) {
     height: window.innerHeight
   });
 
-  var layer = new Kinetic.Layer();
+  layer = new Kinetic.Layer();
 
   GreenDino();
   layer.add(GreenDino.greenDinoObj);
@@ -57,7 +54,7 @@ Game.prototype.loadStage = function(images) {
     chickens.push(Chicken.chickenObj)
   }
 
-  stage.add(layer);
+  stage.add(this.layer);
 
   for (var i = 0; i < chickens.length; i++) {
     chickens[i].start();

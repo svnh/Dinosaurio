@@ -1,4 +1,5 @@
 var GreenDino = function(){
+  socket.emit('dinocreated', "dinocreated from client");
 
   this.running = false;
   this.roaring = false;
@@ -60,7 +61,11 @@ var GreenDino = function(){
       var radians = getRadians(GreenDino.greenDinoObj.attrs.dir);
       var pos = this.greenDinoObj.getPosition();
       this.greenDinoObj.setPosition(pos.x+Math.cos(radians)*timeDiff, pos.y+Math.sin(radians)*timeDiff);
+      
+      var newpos = [this.greenDinoObj.getPosition(), GreenDino.greenDinoObj.attrs.dir];
+      socket.emit('dinoupdated', newpos);
     }
+    
     this.lastTime = time;
     return;
   };
