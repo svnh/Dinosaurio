@@ -1,74 +1,23 @@
 var GreenDino = function(){
-
-  this.running = false;
-  this.roaring = false;
-  this.attacking = false;
-  this.hit = false;
-  this.lastTime = 0;
-
-  this.animationDefs = {
-    running: {
-      frames: 8,
-      start: 480
-    },
-    attacking: {
-      start: 0,
-      frames: 13
-    },
-    hit: {
-      start: 104,
-      frames: 9
-    },
-    looking: {
-      start: 176,
-      frames: 13
-    },
-    paused: {
-      start: 280,
-      frames: 12
-    },
-    roaring: {
-      start: 376,
-      frames: 13
-    },
-    falling: {
-      start: 552,
-      frames: 11
-    },
-    walking: {
-      start: 640,
-      frames: 8
-    }
-  };
-
-  getAnimArray(this.animationDefs, this, 128);
-
-  this.greenDinoObj = new Kinetic.Sprite({
-    x: 200,
-    y: 200,
-    image: images.greendino,
-    animation: 'paused_n',
-    animations: this.animations,
-    frameRate: 12,
-    index: 0,
-    dir:0
-  });
+  Dino.call(this, images.greendino);
 
   this.update = function(Game, time){
     if (this.running) {
-      var timeDiff = (time-this.lastTime)/4;
-      var radians = getRadians(this.greenDinoObj.attrs.dir);
-      var pos = this.greenDinoObj.getPosition();
-      this.greenDinoObj.setPosition(pos.x+Math.cos(radians)*timeDiff, pos.y+Math.sin(radians)*timeDiff);
-      
-      var newpos = [this.greenDinoObj.getPosition(), this.greenDinoObj.attrs.dir];
-      Game.socket.emit('dinoupdated', newpos);
+        var timeDiff = (time-this.lastTime)/4;
+        var radians = getRadians(this.dinoObj.attrs.dir);
+        var pos = this.dinoObj.getPosition();
+        this.dinoObj.setPosition(pos.x+Math.cos(radians)*timeDiff, pos.y+Math.sin(radians)*timeDiff);
+        
+        var newpos = [this.dinoObj.getPosition(), this.dinoObj.attrs.dir];
+        Game.socket.emit('dinoupdated', newpos);
     }   
     this.lastTime = time;
     return;
   };
 };
 
+GreenDino.prototype = Object.create(Dino.prototype);
+GreenDino.prototype.constructor = GreenDino;
 
 // GreenDino.checkBoundaries = function(){
 //   var stagePosition = stage.getPosition();
