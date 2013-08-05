@@ -64,8 +64,7 @@ var GreenDino = function(){
       
       var newpos = [this.greenDinoObj.getPosition(), GreenDino.greenDinoObj.attrs.dir];
       socket.emit('dinoupdated', newpos);
-    }
-    
+    }   
     this.lastTime = time;
     return;
   };

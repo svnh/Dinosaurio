@@ -1,26 +1,22 @@
-var socket = io.connect('http://localhost:8080');
+var socket = io.connect(window.location.origin);
 
 socket.on('connect', function () {
-  console.log('socket connected on client')
   socket.emit('emitting client connected');
   socket.send('sending client connected from client');
   socket.on('dinoupdated', function (dinoupdated) {
-    console.log('client received message: ');
-    console.log('x', dinoupdated[0].x)
-    console.log('y', dinoupdated[0].y)
-    console.log('dir', dinoupdated[1])
     if (dinocounter < 1){
       RedDino();
       layer.add(RedDino.redDinoObj); 
       RedDino.redDinoObj.start();
-      console.log('red added');
       opp = RedDino.redDinoObj;
     };
       dinocounter++;
     if (dinocounter > 2){
-      console.log('updating')
       RedDino.update(dinoupdated[0].x, dinoupdated[0].y, dinoupdated[1]);
     }
+  });
+  socket.on('dinochangeanim', function (dinochangeanim) {
+    opp.setAnimation(dinochangeanim);
   });
 });
 var opp;

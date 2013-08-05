@@ -58,9 +58,6 @@ var RedDino = function(){
       var radians = getRadians(direct);
       this.redDinoObj.setPosition(x+Math.cos(radians)*5, y+Math.sin(radians)*5);
       var newpos = this.redDinoObj.getPosition();
-      // RedDino.redDinoObj.setAnimation('running_'+RedDino.directions[RedDino.redDinoObj.attrs.dir]);
-
-      // RedDino.redDinoObj.setAnimation('running_'+RedDino.directions[direct]);
     return;
   };
 };
