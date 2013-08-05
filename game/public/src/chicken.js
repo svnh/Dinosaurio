@@ -1,3 +1,4 @@
+// 1 chicken instance per chicken!
 var Chicken = function(randomX, randomY){
 
   this.hit = false;
@@ -34,6 +35,9 @@ var Chicken = function(randomX, randomY){
 
 };
 
+// Update should control a single chicken
+// GAME should call update on all chickens
+// Chickens should be stored as a property of game
 Chicken.update = _.throttle(function(time){
 
   for (var i = 0; i < chickens.length; i++) {

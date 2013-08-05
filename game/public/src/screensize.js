@@ -10,6 +10,7 @@ var resizer = _.throttle(function() {
   stage.setSize(newWidth, newHeight);
 }, 75);
 
+// Add this listener inside of game's cosntructor
 $(window).resize(resizer);
 
 var goFullScreen = function(){

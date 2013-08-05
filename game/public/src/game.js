@@ -1,3 +1,4 @@
+// Move all socket connection goodies into GAME
 var socket = io.connect(window.location.origin);
 
 socket.on('connect', function () {
@@ -27,27 +28,14 @@ socket.on('connect', function () {
 
 });
 
-var opp;
-var dinocounter = 0;
-
 var init = function() {
   $('.play').hide();
   this.game = new Game();
 }
 
+// Don't be global
+var opp;
+var dinocounter = 0;
+
 var chickens = [];
 var counter = 0;
-var layer;
-
-var gameLoop = function(time){
-  frames++;
-  // if (frames % 100 === 0) {
-  //   console.log(frames / (time/1000));
-  // }
-  collisionHandler(GreenDino, chickens);
-  Chicken.update(time);
-  GreenDino.update(time);
-  checkBoundaries();
-  translateScreen(); 
-  requestAnimationFrame(this.gameLoop);
-};

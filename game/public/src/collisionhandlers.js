@@ -1,3 +1,4 @@
+// This could be in util
 var theyAreColliding = function(GreenDino, chickenInstance) {
   greenX = GreenDino.attrs.x;
   greenY = GreenDino.attrs.y;
@@ -10,6 +11,8 @@ var theyAreColliding = function(GreenDino, chickenInstance) {
    greenY + 60 < chickenInstanceY));  //
 };
 
+
+// This should all be in game
 var collisionHandler = function(GreenDino, chickens, stage){
   for (var i = 0; i < chickens.length; i++) {
     var chickenInstance = chickens[i].attrs;

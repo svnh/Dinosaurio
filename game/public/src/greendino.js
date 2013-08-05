@@ -41,27 +41,27 @@ var GreenDino = function(){
     }
   };
 
-  getAnimArray(this.animationDefs, GreenDino, 128);
+  getAnimArray(this.animationDefs, this, 128);
 
-  GreenDino.greenDinoObj = new Kinetic.Sprite({
+  this.greenDinoObj = new Kinetic.Sprite({
     x: 200,
     y: 200,
     image: images.greendino,
     animation: 'paused_n',
-    animations: GreenDino.animations,
+    animations: this.animations,
     frameRate: 12,
     index: 0,
     dir:0
   });
 
-  GreenDino.update = function(time){
+  this.update = function(time){
     if (this.running) {
       var timeDiff = (time-this.lastTime)/4;
-      var radians = getRadians(GreenDino.greenDinoObj.attrs.dir);
+      var radians = getRadians(this.greenDinoObj.attrs.dir);
       var pos = this.greenDinoObj.getPosition();
       this.greenDinoObj.setPosition(pos.x+Math.cos(radians)*timeDiff, pos.y+Math.sin(radians)*timeDiff);
       
-      var newpos = [this.greenDinoObj.getPosition(), GreenDino.greenDinoObj.attrs.dir];
+      var newpos = [this.greenDinoObj.getPosition(), this.greenDinoObj.attrs.dir];
       socket.emit('dinoupdated', newpos);
     }   
     this.lastTime = time;

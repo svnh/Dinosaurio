@@ -1,3 +1,5 @@
+// Try to inherit 
+// Pass Red/greenness as an option
 var RedDino = function(){
 
   this.running = false;

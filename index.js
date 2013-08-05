@@ -7,6 +7,23 @@ app.use(express.static(__dirname + '/game/public/'));
 
 server.listen(8080);
 
+// chicken = {
+//   hp: 100,
+//   pos: [left, top]
+// }
+
+function initGame() {
+  // Create chickens
+}
+
+function loop(time) {
+  // Update chicken position
+
+  // Broadcast chicken position to all clients
+
+  // If all chickens eaten, init game
+}
+
 io.sockets.on('connection', function (socket) {
 
   socket.on('dinoupdated', function (dinoupdated) {
