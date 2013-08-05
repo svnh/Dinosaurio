@@ -42,21 +42,21 @@ var RedDino = function(){
     }
   };
 
-  getAnimArray(this.animationDefs, RedDino, 128);
+  getAnimArray(this.animationDefs, this, 128);
 
-  RedDino.redDinoObj = new Kinetic.Sprite({
+  this.redDinoObj = new Kinetic.Sprite({
     x: 210,
     y: 210,
     image: images.reddino,
     animation: 'paused_n',
-    animations: RedDino.animations,
+    animations: this.animations,
     frameRate: 12,
     index: 0,
     dir:0
   });
 
-  RedDino.update = function(x, y, direct){
-    RedDino.redDinoObj.attrs.dir = direct
+  this.update = function(x, y, direct){
+    this.redDinoObj.attrs.dir = direct
       var radians = getRadians(direct);
       this.redDinoObj.setPosition(x+Math.cos(radians)*5, y+Math.sin(radians)*5);
       var newpos = this.redDinoObj.getPosition();

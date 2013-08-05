@@ -31,6 +31,7 @@ socket.on('connect', function () {
 var init = function() {
   $('.play').hide();
   this.game = new Game();
+  $(window).resize(Game.resizer);
 }
 
 // Don't be global
