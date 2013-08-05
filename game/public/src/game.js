@@ -1,8 +1,7 @@
 var socket = io.connect(window.location.origin);
 
 socket.on('connect', function () {
-  socket.emit('emitting client connected');
-  socket.send('sending client connected from client');
+
   socket.on('dinoupdated', function (dinoupdated) {
     if (dinocounter < 1){
       RedDino();
@@ -15,12 +14,17 @@ socket.on('connect', function () {
       RedDino.update(dinoupdated[0].x, dinoupdated[0].y, dinoupdated[1]);
     }
   });
+
   socket.on('dinochangeanim', function (dinochangeanim) {
-    opp.setAnimation(dinochangeanim);
+    if (dinocounter > 2){
+      opp.setAnimation(dinochangeanim);
+    }
   });
+
   socket.on('counterChange', function (counterChange) {
     $('.oppCounter').text('OPPONENT CHICKENS: ' + counterChange);
   });
+
 });
 
 var opp;
@@ -28,7 +32,6 @@ var dinocounter = 0;
 
 var init = function() {
   this.game = new Game();
-  socket.emit('init', "initalizing from client");
 }
 
 var chickens = [];

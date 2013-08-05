@@ -61,5 +61,4 @@ var keyBindings = function(DinoClass, dinoinstance, run, left, right, attack, ro
     }
     DinoClass.roaring = true;
   }, 'keydown');
-
 };

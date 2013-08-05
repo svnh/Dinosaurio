@@ -1,5 +1,4 @@
 var GreenDino = function(){
-  socket.emit('dinocreated', "dinocreated from client");
 
   this.running = false;
   this.roaring = false;

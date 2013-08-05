@@ -4,12 +4,12 @@ var Game = function() {
     chicken: '/chicken/chicken-sprite.png',
     reddino: '/dino-red/dino-sprite.png',
   };
+
   this.images;
 
   this.loadImages(this.sources, this.loadStage);
 
   this.frames = 0;
-
 };
 
 Game.prototype.loadImages = function(sources, callback) {
