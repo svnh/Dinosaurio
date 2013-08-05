@@ -46,7 +46,7 @@ var RedDino = function(){
     x: 210,
     y: 210,
     image: images.reddino,
-    animation: 'running_n',
+    animation: 'paused_n',
     animations: RedDino.animations,
     frameRate: 12,
     index: 0,
@@ -63,7 +63,7 @@ var RedDino = function(){
       var newpos = this.redDinoObj.getPosition();
       // RedDino.redDinoObj.setAnimation('running_'+RedDino.directions[RedDino.redDinoObj.attrs.dir]);
 
-      RedDino.redDinoObj.setAnimation('running_'+RedDino.directions[direct]);
+      // RedDino.redDinoObj.setAnimation('running_'+RedDino.directions[direct]);
     return;
   };
 };
