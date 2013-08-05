@@ -18,31 +18,3 @@ var GreenDino = function(){
 
 GreenDino.prototype = Object.create(Dino.prototype);
 GreenDino.prototype.constructor = GreenDino;
-
-// GreenDino.checkBoundaries = function(){
-//   var stagePosition = stage.getPosition();
-//   var greendinoX = this.greenDinoObj.getPosition().x + stagePosition.x + 128/2;
-//   var greendinoY = this.greenDinoObj.getPosition().y + stagePosition.y + 128/2;
-//   var windowWidth = window.outerWidth;
-//   var windowHeight = window.outerHeight;
-
-//   var stageMoveX = 0;
-//   var stageMoveY = 0;
-
-//   if (
-//     (greendinoX <= windowWidth/2 && stagePosition.x <= 0) ||
-//     (greendinoX >= windowWidth/2 && stagePosition.x - windowWidth >= -2048)
-//   ){
-//      stageMoveX = (greendinoX - windowWidth/2)*-1;
-//   }
-//   if (
-//     (greendinoY <= windowHeight/2 && stagePosition.y <= 0) ||
-//     (greendinoY >= windowHeight/2 && stagePosition.y - windowHeight >= -2048)
-//   ){
-//     stageMoveY = (greendinoY - windowHeight/2)*-1;
-//   }
-
-//   if (stageMoveX || stageMoveY) {
-//     stage.move(stageMoveX, stageMoveY);
-//   }
-// };
