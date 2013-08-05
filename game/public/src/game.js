@@ -2,23 +2,22 @@
 var socket = io.connect(window.location.origin);
 
 socket.on('connect', function () {
-
   socket.on('dinoupdated', function (dinoupdated) {
     if (dinocounter < 1){
-      RedDino();
-      layer.add(RedDino.redDinoObj); 
-      RedDino.redDinoObj.start();
-      opp = RedDino.redDinoObj;
+      Opp = new RedDino();
+      console.log(Opp)
+      layer.add(Opp.redDinoObj); 
+      Opp.redDinoObj.start();
     };
       dinocounter++;
     if (dinocounter > 2){
-      RedDino.update(dinoupdated[0].x, dinoupdated[0].y, dinoupdated[1]);
+      Opp.update(dinoupdated[0].x, dinoupdated[0].y, dinoupdated[1]);
     }
   });
 
   socket.on('dinochangeanim', function (dinochangeanim) {
     if (dinocounter > 2){
-      opp.setAnimation(dinochangeanim);
+      Opp.redDinoObj.setAnimation(dinochangeanim);
     }
   });
 
@@ -35,7 +34,7 @@ var init = function() {
 }
 
 // Don't be global
-var opp;
+var Opp;
 var dinocounter = 0;
 
 var chickens = [];
