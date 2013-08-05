@@ -38,13 +38,13 @@ var Chicken = function(randomX, randomY){
 // Update should control a single chicken
 // GAME should call update on all chickens
 // Chickens should be stored as a property of game
-Chicken.prototype.update = _.throttle(function(time){
+Chicken.prototype.update = _.throttle(function(Game, time){
 
-  for (var i = 0; i < chickens.length; i++) {
-    var chickenInstance = chickens[i].attrs;
+  for (var i = 0; i < Game.chickens.length; i++) {
+    var chickenInstance = Game.chickens[i].attrs;
     var random = Math.random()*5;
-    var radians = getRadians(chickens[i].attrs.dir);
-    var pos = chickens[i].getPosition();
+    var radians = getRadians(Game.chickens[i].attrs.dir);
+    var pos = Game.chickens[i].getPosition();
     var possibAnims = ['running_'+this.directions[chickenInstance.dir],'running_'+this.directions[chickenInstance.dir], 'picking_'+this.directions[chickenInstance.dir]];
 
     if(chickenInstance.y < -20 || chickenInstance.y > 2055 || chickenInstance.x < -20 || chickenInstance.x > 2055) {
@@ -52,21 +52,21 @@ Chicken.prototype.update = _.throttle(function(time){
       chickenInstance.turnedRight = true;
 
       radians = getRadians(chickenInstance.dir);
-      chickens[i].setAnimation('running_'+this.directions[chickenInstance.dir]);
-      chickens[i].setPosition(pos.x+Math.cos(radians)*random, pos.y+Math.sin(radians)*random);
+      Game.chickens[i].setAnimation('running_'+this.directions[chickenInstance.dir]);
+      Game.chickens[i].setPosition(pos.x+Math.cos(radians)*random, pos.y+Math.sin(radians)*random);
 
     } else if (time - chickenInstance.lastUpdate > 3000){
       chickenInstance.lastUpdate = time;
 
       var randomChoice = Math.floor((Math.random()*3));
-      chickens[i].setAnimation(possibAnims[randomChoice]);
+      Game.chickens[i].setAnimation(possibAnims[randomChoice]);
 
       if(randomChoice === 0 || randomChoice === 2){
-        chickens[i].setPosition(pos.x+Math.cos(radians)*random, pos.y+Math.sin(radians)*random);
+        Game.chickens[i].setPosition(pos.x+Math.cos(radians)*random, pos.y+Math.sin(radians)*random);
       }
 
     } else if (chickenInstance.animation === 'running_'+this.directions[chickenInstance.dir] ) {
-        chickens[i].setPosition(pos.x+Math.cos(radians)*random, pos.y+Math.sin(radians)*random);
+        Game.chickens[i].setPosition(pos.x+Math.cos(radians)*random, pos.y+Math.sin(radians)*random);
     }
 
   }

@@ -54,7 +54,7 @@ var GreenDino = function(){
     dir:0
   });
 
-  this.update = function(time){
+  this.update = function(Game, time){
     if (this.running) {
       var timeDiff = (time-this.lastTime)/4;
       var radians = getRadians(this.greenDinoObj.attrs.dir);
@@ -62,7 +62,7 @@ var GreenDino = function(){
       this.greenDinoObj.setPosition(pos.x+Math.cos(radians)*timeDiff, pos.y+Math.sin(radians)*timeDiff);
       
       var newpos = [this.greenDinoObj.getPosition(), this.greenDinoObj.attrs.dir];
-      socket.emit('dinoupdated', newpos);
+      Game.socket.emit('dinoupdated', newpos);
     }   
     this.lastTime = time;
     return;

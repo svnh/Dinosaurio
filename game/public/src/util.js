@@ -13,3 +13,16 @@ var goFullScreen = function(){
     elem.webkitRequestFullscreen();
   }
 };
+
+
+var theyAreColliding = function(GreenDino, chickenInstance) {
+  greenX = GreenDino.attrs.x;
+  greenY = GreenDino.attrs.y;
+  chickenInstanceX = chickenInstance.x;
+  chickenInstanceY = chickenInstance.y;
+
+  return( !(greenX > chickenInstanceX + 40 ||  //
+   greenX + 60 < chickenInstanceX ||  // 
+   greenY > chickenInstanceY + 40 ||   //
+   greenY + 60 < chickenInstanceY));  //
+};

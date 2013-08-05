@@ -63,28 +63,3 @@ var RedDino = function(){
     return;
   };
 };
-
-// RedDino.update = function(){
-//   if (this.running) {
-//     var radians = getRadians(RedDino.dir);
-//     var pos = RedDino.redDinoObj.getPosition();
-//     RedDino.redDinoObj.setPosition(pos.x+Math.cos(radians)*2, pos.y+Math.sin(radians)*2);
-//   }
-// };
-
-// RedDino.checkBoundaries = function(){
-//   var reddinoX = RedDino.redDinoObj.getPosition().x;
-//   var reddinoY = RedDino.redDinoObj.getPosition().y;
-//   var windowWidth = window.outerWidth;
-//   var windowHeight = window.outerHeight;
-
-//   if (reddinoX >= windowWidth - 120){
-//     RedDino.redDinoObj.setPosition(reddinoX-20, reddinoY);
-//   } else if (reddinoY >= windowHeight - 200){
-//     RedDino.redDinoObj.setPosition(reddinoX, reddinoY-20);
-//   } else if (reddinoX <= 5){
-//     RedDino.redDinoObj.setPosition(reddinoX+20, reddinoY);
-//   } else if (reddinoY <= 5){
-//     RedDino.redDinoObj.setPosition(reddinoX, reddinoY+20);
-//   }
-// };
