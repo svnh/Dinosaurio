@@ -18,7 +18,11 @@ socket.on('connect', function () {
   socket.on('dinochangeanim', function (dinochangeanim) {
     opp.setAnimation(dinochangeanim);
   });
+  socket.on('counterChange', function (counterChange) {
+    $('.oppCounter').text('OPPONENT CHICKENS: ' + counterChange);
+  });
 });
+
 var opp;
 var dinocounter = 0;
 

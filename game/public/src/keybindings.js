@@ -9,7 +9,6 @@ var keyBindings = function(DinoClass, dinoinstance, run, left, right, attack, ro
     if (!DinoClass.running) {
       dinoinstance.setAnimation('running_'+DinoClass.directions[dinoinstance.attrs.dir]);
       socket.emit('dinochangeanim', dinoinstance.getAnimation());
-      console.log('running')
     }
     DinoClass.running = true;
   }, 'keydown');

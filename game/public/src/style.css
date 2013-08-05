@@ -67,5 +67,21 @@ body {
   color: white;
   font-size: 15px;
   font-family: helvetica; 
-}  
 }
+
+.oppCounter {
+  position: fixed;
+  z-index: 2;
+  top: 22px;
+  left: 240px;
+  width: 205px;
+  padding: 3px;
+  text-align: center;
+
+  background-color: transparent;
+
+  color: white;
+  font-size: 15px;
+  font-family: helvetica; 
+}  
+

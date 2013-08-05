@@ -30,6 +30,7 @@ var collisionHandler = function(GreenDino, chickens, stage){
 var changeCounter = function(){
   counter++;
   $('.chickenCounter').text('CHICKENS: ' + counter)
+  socket.emit('counterChange', counter);
 }
 
 // var theyAreColliding = function(GreenDino, RedDino) {

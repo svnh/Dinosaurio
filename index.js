@@ -25,4 +25,8 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('dinochangeanim', dinochangeanim);
   });
 
+  socket.on('counterChange', function (counterChange) {
+    socket.broadcast.emit('counterChange', counterChange);
+  });
+
 });
