@@ -31,6 +31,7 @@ var opp;
 var dinocounter = 0;
 
 var init = function() {
+  $('.play').hide();
   this.game = new Game();
 }
 

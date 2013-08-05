@@ -19,17 +19,16 @@
     <script src="./src/game.js"></script>
   </head>
 
-  <script>
-    window.onload = init();
-  </script>
-
   <body>
     <button class="fullScreen" onclick="goFullScreen();">FULLSCREEN</button>
-    <span class="chickenCounter">CHICKENS: 0</span>
-    <span class="oppCounter">OPPONENT CHICKENS: 0</span>
-    <div id="container">
-      <div id="background"></div>
-      <div id="game"></div>
+    <div id="gameScreen">
+      <span class="chickenCounter">CHICKENS: 0</span>
+      <span class="oppCounter">OPPONENT CHICKENS: 0</span>
+      <button class="play" onclick="init();">PLAY</button>
+      <div id="container">
+        <div id="background"></div>
+        <div id="game"></div>
+      </div>
     </div>
   </body>
   <script src="./src/screensize.js"></script>
