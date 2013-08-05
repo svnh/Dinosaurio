@@ -54,10 +54,7 @@ var RedDino = function(){
   });
 
   RedDino.update = function(x, y, direct){
-    console.log('rddir', RedDino.directions)
-    console.log('direct', direct)
     RedDino.redDinoObj.attrs.dir = direct
-    console.log('rd', RedDino.redDinoObj.attrs.dir)
       var radians = getRadians(direct);
       this.redDinoObj.setPosition(x+Math.cos(radians)*5, y+Math.sin(radians)*5);
       var newpos = this.redDinoObj.getPosition();

@@ -4,25 +4,26 @@ socket.on('connect', function () {
   console.log('socket connected on client')
   socket.emit('emitting client connected');
   socket.send('sending client connected from client');
-  socket.on('msg', function (msg) {
+  socket.on('dinoupdated', function (dinoupdated) {
     console.log('client received message: ');
-    console.log('x', msg[0].x)
-    console.log('y', msg[0].y)
-    console.log('dir', msg[1])
+    console.log('x', dinoupdated[0].x)
+    console.log('y', dinoupdated[0].y)
+    console.log('dir', dinoupdated[1])
     if (dinocounter < 1){
       RedDino();
       layer.add(RedDino.redDinoObj); 
       RedDino.redDinoObj.start();
       console.log('red added');
+      opp = RedDino.redDinoObj;
     };
       dinocounter++;
     if (dinocounter > 2){
       console.log('updating')
-      RedDino.update(msg[0].x, msg[0].y, msg[1]);
+      RedDino.update(dinoupdated[0].x, dinoupdated[0].y, dinoupdated[1]);
     }
   });
 });
-
+var opp;
 var dinocounter = 0;
 
 var init = function() {

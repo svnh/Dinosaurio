@@ -21,8 +21,8 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('dinoupdated', function (dinoupdated) {
     console.log('server received dinoupdated: ', dinoupdated);
-    //socket.emit('msg', 'server emitting dinoupdated');
-    socket.broadcast.emit('msg', dinoupdated);
+    // socket.emit('dinoupdated', dinoupdated);
+    socket.broadcast.emit('dinoupdated', dinoupdated);
   });
 
 });
