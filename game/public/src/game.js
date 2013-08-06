@@ -107,7 +107,7 @@ Game.prototype.loadStage = function(images) {
 
   var newChicken;
 
-  for (var i = 0; i < 3; i++) {
+  for (var i = 0; i < 30; i++) {
     var iden = this.serverChickens[i].iden;
     var randomX = this.serverChickens[i].pos[0];
     var randomY = this.serverChickens[i].pos[1];

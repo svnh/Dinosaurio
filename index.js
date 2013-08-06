@@ -17,15 +17,15 @@ var getRadians = function(direction) {
 //   hp: 100,
 //   pos: [left, top]
 // }
-var serverChickens = [];
+var serverChickens = {};
 
 function initGame() {
   // Create chickens
-  for (var i = 0; i < 3; i++) {
+  for (var i = 0; i < 30; i++) {
     var randomX = Math.floor((Math.random()*2048)+1);
     var randomY = Math.floor((Math.random()*2048)+1);
 
-    serverChickens.push({
+    serverChickens[i] = {
       iden: i,
       pos: [randomX, randomY],
       dir: 0,
@@ -33,7 +33,7 @@ function initGame() {
       lastUpdate: 0,
       animation: 0,
       hit: false
-    });
+    }
   }
 
   loop(0);
@@ -44,8 +44,9 @@ var startTime = new Date().getTime();
 var lastTime;
 
 function loop(time) {
-  for (var i = 0; i < serverChickens.length; i++) {
+  for (var i in serverChickens) {
     if (serverChickens[i].hit === false) {
+
       var random = Math.floor(Math.random()*3);
       var radians = getRadians(serverChickens[i].dir);
       var pos = serverChickens[i].pos;
@@ -80,7 +81,7 @@ function loop(time) {
 
   setTimeout(function() {
     lastTime = new Date().getTime();
-    loop(lastTime-startTime)
+    loop(lastTime-startTime);
   }, 1000/60);
 };
 
@@ -100,7 +101,7 @@ io.sockets.on('connection', function (socket) {
     socket.emit('serverChickens', serverChickens);
   });
 
-  socket.on('needchickenpos', function (time) {
+  socket.on('needchickenpos', function () {
     socket.emit('chickenUpdated', serverChickens);
     // socket.broadcast.emit('chickenUpdated', serverChickens);
   });
