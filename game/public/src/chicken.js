@@ -1,7 +1,4 @@
-var Chicken = function(randomX, randomY){
-
-  this.hit = false;
-  // this.iden = iden;
+var Chicken = function(iden, randomX, randomY){
 
   this.animationDefs = {
     picking: {
@@ -26,28 +23,22 @@ var Chicken = function(randomX, randomY){
     animation: 'running_n',
     animations: this.animations,
     frameRate: 12,
-    index: 0,
     dir:0,
-    lastUpdate: 0,
     hit: false,
   });
 
 };
 
 Chicken.prototype.update = function(Game, serverChicken) {
-  if (serverChicken !== null){
-    var direct = serverChicken.dir
-    var posx = serverChicken.pos[0];
-    var posy = serverChicken.pos[1];
-    var animation = serverChicken.animation;
-    var possibAnims = ['running_'+this.directions[direct],'running_'+this.directions[direct], 'picking_'+this.directions[direct]];
+  var direct = serverChicken.dir
+  var posx = serverChicken.pos[0];
+  var posy = serverChicken.pos[1];
+  var animation = serverChicken.animation;
+  var possibAnims = ['running_'+this.directions[direct],'running_'+this.directions[direct], 'picking_'+this.directions[direct]];
 
-    if (!this.chickenObj.hit){
-      this.chickenObj.setPosition(posx, posy);      
-      if (this.chickenObj.getAnimation() !== possibAnims[animation]){
-        this.chickenObj.setAnimation(possibAnims[animation]);
-      }
-    }
+  this.chickenObj.setPosition(posx, posy);      
+  if (this.chickenObj.getAnimation() !== possibAnims[animation]){
+    this.chickenObj.setAnimation(possibAnims[animation]);
   }
 };
 

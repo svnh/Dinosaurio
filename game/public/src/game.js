@@ -7,7 +7,7 @@ var Game = function() {
 
   this.images;
   this.Opp;
-  this.chickens = [];
+  this.chickens = {};
   this.counter = 0;
   this.loadImages(this.sources, this.loadStage);
   // Permenantly bind methods to this object
@@ -30,13 +30,15 @@ var Game = function() {
       self.serverChickens = serverChickens;
     });
     
-    socket.on('chickenDown', function (chickenIndex) {
-      if (self.chickens[chickenIndex-1] !== null){
-        self.chickens[chickenIndex-1].chickenObj.hide();
-        self.chickens[chickenIndex-1].chickenObj.attrs.hit = true;
-        self.chickens[chickenIndex-1] = null;
-        self.serverChickens[chickenIndex-1] = null;
+    socket.on('killedChicken', function (chickenIndex) {
+      if (self.chickens[chickenIndex] !== undefined){
+        delete self.serverChickens[chickenIndex];
+        console.log(self.chickens[chickenIndex].chickenObj)
+        self.chickens[chickenIndex].chickenObj.remove()
+        console.log(self.chickens[chickenIndex].chickenObj)
+        delete self.chickens[chickenIndex];
       }
+      console.log('ha')
     });
 
     socket.on('dinoupdated', function (dinoupdated) {
@@ -100,24 +102,24 @@ Game.prototype.loadStage = function(images) {
     height: window.innerHeight
   });
 
-  layer = this.layer =  new Kinetic.Layer();
+  layer = this.layer = new Kinetic.Layer();
 
   var greenDino = this.greenDino = new GreenDino();
   layer.add(greenDino.dinoObj);
 
   var newChicken;
 
-  for (var i = 0; i < 30; i++) {
-    var iden = this.serverChickens[i].iden;
-    var randomX = this.serverChickens[i].pos[0];
-    var randomY = this.serverChickens[i].pos[1];
-    newChicken = this.newChicken = new Chicken(randomX, randomY);
+  for (var prop in this.serverChickens) {
+    var iden = this.serverChickens[prop].iden;
+    var randomX = this.serverChickens[prop].pos[0];
+    var randomY = this.serverChickens[prop].pos[1];
+    newChicken = this.newChicken = new Chicken(iden, randomX, randomY);
     layer.add(newChicken.chickenObj);
-    this.chickens.push(newChicken)
+    this.chickens[iden] = newChicken;
   }
   stage.add(this.layer);
-  for (var i = 0; i < this.chickens.length; i++) {
-    this.chickens[i].chickenObj.start();
+  for (var prop in this.serverChickens) {
+    this.chickens[prop].chickenObj.start();
   }
 
   greenDino.dinoObj.start();
@@ -203,38 +205,31 @@ Game.prototype.resizer = _.throttle(function() {
 }, 75);
 
 Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
-  for (var i = 0; i < chickens.length; i++) {
-    if (this.chickens[i] !== null && !this.chickens[i].chickenObj.hit){
-      var chickenInstance = this.chickens[i].chickenObj.attrs;
-      if(theyAreColliding(this.greenDino.dinoObj, chickenInstance)){
-        if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]){
-          if (!chickenInstance.hit) {
-            chickenInstance.hit = true;
-            var deadChicken = this.chickens[i].chickenObj.index;
-            this.chickens[i].chickenObj.hide();
-            this.socket.emit('chickenDown', deadChicken);
-            this.counter++;
-            $('.chickenCounter').text('CHICKENS: ' + this.counter)
-            this.socket.emit('counterChange', this.counter);
-          }
-        }
-      } else {
-        chickenInstance.hit = false;
+  for (var prop in this.chickens) {
+    var chickenInstance = this.chickens[prop].chickenObj.attrs;
+    if(theyAreColliding(this.greenDino.dinoObj, chickenInstance)){
+      if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]) {
+        var deadChicken = this.serverChickens[prop];
+        delete this.serverChickens[prop];
+        this.chickens[prop].chickenObj.remove()
+        delete this.chickens[prop];
+        this.socket.emit('chickenDown', prop);
+        this.counter++;
+        $('.chickenCounter').text('CHICKENS: ' + this.counter)
+        this.socket.emit('counterChange', this.counter);
       }
     }
   }
 };
 
 Game.prototype.gameLoop = function(time) {
-  this.collisionHandler(this.greenDino, this.chickens);
+  this.collisionHandler(this.greenDino, this.serverChickens);
   this.greenDino.update(this, time);
 
   this.socket.emit('needchickenpos', time);
 
-  for (var i = 0; i < this.chickens.length; i++) {
-    if (this.chickens[i] !== null){
-      this.chickens[i].update(this, this.serverChickens[i]);
-    }
+  for (var prop in this.serverChickens) {
+    this.chickens[prop].update(this, this.serverChickens[prop]);
   }
 
   this.checkBoundaries();

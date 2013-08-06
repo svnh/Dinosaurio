@@ -13,10 +13,6 @@ var getRadians = function(direction) {
   return Math.PI*2 / (8/direction) - Math.PI/2;
 };
 
-// chicken = {
-//   hp: 100,
-//   pos: [left, top]
-// }
 var serverChickens = {};
 
 function initGame() {
@@ -32,7 +28,6 @@ function initGame() {
       random: 0,
       lastUpdate: 0,
       animation: 0,
-      hit: false
     }
   }
 
@@ -44,37 +39,34 @@ var startTime = new Date().getTime();
 var lastTime;
 
 function loop(time) {
-  for (var i in serverChickens) {
-    if (serverChickens[i].hit === false) {
+  for (var prop in serverChickens) {
+    var random = Math.floor(Math.random()*3);
+    var radians = getRadians(serverChickens[prop].dir);
+    var pos = serverChickens[prop].pos;
 
-      var random = Math.floor(Math.random()*3);
-      var radians = getRadians(serverChickens[i].dir);
-      var pos = serverChickens[i].pos;
+    serverChickens[prop].random = random;
 
-      serverChickens[i].random = random;
+   if(serverChickens[prop].pos[1] < -20 || serverChickens[prop].pos[1] > 2055 || serverChickens[prop].pos[0] < -20 || serverChickens[prop].pos[0] > 2055) {
+      serverChickens[prop].dir = serverChickens[prop].dir === 7 ? 0 : serverChickens[prop].dir+1;
 
-     if(serverChickens[i].pos[1] < -20 || serverChickens[i].pos[1] > 2055 || serverChickens[i].pos[0] < -20 || serverChickens[i].pos[0] > 2055) {
-        serverChickens[i].dir = serverChickens[i].dir === 7 ? 0 : serverChickens[i].dir+1;
+      radians = getRadians(serverChickens[prop].dir);
 
-        radians = getRadians(serverChickens[i].dir);
+      serverChickens[prop].pos = [serverChickens[prop].pos[0]+Math.cos(radians)*random, serverChickens[prop].pos[1]+Math.sin(radians)*random];
+      serverChickens[prop].animation = 0;
+    } if (time - serverChickens[prop].lastUpdate > 3000) {
+      serverChickens[prop].lastUpdate = time;
+      serverChickens[prop].animation = random;
 
-        serverChickens[i].pos = [serverChickens[i].pos[0]+Math.cos(radians)*random, serverChickens[i].pos[1]+Math.sin(radians)*random];
-        serverChickens[i].animation = 0;
-      } if (time - serverChickens[i].lastUpdate > 3000) {
-        serverChickens[i].lastUpdate = time;
-        serverChickens[i].animation = random;
+      if (random === 0 || random === 1) {
+        serverChickens[prop].pos = [serverChickens[prop].pos[0]+Math.cos(radians)*random, serverChickens[prop].pos[1]+Math.sin(radians)*random];
+      }
 
-        if (random === 0 || random === 1) {
-          serverChickens[i].pos = [serverChickens[i].pos[0]+Math.cos(radians)*random, serverChickens[i].pos[1]+Math.sin(radians)*random];
-        }
-
-      } else {
-        if (serverChickens[i].animation === 0 || serverChickens[i].animation === 1) {
-          serverChickens[i].pos = [serverChickens[i].pos[0]+Math.cos(radians)*random, serverChickens[i].pos[1]+Math.sin(radians)*random];
-        } if (serverChickens[i].animation === 2) {
-          serverChickens[i].pos = [serverChickens[i].pos[0], serverChickens[i].pos[1]];
-          serverChickens[i].animation = 2;
-        }
+    } else {
+      if (serverChickens[prop].animation === 0 || serverChickens[prop].animation === 1) {
+        serverChickens[prop].pos = [serverChickens[prop].pos[0]+Math.cos(radians)*random, serverChickens[prop].pos[1]+Math.sin(radians)*random];
+      } if (serverChickens[prop].animation === 2) {
+        serverChickens[prop].pos = [serverChickens[prop].pos[0], serverChickens[prop].pos[1]];
+        serverChickens[prop].animation = 2;
       }
     }
   }
@@ -91,7 +83,7 @@ function loop(time) {
   // If all chickens eaten, init game
 
 function killChicken(chickenIndex){
-  serverChickens[chickenIndex].hit = true;
+  delete serverChickens[chickenIndex];
 };
 
 initGame();
@@ -107,11 +99,9 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('chickenDown', function (chickenIndex) {
-    if (serverChickens[chickenIndex] !== null || serverChickens[chickenIndex] !== undefined) {
-      // socket.emit('chickenDown', chickenIndex);
-      socket.broadcast.emit('chickenDown', chickenIndex);
+      socket.broadcast.emit('killedChicken', chickenIndex);
       killChicken(chickenIndex);
-    }
+      // socket.broadcast.emit('chickenDown', chickenIndex);
   });
 
   socket.on('dinoupdated', function (dinoupdated) {
