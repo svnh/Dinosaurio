@@ -11,9 +11,19 @@ server.listen(8080);
 //   hp: 100,
 //   pos: [left, top]
 // }
+var serverChickens = [];
 
 function initGame() {
   // Create chickens
+  for (var i = 0; i < 30; i++) {
+    var randomX = Math.floor((Math.random()*2048)+1);
+    var randomY = Math.floor((Math.random()*2048)+1);
+
+    serverChickens.push({
+      iden: i,
+      pos: [randomX, randomY]
+    });
+  }
 }
 
 function loop(time) {
@@ -24,7 +34,13 @@ function loop(time) {
   // If all chickens eaten, init game
 }
 
+initGame();
+
 io.sockets.on('connection', function (socket) {
+
+  socket.on('init', function () {
+    socket.emit('serverChickens', serverChickens);
+  });
 
   socket.on('dinoupdated', function (dinoupdated) {
     socket.broadcast.emit('dinoupdated', dinoupdated);

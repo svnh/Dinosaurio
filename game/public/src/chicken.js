@@ -1,7 +1,7 @@
-// 1 chicken instance per chicken!
-var Chicken = function(randomX, randomY){
+var Chicken = function(iden, randomX, randomY){
 
   this.hit = false;
+  this.iden = iden;
 
   this.animationDefs = {
     picking: {
@@ -19,7 +19,6 @@ var Chicken = function(randomX, randomY){
   };
 
   getAnimArray(this.animationDefs, this, 64);
-
   this.chickenObj = new Kinetic.Sprite({
     x: randomX,
     y: randomY,

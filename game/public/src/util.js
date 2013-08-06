@@ -14,7 +14,6 @@ var goFullScreen = function(){
   }
 };
 
-
 var theyAreColliding = function(GreenDino, chickenInstance) {
   greenX = GreenDino.attrs.x;
   greenY = GreenDino.attrs.y;

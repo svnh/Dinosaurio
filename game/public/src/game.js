@@ -10,34 +10,45 @@ var Game = function() {
   this.chickens = [];
   this.counter = 0;
   this.loadImages(this.sources, this.loadStage);
-
   // Permenantly bind methods to this object
   this.gameLoop = this.gameLoop.bind(this);
 
+
+  this.dinocounter = 0;
+  this.serverChickens;
+
+  var self = this;
+
   var socket = this.socket = io.connect(window.location.origin);
   socket.on('connect', function () {
-    this.dinocounter = 0;
+    socket.emit('init', 'client init');
+    socket.on('serverChickens', function (serverChickens) {
+      self.serverChickens = serverChickens;
+      console.log(self.serverChickens)
+    });
+
     socket.on('dinoupdated', function (dinoupdated) {
-      if (this.dinocounter < 1){
-        this.Opp = new RedDino();
-        layer.add(this.Opp.dinoObj); 
-        this.Opp.dinoObj.start();
+      if (self.dinocounter < 1){
+        self.Opp = new RedDino();
+        layer.add(self.Opp.dinoObj); 
+        self.Opp.dinoObj.start();
       };
-        this.dinocounter++;
-      if (this.dinocounter > 2){
-        this.Opp.update(dinoupdated[0].x, dinoupdated[0].y, dinoupdated[1]);
+        self.dinocounter++;
+      if (self.dinocounter > 2){
+        self.Opp.update(dinoupdated[0].x, dinoupdated[0].y, dinoupdated[1]);
       }
     });
+    
     socket.on('dinochangeanim', function (dinochangeanim) {
-      if (this.dinocounter > 2){
-        this.Opp.dinoObj.setAnimation(dinochangeanim);
+      if (self.dinocounter > 2){
+        self.Opp.dinoObj.setAnimation(dinochangeanim);
       }
     });
+    
     socket.on('counterChange', function (counterChange) {
       $('.oppCounter').text('OPPONENT CHICKENS: ' + counterChange);
     });
   });
-
 };
 
 Game.prototype.loadImages = function(sources, callback) {
@@ -83,10 +94,12 @@ Game.prototype.loadStage = function(images) {
   layer.add(greenDino.dinoObj);
 
   var newChicken;
+
   for (var i = 0; i < 30; i++) {
-    var randomX = Math.floor((Math.random()*2048)+1);
-    var randomY = Math.floor((Math.random()*2048)+1);
-    var newChicken = this.newChicken = new Chicken(randomX, randomY);
+    var iden = this.serverChickens[i].iden
+    var randomX = this.serverChickens[i].pos[0];
+    var randomY = this.serverChickens[i].pos[1];
+    newChicken = this.newChicken = new Chicken(iden, randomX, randomY);
     layer.add(newChicken.chickenObj);
     this.chickens.push(newChicken)
   }
@@ -144,9 +157,6 @@ Game.prototype.translateScreen = function(){
 
   var width = window.innerWidth;
   var height = window.innerHeight;
-
-  var backgroundWidth = document.getElementById('background').offsetWidth;
-  var backgroundHeight = document.getElementById('background').offsetHeight;
 
   var sizeX = 2048;
   var sizeY = 2048;
