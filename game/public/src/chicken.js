@@ -45,8 +45,9 @@ Chicken.prototype.update = function(Game, serverChicken) {
   if (!this.chickenObj.hit){
     this.chickenObj.setPosition(posx, posy);      
     if (this.chickenObj.getAnimation() !== possibAnims[animation]){
-      console.log('chaning animation')
+      console.log(this.chickenObj.getAnimation())
       this.chickenObj.setAnimation(possibAnims[animation]);
+      console.log(this.chickenObj.getAnimation())
     }
   }
 };

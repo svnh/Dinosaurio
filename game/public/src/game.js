@@ -22,7 +22,6 @@ var Game = function() {
   var socket = this.socket = io.connect(window.location.origin);
   socket.on('connect', function () {
     socket.emit('init', 'client init');
-    // socket.emit('needchickenpos', 'client needs chickenpos');
     socket.on('serverChickens', function (serverChickens) {
       self.serverChickens = serverChickens;
     });
@@ -218,7 +217,7 @@ Game.prototype.gameLoop = function(time) {
   this.collisionHandler(this.greenDino, this.chickens);
   this.greenDino.update(this, time);
 
-  this.socket.emit('needchickenpos', 'client needs chickenpos');
+  this.socket.emit('needchickenpos', time);
 
   for (var i = 0; i < this.chickens.length; i++) {
     this.chickens[i].update(this, this.serverChickens[i]);

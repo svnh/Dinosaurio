@@ -36,12 +36,15 @@ function initGame() {
   }
 }
 
+
 function loop(time) {
+  console.log(time)
   for (var i = 0; i < serverChickens.length; i++) {
     var random = Math.floor(Math.random()*3);
-    var animation = serverChickens[i].animation
     var radians = getRadians(serverChickens[i].dir);
     var pos = serverChickens[i].pos;
+
+    serverChickens[i].random = random;
 
    if(serverChickens[i].pos[1] < -20 || serverChickens[i].pos[1] > 2055 || serverChickens[i].pos[0] < -20 || serverChickens[i].pos[0] > 2055) {
       serverChickens[i].dir = serverChickens[i].dir === 7 ? 0 : serverChickens[i].dir+1;
@@ -50,24 +53,21 @@ function loop(time) {
 
       serverChickens[i].pos = [serverChickens[i].pos[0]+Math.cos(radians)*random, serverChickens[i].pos[1]+Math.sin(radians)*random];
       serverChickens[i].animation = 0;
+    } if (time - serverChickens[i].lastUpdate > 3000) {
       serverChickens[i].lastUpdate = time;
-    } else if (time - serverChickens[i].lastUpdate > 3000){
-      console.log('time is changing')
-      serverChickens[i].lastUpdate = time;
-      var randomChoice = Math.floor(Math.random()*3);
+      serverChickens[i].animation = random;
 
-      if(randomChoice === 0 || randomChoice === 1){
+      if (random === 0 || random === 1) {
         serverChickens[i].pos = [serverChickens[i].pos[0]+Math.cos(radians)*random, serverChickens[i].pos[1]+Math.sin(radians)*random];
       }
 
-    } else if (serverChickens[i].animation === 0) {
-        serverChickens[i].pos = [serverChickens[i].pos[0]+Math.cos(radians)*random, serverChickens[i].pos[1]+Math.sin(radians)*random];
-      serverChickens[i].lastUpdate = time;
     } else {
-        console.log('its not zero')
-      serverChickens[i].pos = [serverChickens[i].pos[0], serverChickens[i].pos[1]];
-      serverChickens[i].animation === 2;
-      serverChickens[i].lastUpdate = time;
+      if (serverChickens[i].animation === 0 || serverChickens[i].animation === 1) {
+        serverChickens[i].pos = [serverChickens[i].pos[0]+Math.cos(radians)*random, serverChickens[i].pos[1]+Math.sin(radians)*random];
+      } if (serverChickens[i].animation === 2) {
+        serverChickens[i].pos = [serverChickens[i].pos[0], serverChickens[i].pos[1]];
+        serverChickens[i].animation === 2;
+      }
     }
   }
 };
@@ -85,8 +85,8 @@ io.sockets.on('connection', function (socket) {
     socket.emit('serverChickens', serverChickens);
   });
 
-  socket.on('needchickenpos', function () {
-    loop();
+  socket.on('needchickenpos', function (time) {
+    loop(time);
     socket.emit('chickenUpdated', serverChickens);
     socket.broadcast.emit('chickenUpdated', serverChickens);
   });

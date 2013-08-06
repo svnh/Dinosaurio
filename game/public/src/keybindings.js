@@ -1,7 +1,6 @@
 var keyBindings = function(Game, DinoClass, dinoinstance, run, left, right, attack, roar){
 
   Mousetrap.bind(run, function(){
-    debugger;
     DinoClass.running = false;
     dinoinstance.setAnimation('paused_'+DinoClass.directions[dinoinstance.attrs.dir]);
     Game.socket.emit('dinochangeanim', dinoinstance.getAnimation());
