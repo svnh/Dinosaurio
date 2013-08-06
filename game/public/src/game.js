@@ -29,6 +29,15 @@ var Game = function() {
      socket.on('chickenUpdated', function (serverChickens) {
       self.serverChickens = serverChickens;
     });
+    
+    socket.on('chickenDown', function (chickenIndex) {
+      if (self.chickens[chickenIndex-1] !== null){
+        self.chickens[chickenIndex-1].chickenObj.hide();
+        self.chickens[chickenIndex-1].chickenObj.attrs.hit = true;
+        self.chickens[chickenIndex-1] = null;
+        self.serverChickens[chickenIndex-1] = null;
+      }
+    });
 
     socket.on('dinoupdated', function (dinoupdated) {
       if (self.dinocounter < 1){
@@ -98,8 +107,8 @@ Game.prototype.loadStage = function(images) {
 
   var newChicken;
 
-  for (var i = 0; i < 30; i++) {
-    // var iden = this.serverChickens[i].iden
+  for (var i = 0; i < 3; i++) {
+    var iden = this.serverChickens[i].iden;
     var randomX = this.serverChickens[i].pos[0];
     var randomY = this.serverChickens[i].pos[1];
     newChicken = this.newChicken = new Chicken(randomX, randomY);
@@ -107,7 +116,6 @@ Game.prototype.loadStage = function(images) {
     this.chickens.push(newChicken)
   }
   stage.add(this.layer);
-
   for (var i = 0; i < this.chickens.length; i++) {
     this.chickens[i].chickenObj.start();
   }
@@ -196,19 +204,23 @@ Game.prototype.resizer = _.throttle(function() {
 
 Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
   for (var i = 0; i < chickens.length; i++) {
-    var chickenInstance = chickens[i].chickenObj.attrs;
-    if(theyAreColliding(this.greenDino.dinoObj, chickenInstance)){
-      if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]){
-        if (!chickenInstance.hit) {
-          chickenInstance.hit = true;
-          chickens[i].chickenObj.hide();
-          this.counter++;
-          $('.chickenCounter').text('CHICKENS: ' + this.counter)
-          this.socket.emit('counterChange', this.counter);
+    if (this.chickens[i] !== null && !this.chickens[i].chickenObj.hit){
+      var chickenInstance = this.chickens[i].chickenObj.attrs;
+      if(theyAreColliding(this.greenDino.dinoObj, chickenInstance)){
+        if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]){
+          if (!chickenInstance.hit) {
+            chickenInstance.hit = true;
+            var deadChicken = this.chickens[i].chickenObj.index;
+            this.chickens[i].chickenObj.hide();
+            this.socket.emit('chickenDown', deadChicken);
+            this.counter++;
+            $('.chickenCounter').text('CHICKENS: ' + this.counter)
+            this.socket.emit('counterChange', this.counter);
+          }
         }
+      } else {
+        chickenInstance.hit = false;
       }
-   } else {
-      chickenInstance.hit = false;
     }
   }
 };
@@ -220,7 +232,9 @@ Game.prototype.gameLoop = function(time) {
   this.socket.emit('needchickenpos', time);
 
   for (var i = 0; i < this.chickens.length; i++) {
-    this.chickens[i].update(this, this.serverChickens[i]);
+    if (this.chickens[i] !== null){
+      this.chickens[i].update(this, this.serverChickens[i]);
+    }
   }
 
   this.checkBoundaries();

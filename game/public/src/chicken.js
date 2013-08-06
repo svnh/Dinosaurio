@@ -35,19 +35,18 @@ var Chicken = function(randomX, randomY){
 };
 
 Chicken.prototype.update = function(Game, serverChicken) {
-  var direct = serverChicken.dir
-  var posx = serverChicken.pos[0];
-  var posy = serverChicken.pos[1];
-  var animation = serverChicken.animation;
-  var possibAnims = ['running_'+this.directions[direct],'running_'+this.directions[direct], 'picking_'+this.directions[direct]];
+  if (serverChicken !== null){
+    var direct = serverChicken.dir
+    var posx = serverChicken.pos[0];
+    var posy = serverChicken.pos[1];
+    var animation = serverChicken.animation;
+    var possibAnims = ['running_'+this.directions[direct],'running_'+this.directions[direct], 'picking_'+this.directions[direct]];
 
-
-  if (!this.chickenObj.hit){
-    this.chickenObj.setPosition(posx, posy);      
-    if (this.chickenObj.getAnimation() !== possibAnims[animation]){
-      console.log(this.chickenObj.getAnimation())
-      this.chickenObj.setAnimation(possibAnims[animation]);
-      console.log(this.chickenObj.getAnimation())
+    if (!this.chickenObj.hit){
+      this.chickenObj.setPosition(posx, posy);      
+      if (this.chickenObj.getAnimation() !== possibAnims[animation]){
+        this.chickenObj.setAnimation(possibAnims[animation]);
+      }
     }
   }
 };
