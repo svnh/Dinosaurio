@@ -40,7 +40,7 @@ var Game = function() {
     });
     
     socket.on('dinochangeanim', function (dinochangeanim) {
-      if (self.dinocounter > 2){
+      if (self.dinocounter > 0){
         self.Opp.dinoObj.setAnimation(dinochangeanim);
       }
     });
@@ -216,7 +216,7 @@ Game.prototype.gameLoop = function(time) {
   this.greenDino.update(this, time);
 
   for (var i = 0; i < this.chickens.length; i++) {
-    this.chickens[i].update(this, time);
+    this.chickens[i].update(Game, time);
   }
 
   this.checkBoundaries();
