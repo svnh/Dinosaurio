@@ -22,9 +22,13 @@ var Game = function() {
   var socket = this.socket = io.connect(window.location.origin);
   socket.on('connect', function () {
     socket.emit('init', 'client init');
+    // socket.emit('needchickenpos', 'client needs chickenpos');
     socket.on('serverChickens', function (serverChickens) {
       self.serverChickens = serverChickens;
-      console.log(self.serverChickens)
+    });
+
+     socket.on('chickenUpdated', function (serverChickens) {
+      self.serverChickens = serverChickens;
     });
 
     socket.on('dinoupdated', function (dinoupdated) {
@@ -96,14 +100,13 @@ Game.prototype.loadStage = function(images) {
   var newChicken;
 
   for (var i = 0; i < 30; i++) {
-    var iden = this.serverChickens[i].iden
+    // var iden = this.serverChickens[i].iden
     var randomX = this.serverChickens[i].pos[0];
     var randomY = this.serverChickens[i].pos[1];
-    newChicken = this.newChicken = new Chicken(iden, randomX, randomY);
+    newChicken = this.newChicken = new Chicken(randomX, randomY);
     layer.add(newChicken.chickenObj);
     this.chickens.push(newChicken)
   }
-
   stage.add(this.layer);
 
   for (var i = 0; i < this.chickens.length; i++) {
@@ -215,8 +218,10 @@ Game.prototype.gameLoop = function(time) {
   this.collisionHandler(this.greenDino, this.chickens);
   this.greenDino.update(this, time);
 
+  this.socket.emit('needchickenpos', 'client needs chickenpos');
+
   for (var i = 0; i < this.chickens.length; i++) {
-    this.chickens[i].update(Game, time);
+    this.chickens[i].update(this, this.serverChickens[i]);
   }
 
   this.checkBoundaries();
