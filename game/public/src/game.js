@@ -8,7 +8,7 @@ var Game = function() {
   this.images;
   this.Opp;
   this.chickens = {};
-  this.counter = 0;
+  this.score = 0;
   this.loadImages(this.sources, this.loadStage);
   // Permenantly bind methods to this object
   this.gameLoop = this.gameLoop.bind(this);
@@ -33,12 +33,9 @@ var Game = function() {
     socket.on('killedChicken', function (chickenIndex) {
       if (self.chickens[chickenIndex] !== undefined){
         delete self.serverChickens[chickenIndex];
-        console.log(self.chickens[chickenIndex].chickenObj)
         self.chickens[chickenIndex].chickenObj.remove()
-        console.log(self.chickens[chickenIndex].chickenObj)
         delete self.chickens[chickenIndex];
       }
-      console.log('ha')
     });
 
     socket.on('dinoupdated', function (dinoupdated) {
@@ -214,9 +211,10 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
         this.chickens[prop].chickenObj.remove()
         delete this.chickens[prop];
         this.socket.emit('chickenDown', prop);
-        this.counter++;
-        $('.chickenCounter').text('CHICKENS: ' + this.counter)
-        this.socket.emit('counterChange', this.counter);
+        this.score++;
+        $('.chickenCounter').text('CHICKENS: ' + this.score)
+        this.socket.emit('counterChange', this.score);
+
       }
     }
   }

@@ -16,7 +16,6 @@ var getRadians = function(direction) {
 var serverChickens = {};
 
 function initGame() {
-  // Create chickens
   for (var i = 0; i < 30; i++) {
     var randomX = Math.floor((Math.random()*2048)+1);
     var randomY = Math.floor((Math.random()*2048)+1);
@@ -30,7 +29,6 @@ function initGame() {
       animation: 0,
     }
   }
-
   loop(0);
 }
 
@@ -77,31 +75,26 @@ function loop(time) {
   }, 1000/60);
 };
 
-
-  // Broadcast chicken position to all clients
-
   // If all chickens eaten, init game
 
 function killChicken(chickenIndex){
   delete serverChickens[chickenIndex];
 };
 
-initGame();
 
 io.sockets.on('connection', function (socket) {
   socket.on('init', function () {
+    initGame();
     socket.emit('serverChickens', serverChickens);
   });
 
   socket.on('needchickenpos', function () {
     socket.emit('chickenUpdated', serverChickens);
-    // socket.broadcast.emit('chickenUpdated', serverChickens);
   });
 
   socket.on('chickenDown', function (chickenIndex) {
       socket.broadcast.emit('killedChicken', chickenIndex);
       killChicken(chickenIndex);
-      // socket.broadcast.emit('chickenDown', chickenIndex);
   });
 
   socket.on('dinoupdated', function (dinoupdated) {
