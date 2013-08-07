@@ -124,6 +124,9 @@ io.sockets.on('connection', function (userSocket) {
 
   userSocket.on('disconnect', function () {
     userSocket.in(room).broadcast.emit('oppDisconnected', room);
+    if (initcount % 2 === 1){
+      initcount -= 1;
+    }
   });
 
 });
