@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
-var io = require('socket.io').listen(server);
+var io = require('socket.io').listen(server, { log: false });
 
 app.use(express.static(__dirname + '/game/public/'));
 
@@ -78,39 +78,45 @@ function killChicken(chickenIndex){
   delete serverChickens[chickenIndex];
 };
 
-
-
-var room = 'room';
+var room = "room";
 
 var initcount = 0;
 
 io.sockets.on('connection', function (userSocket) {
+  initcount += 1;
+  if (initcount % 2 === 1) {
+    room = initcount.toString();
+  }
   userSocket.join(room);
   userSocket.in(room).emit('join', room);
-  // console.log(io.sockets.clients('room'))
-  userSocket.on('init', function () {
+  // console.log(io.sockets.clients(room))
+  userSocket.on('init', function (room) {
     initGame();
     userSocket.in(room).emit('serverChickens', serverChickens);
   });
 
-  userSocket.on('needchickenpos', function () {
+  userSocket.on('needchickenpos', function (room) {
     userSocket.in(room).emit('chickenUpdated', serverChickens);
   });
 
   userSocket.on('chickenDown', function (chickenIndex) {
       userSocket.in(room).broadcast.emit('killedChicken', chickenIndex);
-      killChicken(chickenIndex);
+      // killChicken(chickenIndex);
   });
 
-  userSocket.on('dinoupdated', function (dinoupdated) {
+  userSocket.on('dinoCreated', function (room) {
+    userSocket.in(room).broadcast.emit('dinoCreated', room);
+  });
+
+  userSocket.on('dinoupdated', function (room, dinoupdated) {
     userSocket.in(room).broadcast.emit('dinoupdated', dinoupdated);
   });
 
-  userSocket.on('dinochangeanim', function (dinochangeanim) {
+  userSocket.on('dinochangeanim', function (room, dinochangeanim) {
     userSocket.in(room).broadcast.emit('dinochangeanim', dinochangeanim);
   });
 
-  userSocket.on('counterChange', function (counterChange) {
+  userSocket.on('counterChange', function (room, counterChange) {
     userSocket.in(room).broadcast.emit('counterChange', counterChange);
   });
 });

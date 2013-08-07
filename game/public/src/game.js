@@ -17,14 +17,18 @@ var Game = function() {
   this.dinocounter = 0;
   this.serverChickens;
 
-  var self = this;
-
   var socket = this.socket = io.connect(window.location.origin);
+  var self = this;  
+  this.room;
+
   socket.on('connect', function () {
 
-    socket.on('join', function(){
-      socket.emit('init', 'client init');
+    socket.on('join', function(room){
+      self.room = room;
+      socket.emit('room', room)
+      socket.emit('init', room);
     });
+
      socket.on('serverChickens', function (serverChickens) {
       self.serverChickens = serverChickens;
     });
@@ -41,13 +45,19 @@ var Game = function() {
       }
     });
 
+    socket.on('dinoCreated', function () {
+      self.Opp = new RedDino();
+      layer.add(self.Opp.dinoObj); 
+      self.Opp.dinoObj.start();
+    });
+
     socket.on('dinoupdated', function (dinoupdated) {
-      if (self.dinocounter < 1){
+      if (self.Opp === undefined) {
         self.Opp = new RedDino();
         layer.add(self.Opp.dinoObj); 
         self.Opp.dinoObj.start();
-      };
-        self.dinocounter++;
+      }
+      self.dinocounter++;
       if (self.dinocounter > 2){
         self.Opp.update(dinoupdated[0].x, dinoupdated[0].y, dinoupdated[1]);
       }
@@ -119,6 +129,8 @@ Game.prototype.loadStage = function(images) {
   greenDino.dinoObj.start();
   keyBindings(this, greenDino, greenDino.dinoObj, 'up', 'left', 'right', 'space', '/');
 
+  this.socket.emit('dinoCreated', this.room);
+
   requestAnimationFrame(this.gameLoop);
 };
 
@@ -155,7 +167,6 @@ Game.prototype.checkBoundaries = function(){
     this.greenDino.dinoObj.setPosition(-15, sizeY);
   }
 };
-
 
 Game.prototype.translateScreen = function(){
   var dinoX = this.greenDino.dinoObj.getPosition().x + 128/2;
@@ -220,7 +231,7 @@ Game.prototype.gameLoop = function(time) {
   this.collisionHandler(this.greenDino, this.serverChickens);
   this.greenDino.update(this, time);
 
-  this.socket.emit('needchickenpos', time);
+  this.socket.emit('needchickenpos', this.room);
 
   for (var prop in this.serverChickens) {
     if (this.chickens[prop]){
