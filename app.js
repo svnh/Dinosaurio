@@ -8,15 +8,15 @@ app.use(express.static(__dirname + '/game/public/'));
 server.listen(8080);
 
 var getRadians = function(direction) {
-  return Math.PI*2 / (8/direction) - Math.PI/2;
+  return Math.PI * 2 / (8 / direction) - Math.PI / 2;
 };
 
 var serverChickens = {};
 
 var initGame = function () {
   for (var i = 0; i < 30; i++) {
-    var randomX = Math.floor((Math.random()*2048)+1);
-    var randomY = Math.floor((Math.random()*2048)+1);
+    var randomX = Math.floor((Math.random() * 2048) + 1);
+    var randomY = Math.floor((Math.random() * 2048) + 1);
 
     serverChickens[i] = {
       iden: i,
@@ -36,8 +36,8 @@ var lastTime;
 
 var loop = function (time) {
   for (var prop in serverChickens) {
-    var randomSpeed = Math.floor(Math.random()*3);
-    var random = Math.floor(Math.random()*3);
+    var randomSpeed = Math.floor(Math.random() * 2);
+    var random = Math.floor(Math.random() * 3);
     var radians = getRadians(serverChickens[prop].dir);
     var pos = serverChickens[prop].pos;
 
@@ -48,19 +48,19 @@ var loop = function (time) {
 
       radians = getRadians(serverChickens[prop].dir);
 
-      serverChickens[prop].pos = [serverChickens[prop].pos[0]+Math.cos(radians)*randomSpeed, serverChickens[prop].pos[1]+Math.sin(radians)*randomSpeed];
+      serverChickens[prop].pos = [serverChickens[prop].pos[0] + Math.cos(radians) * randomSpeed, serverChickens[prop].pos[1] + Math.sin(radians) * randomSpeed];
       serverChickens[prop].animation = 0;
     } if (time - serverChickens[prop].lastUpdate > 3000) {
       serverChickens[prop].lastUpdate = time;
       serverChickens[prop].animation = random;
 
       if (random === 0 || random === 1) {
-        serverChickens[prop].pos = [serverChickens[prop].pos[0]+Math.cos(radians)*randomSpeed, serverChickens[prop].pos[1]+Math.sin(radians)*randomSpeed];
+        serverChickens[prop].pos = [serverChickens[prop].pos[0] + Math.cos(radians) * randomSpeed, serverChickens[prop].pos[1] + Math.sin(radians) * randomSpeed];
       }
 
     } else {
       if (serverChickens[prop].animation === 0 || serverChickens[prop].animation === 1) {
-        serverChickens[prop].pos = [serverChickens[prop].pos[0]+Math.cos(radians)*randomSpeed, serverChickens[prop].pos[1]+Math.sin(radians)*randomSpeed];
+        serverChickens[prop].pos = [serverChickens[prop].pos[0] + Math.cos(radians) * randomSpeed, serverChickens[prop].pos[1] + Math.sin(radians) * randomSpeed];
       } if (serverChickens[prop].animation === 2) {
         serverChickens[prop].pos = [serverChickens[prop].pos[0], serverChickens[prop].pos[1]];
         serverChickens[prop].animation = 2;
@@ -124,7 +124,7 @@ io.sockets.on('connection', function (userSocket) {
 
   userSocket.on('disconnect', function () {
     userSocket.in(room).broadcast.emit('oppDisconnected', room);
-    if (initcount % 2 === 1){
+    if (initcount % 2 === 1) {
       initcount -= 1;
     }
   });

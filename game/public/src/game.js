@@ -25,13 +25,13 @@ var Game = function() {
       socket.emit('init', room);
     });
 
-     socket.on('serverChickens', function (serverChickens) {
+    socket.on('serverChickens', function (serverChickens) {
       self.serverChickens = serverChickens;
       $('.waiting').hide();
       self.loadImages(self.sources, self.loadStage);
     });
 
-     socket.on('chickenUpdated', function (serverChickens) {
+    socket.on('chickenUpdated', function (serverChickens) {
       self.serverChickens = serverChickens;
     });
     
@@ -77,7 +77,6 @@ var Game = function() {
 
   });
 
-  // Permenantly bind methods to 'this' object
   this.gameLoop = this.gameLoop.bind(this);
 };
 
@@ -118,7 +117,6 @@ Game.prototype.loadStage = function(images) {
   layer.add(greenDino.dinoObj);
 
   var newChicken;
-
   for (var prop in this.serverChickens) {
     var iden = this.serverChickens[prop].iden;
     var randomX = this.serverChickens[prop].pos[0];
@@ -127,14 +125,15 @@ Game.prototype.loadStage = function(images) {
     layer.add(newChicken.chickenObj);
     this.chickens[iden] = newChicken;
   }
+
   stage.add(this.layer);
+
   for (var prop in this.serverChickens) {
     this.chickens[prop].chickenObj.start();
   }
 
   greenDino.dinoObj.start();
   keyBindings(this, greenDino, greenDino.dinoObj, 'up', 'left', 'right', 'space', '/');
-
   this.socket.emit('dinoCreated', this.room);
 
   requestAnimationFrame(this.gameLoop);
@@ -255,7 +254,6 @@ Game.prototype.gameLoop = function(time) {
   } else {
     this.endGame();    
   }
-
 };
 
 Game.prototype.endGame = function() {
@@ -264,10 +262,9 @@ Game.prototype.endGame = function() {
 
   setInterval(function(){
     iden = 1;
-    var randomX = Math.floor((Math.random()*2048)+1);
-    var randomY = Math.floor((Math.random()*2048)+1);
+    var randomX = Math.floor((Math.random() * 2048) + 1);
+    var randomY = Math.floor((Math.random() * 2048) + 1);
     var endChicken = self.endChicken = new Chicken(iden, randomX, randomY);
     this.layer.add(endChicken.chickenObj);
   }, 100);
-
 };
