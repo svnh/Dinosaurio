@@ -98,7 +98,7 @@ io.sockets.on('connection', function (userSocket) {
     userSocket.in(room).emit('chickenUpdated', serverChickens);
   });
 
-  userSocket.on('chickenDown', function (chickenIndex) {
+  userSocket.on('chickenDown', function (room, chickenIndex) {
       userSocket.in(room).broadcast.emit('killedChicken', chickenIndex);
       // killChicken(chickenIndex);
   });

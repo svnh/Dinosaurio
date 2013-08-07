@@ -218,7 +218,7 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
         delete this.serverChickens[prop];
         this.chickens[prop].chickenObj.remove()
         delete this.chickens[prop];
-        this.socket.emit('chickenDown', prop);
+        this.socket.emit('chickenDown', this.room, prop);
         this.score++;
         $('.chickenCounter').text('CHICKENS: ' + this.score)
         this.socket.emit('counterChange', this.room, this.score);
