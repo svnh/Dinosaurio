@@ -10,7 +10,7 @@ var Game = function() {
   this.chickens = {};
   this.score = 0;
   this.loadImages(this.sources, this.loadStage);
-  // Permenantly bind methods to this object
+  // Permenantly bind methods to 'this' object
   this.gameLoop = this.gameLoop.bind(this);
 
 
@@ -21,8 +21,11 @@ var Game = function() {
 
   var socket = this.socket = io.connect(window.location.origin);
   socket.on('connect', function () {
-    socket.emit('init', 'client init');
-    socket.on('serverChickens', function (serverChickens) {
+
+    socket.on('join', function(){
+      socket.emit('init', 'client init');
+    });
+     socket.on('serverChickens', function (serverChickens) {
       self.serverChickens = serverChickens;
     });
 
@@ -83,12 +86,6 @@ Game.prototype.loadImages = function(sources, callback) {
     images[src].src = assetDir + sources[src];
   }
 };
-
-// Listen for chickenposition event on socket
-// Move this.chickens
-
-// Listen for initgame event
-// Create this.chickens
 
 Game.prototype.loadStage = function(images) {
   var background = document.getElementById('background');
@@ -214,7 +211,6 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
         this.score++;
         $('.chickenCounter').text('CHICKENS: ' + this.score)
         this.socket.emit('counterChange', this.score);
-
       }
     }
   }
@@ -227,7 +223,9 @@ Game.prototype.gameLoop = function(time) {
   this.socket.emit('needchickenpos', time);
 
   for (var prop in this.serverChickens) {
-    this.chickens[prop].update(this, this.serverChickens[prop]);
+    if (this.chickens[prop]){
+      this.chickens[prop].update(this, this.serverChickens[prop]);
+    }
   }
 
   this.checkBoundaries();
