@@ -52,6 +52,19 @@ body {
   font-size: 50px;
 }
 
+.waiting {
+  z-index: 2;
+  position: fixed;
+  top: 50%;
+  left: 40%;
+
+  display: none;
+
+  color: white;
+  font-size: 30px;
+  font-family: helvetica; 
+}
+
 .fullScreen {
   position: fixed;
   z-index: 2;

@@ -125,4 +125,5 @@ io.sockets.on('connection', function (userSocket) {
   userSocket.on('disconnect', function () {
     userSocket.in(room).broadcast.emit('oppDisconnected', room);
   });
+
 });

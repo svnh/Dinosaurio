@@ -27,6 +27,7 @@ var Game = function() {
 
      socket.on('serverChickens', function (serverChickens) {
       self.serverChickens = serverChickens;
+      $('.waiting').hide();
       self.loadImages(self.sources, self.loadStage);
     });
 
