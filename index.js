@@ -13,7 +13,7 @@ var getRadians = function(direction) {
 
 var serverChickens = {};
 
-function initGame() {
+var initGame = function () {
   for (var i = 0; i < 30; i++) {
     var randomX = Math.floor((Math.random()*2048)+1);
     var randomY = Math.floor((Math.random()*2048)+1);
@@ -34,7 +34,7 @@ function initGame() {
 var startTime = new Date().getTime();
 var lastTime;
 
-function loop(time) {
+var loop = function (time) {
   for (var prop in serverChickens) {
     var randomSpeed = Math.floor(Math.random()*3);
     var random = Math.floor(Math.random()*3);
@@ -74,7 +74,7 @@ function loop(time) {
   }, 1000/60);
 };
 
-function killChicken(chickenIndex){
+var killChicken = function (chickenIndex) {
   delete serverChickens[chickenIndex];
 };
 

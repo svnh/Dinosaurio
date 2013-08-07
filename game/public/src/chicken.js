@@ -20,7 +20,7 @@ var Chicken = function(iden, randomX, randomY){
     x: randomX,
     y: randomY,
     image: images.chicken,
-    animation: 'running_n',
+    animation: 'picking_n',
     animations: this.animations,
     frameRate: 12,
     dir:0,

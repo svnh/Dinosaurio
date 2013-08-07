@@ -2,7 +2,7 @@ var Game = function() {
   this.sources = {
     greendino: '/dino-green/dino-sprite.png',
     chicken: '/chicken/chicken-sprite.png',
-    reddino: '/dino-red/dino-sprite.png',
+    reddino: '/dino-red/dino-sprite.png'
   };
 
   this.images;
@@ -228,6 +228,9 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
 };
 
 Game.prototype.gameLoop = function(time) {
+  console.log('size: ', _.size(this.chickens), 'room: ', this.room)
+  var remainingChickens = _.size(this.chickens);
+
   this.collisionHandler(this.greenDino, this.serverChickens);
   this.greenDino.update(this, time);
 
@@ -241,5 +244,25 @@ Game.prototype.gameLoop = function(time) {
 
   this.checkBoundaries();
   this.translateScreen(); 
-  requestAnimationFrame(this.gameLoop);
+
+  if (remainingChickens > 0){
+    requestAnimationFrame(this.gameLoop);
+  } else {
+    this.endGame();    
+  }
+
+};
+
+Game.prototype.endGame = function() {
+  this.layer.removeChildren();
+  var self = this;
+
+  setInterval(function(){
+    iden = 1;
+    var randomX = Math.floor((Math.random()*2048)+1);
+    var randomY = Math.floor((Math.random()*2048)+1);
+    var endChicken = self.endChicken = new Chicken(iden, randomX, randomY);
+    this.layer.add(endChicken.chickenObj);
+  }, 100);
+
 };
