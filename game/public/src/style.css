@@ -1,6 +1,8 @@
 body {
   margin: 0;
   padding: 0;
+  color: white;
+  font-family: helvetica;
 }
 
 #container {
@@ -38,72 +40,59 @@ body {
   display: block !important;
 }
 
-.play {
-  z-index: 2;
+button {
   position: fixed;
+  z-index: 2;
+  background-color: transparent;
+  color: white;
+}
+
+.play {
   top: 50%;
   left: 45%;
 
   border: 3px solid white;
 
-  background-color: transparent;
-
-  color: white;
   font-size: 50px;
 }
 
-.waiting {
-  z-index: 2;
-  position: fixed;
-  top: 50%;
-  left: 40%;
-
-  display: none;
-
-  color: white;
-  font-size: 30px;
-  font-family: helvetica; 
-}
-
 .fullScreen {
-  position: fixed;
-  z-index: 2;
   top: 20px;
   left: 80%;
   width: 105px;
 
   border: 1px solid white;
 
-  background-color: transparent;
-
-  color: white;
   font-size: 15px;
+}
+
+span {
+  z-index: 2;
+  position: fixed;
+
+  padding: 3px;
+
+  font-size: 15px;
+}
+
+.waiting {
+  top: 50%;
+  left: 40%;
+
+  display: none;
+
+  font-size: 30px;
 }
 
 .chickenCounter {
-  position: fixed;
-  z-index: 2;
   top: 22px;
   left: 20px;
   width: 105px;
-  padding: 3px;
-  text-align: center;
-
-  color: white;
-  font-size: 15px;
-  font-family: helvetica; 
 }
 
 .oppCounter {
-  position: fixed;
-  z-index: 2;
   top: 22px;
   left: 130px;
   width: 205px;
-  padding: 3px;
-
-  color: white;
-  font-size: 15px;
-  font-family: helvetica; 
 }  
 
