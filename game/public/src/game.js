@@ -221,7 +221,7 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
         this.socket.emit('chickenDown', prop);
         this.score++;
         $('.chickenCounter').text('CHICKENS: ' + this.score)
-        this.socket.emit('counterChange', this.score);
+        this.socket.emit('counterChange', this.room, this.score);
       }
     }
   }

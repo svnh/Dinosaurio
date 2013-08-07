@@ -89,7 +89,6 @@ io.sockets.on('connection', function (userSocket) {
   }
   userSocket.join(room);
   userSocket.in(room).emit('join', room);
-  // console.log(io.sockets.clients(room))
   userSocket.on('init', function (room) {
     initGame();
     userSocket.in(room).emit('serverChickens', serverChickens);
