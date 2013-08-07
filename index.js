@@ -91,7 +91,10 @@ io.sockets.on('connection', function (userSocket) {
   userSocket.in(room).emit('join', room);
   userSocket.on('init', function (room) {
     initGame();
-    userSocket.in(room).emit('serverChickens', serverChickens);
+    if (initcount % 2 === 0){
+      userSocket.in(room).broadcast.emit('serverChickens', serverChickens);
+      userSocket.in(room).emit('serverChickens', serverChickens);
+    }
   });
 
   userSocket.on('needchickenpos', function (room) {
@@ -117,5 +120,9 @@ io.sockets.on('connection', function (userSocket) {
 
   userSocket.on('counterChange', function (room, counterChange) {
     userSocket.in(room).broadcast.emit('counterChange', counterChange);
+  });
+
+  userSocket.on('disconnect', function () {
+    userSocket.in(room).broadcast.emit('oppDisconnected', room);
   });
 });

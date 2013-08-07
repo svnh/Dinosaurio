@@ -9,10 +9,6 @@ var Game = function() {
   this.Opp;
   this.chickens = {};
   this.score = 0;
-  this.loadImages(this.sources, this.loadStage);
-  // Permenantly bind methods to 'this' object
-  this.gameLoop = this.gameLoop.bind(this);
-
 
   this.dinocounter = 0;
   this.serverChickens;
@@ -25,12 +21,13 @@ var Game = function() {
 
     socket.on('join', function(room){
       self.room = room;
-      socket.emit('room', room)
+      socket.emit('room', room);
       socket.emit('init', room);
     });
 
      socket.on('serverChickens', function (serverChickens) {
       self.serverChickens = serverChickens;
+      self.loadImages(self.sources, self.loadStage);
     });
 
      socket.on('chickenUpdated', function (serverChickens) {
@@ -72,7 +69,15 @@ var Game = function() {
     socket.on('counterChange', function (counterChange) {
       $('.oppCounter').text('OPPONENT CHICKENS: ' + counterChange);
     });
+
+    socket.on('oppDisconnected', function () {
+      self.endGame();
+    });
+
   });
+
+  // Permenantly bind methods to 'this' object
+  this.gameLoop = this.gameLoop.bind(this);
 };
 
 Game.prototype.loadImages = function(sources, callback) {
@@ -228,7 +233,6 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
 };
 
 Game.prototype.gameLoop = function(time) {
-  console.log('size: ', _.size(this.chickens), 'room: ', this.room)
   var remainingChickens = _.size(this.chickens);
 
   this.collisionHandler(this.greenDino, this.serverChickens);
