@@ -215,9 +215,28 @@ Game.prototype.resizer = _.throttle(function() {
 }, 75);
 
 Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
+  var chompSize = 128/5;
+  var chompDistance = 128/4;
+  var direction = getRadians(this.greenDino.dinoObj.attrs.dir);
+  var playerCenterLeft = this.greenDino.dinoObj.attrs.x+128/2;
+  var playerCenterTop = this.greenDino.dinoObj.attrs.y+128/2;
+  var playerBoundingRect = {
+    left: playerCenterLeft-chompSize/2+Math.cos(direction)*chompDistance,
+    top: playerCenterTop-chompSize/2+Math.sin(direction)*chompDistance,
+    width: chompSize,
+    height: chompSize
+  };
+
   for (var prop in this.chickens) {
-    var chickenInstance = this.chickens[prop].chickenObj.attrs;
-    if(theyAreColliding(this.greenDino.dinoObj, chickenInstance)){
+    var item = this.chickens[prop];
+
+    var itemBoundingRect = {
+      left: parseInt(this.chickens[prop].chickenObj.attrs.x)+24,
+      top: parseInt(this.chickens[prop].chickenObj.attrs.y)+24,
+      width: 32,
+      height: 32
+    };
+    if(theyAreColliding(playerBoundingRect, itemBoundingRect)){
       if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]) {
         var deadChicken = this.serverChickens[prop];
         delete this.serverChickens[prop];

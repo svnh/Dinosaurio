@@ -13,14 +13,10 @@ var goFullScreen = function(){
   }
 };
 
-var theyAreColliding = function(GreenDino, chickenInstance) {
-  greenX = GreenDino.attrs.x;
-  greenY = GreenDino.attrs.y;
-  chickenInstanceX = chickenInstance.x;
-  chickenInstanceY = chickenInstance.y;
-
-  return( !(greenX > chickenInstanceX + 40 ||  //
-   greenX + 60 < chickenInstanceX ||  // 
-   greenY > chickenInstanceY + 40 ||   //
-   greenY + 60 < chickenInstanceY));  //
+var theyAreColliding = function(rectA, rectB) {
+  if (
+    Math.abs(rectA.left - rectB.left) < (Math.abs(rectA.width + rectB.width) / 2) 
+    && (Math.abs(rectA.top - rectB.top) < (Math.abs(rectA.height + rectB.height) / 2))
+  )
+  return true;
 };

@@ -30,13 +30,12 @@ var initGame = function () {
   loop(0);
 }
 
-
 var startTime = new Date().getTime();
 var lastTime;
 
 var loop = function (time) {
   for (var prop in serverChickens) {
-    var randomSpeed = Math.floor(Math.random() * 3);
+    var randomSpeed = Math.floor(Math.random() * 2);
     var random = Math.floor(Math.random() * 3);
     var radians = getRadians(serverChickens[prop].dir);
     var pos = serverChickens[prop].pos;
