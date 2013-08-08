@@ -19,7 +19,7 @@ var serverChickens = {};
 var smartChickens = {};
 
 var initGame = function () {
-  for (var i = 0; i < 5; i++) {
+  for (var i = 0; i < 10; i++) {
     var randomX = Math.floor((Math.random() * 2048) + 1);
     var randomY = Math.floor((Math.random() * 2048) + 1);
 
@@ -32,7 +32,7 @@ var initGame = function () {
       animation: 0,
     }
   }
-  for (var i = 0; i < 30; i++) {
+  for (var i = 0; i < 10; i++) {
     var randomX = Math.floor((Math.random() * 2048) + 1);
     var randomY = Math.floor((Math.random() * 2048) + 1);
 
