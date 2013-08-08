@@ -146,7 +146,7 @@ var loop = function (time) {
         var direction = (getDirection(radians) + 4) % 8;
         smartChickens[prop].dir = direction;
         smartChickens[prop].animation = 0;
-        smartChickens[prop].pos = [smartChickens[prop].pos[0] + Math.cos(radians) * 5, smartChickens[prop].pos[1] + Math.sin(radians) * 3];
+        smartChickens[prop].pos = [smartChickens[prop].pos[0] + Math.cos(radians) * 2, smartChickens[prop].pos[1] + Math.sin(radians) * 2];
       } else {
         moveChicken(time, smartChickens[prop])
       }  
@@ -213,11 +213,10 @@ io.sockets.on('connection', function (userSocket) {
     for (var prop in roomList) {
       if (disconUser === roomList[prop].user1 || disconUser === roomList[prop].user2 ){
         userSocket.in(prop).broadcast.emit('oppDisconnected', room);
-        if (roomList[prop].user2 == undefined) {
+        if (roomList[prop].user2 === undefined) {
           initcount += 1;
         }
       }
     }
   });
-
 });

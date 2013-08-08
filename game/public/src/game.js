@@ -246,22 +246,41 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
     height: chompSize
   };
 
-  for (var prop in this.chickens) {
-    var item = this.chickens[prop];
-
+  for (var instance in this.chickens) {
     var itemBoundingRect = {
-      left: parseInt(this.chickens[prop].chickenObj.attrs.x)+24,
-      top: parseInt(this.chickens[prop].chickenObj.attrs.y)+24,
+      left: parseInt(this.chickens[instance].chickenObj.attrs.x)+24,
+      top: parseInt(this.chickens[instance].chickenObj.attrs.y)+24,
       width: 32,
       height: 32
     };
     if(theyAreColliding(playerBoundingRect, itemBoundingRect)){
       if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]) {
-        var deadChicken = this.serverChickens[prop];
-        delete this.serverChickens[prop];
-        this.chickens[prop].chickenObj.remove()
-        delete this.chickens[prop];
-        this.socket.emit('chickenDown', this.room, prop);
+        var deadChicken = this.serverChickens[instance];
+        delete this.serverChickens[instance];
+        this.chickens[instance].chickenObj.remove()
+        delete this.chickens[instance];
+        this.socket.emit('chickenDown', this.room, instance);
+        this.score++;
+        $('.chickenCounter').text('CHICKENS: ' + this.score)
+        this.socket.emit('counterChange', this.room, this.score);
+      }
+    }
+  }
+
+  for (var instance in this.smartChickenObjs) {
+    var smartBoundingRect = {
+      left: parseInt(this.smartChickenObjs[instance].chickenObj.attrs.x)+24,
+      top: parseInt(this.smartChickenObjs[instance].chickenObj.attrs.y)+24,
+      width: 32,
+      height: 32
+    };
+    if(theyAreColliding(playerBoundingRect, smartBoundingRect)){
+      if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]) {
+        var deadChicken = this.smartChickens[instance];
+        delete this.smartChickens[instance];
+        this.smartChickenObjs[instance].chickenObj.remove()
+        delete this.smartChickenObjs[instance];
+        this.socket.emit('chickenDown', this.room, instance);
         this.score++;
         $('.chickenCounter').text('CHICKENS: ' + this.score)
         this.socket.emit('counterChange', this.room, this.score);
