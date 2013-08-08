@@ -1,11 +1,11 @@
 {
   "name": "DinosaurSprites",
-  "version": "0.0.0",
+  "version": "0.0.0-6",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm start"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,9 @@
   },
   "dependencies": {
     "express": "~3.3.4"
+  },
+  "subdomain": "dinosaurio",
+  "engines": {
+    "node": "0.8.x"
   }
 }

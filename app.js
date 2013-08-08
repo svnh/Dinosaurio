@@ -19,7 +19,7 @@ var serverChickens = {};
 var smartChickens = {};
 
 var initGame = function () {
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 15; i++) {
     var randomX = Math.floor((Math.random() * 2048) + 1);
     var randomY = Math.floor((Math.random() * 2048) + 1);
 
@@ -32,7 +32,7 @@ var initGame = function () {
       animation: 0,
     }
   }
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 15; i++) {
     var randomX = Math.floor((Math.random() * 2048) + 1);
     var randomY = Math.floor((Math.random() * 2048) + 1);
 
@@ -51,7 +51,7 @@ var initGame = function () {
 var startTime = new Date().getTime();
 var lastTime;
 
-var moveChicken = function(time, chickenType){
+var serverMoveChicken = function(time, chickenType){
   var randomSpeed = Math.floor(Math.random() * 2);
   var random = Math.floor(Math.random() * 3);
   var radians = getRadians(chickenType.dir);
@@ -111,7 +111,7 @@ var moveChicken = function(time, chickenType){
 
 var loop = function (time) {
   for (var prop in serverChickens) {
-    moveChicken(time, serverChickens[prop]);
+    serverMoveChicken(time, serverChickens[prop]);
   }
 
   for (var prop in smartChickens) {
@@ -148,7 +148,7 @@ var loop = function (time) {
         smartChickens[prop].animation = 0;
         smartChickens[prop].pos = [smartChickens[prop].pos[0] + Math.cos(radians) * 2, smartChickens[prop].pos[1] + Math.sin(radians) * 2];
       } else {
-        moveChicken(time, smartChickens[prop])
+        serverMoveChicken(time, smartChickens[prop])
       }  
     }
   }
