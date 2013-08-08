@@ -36,25 +36,50 @@ var lastTime;
 
 var loop = function (time) {
   for (var prop in serverChickens) {
-    var randomSpeed = Math.floor(Math.random() * 2);
+    var randomSpeed = Math.floor(Math.random() * 3);
     var random = Math.floor(Math.random() * 3);
     var radians = getRadians(serverChickens[prop].dir);
     var pos = serverChickens[prop].pos;
+    var left = serverChickens[prop].pos[0];
+    var top = serverChickens[prop].pos[1];
+    var size = 64;
+    var doRotate = false;
 
     serverChickens[prop].random = random;
 
-   if(serverChickens[prop].pos[1] < -20 || serverChickens[prop].pos[1] > 2055 || serverChickens[prop].pos[0] < -20 || serverChickens[prop].pos[0] > 2055) {
-      serverChickens[prop].dir = serverChickens[prop].dir === 7 ? 0 : serverChickens[prop].dir+1;
+    if (left + size/4 <= 0) {
+      left = -size/4;
+      doRotate = true;
+    }
+
+    if (top + size/4 <= 0) {
+      top = -size/4;
+      doRotate = true;
+    }
+
+    if (left + size*3/4 >= 2048) {
+      left = 2048 - size*3/4;
+      doRotate = true;
+    }
+
+    if (top + size*3/4 >= 2048) {
+      top = 2048 - size*3/4;
+      doRotate = true;
+    }
+
+    if (doRotate) {
+      serverChickens[prop].dir = Math.floor((serverChickens[prop].dir + 2) % 8);
 
       radians = getRadians(serverChickens[prop].dir);
 
       serverChickens[prop].pos = [serverChickens[prop].pos[0] + Math.cos(radians) * randomSpeed, serverChickens[prop].pos[1] + Math.sin(radians) * randomSpeed];
       serverChickens[prop].animation = 0;
+
     } if (time - serverChickens[prop].lastUpdate > 3000) {
       serverChickens[prop].lastUpdate = time;
       serverChickens[prop].animation = random;
-
       if (random === 0 || random === 1) {
+        serverChickens[prop].dir = serverChickens[prop].dir === 7 ? 0 : serverChickens[prop].dir+1;
         serverChickens[prop].pos = [serverChickens[prop].pos[0] + Math.cos(radians) * randomSpeed, serverChickens[prop].pos[1] + Math.sin(radians) * randomSpeed];
       }
 
