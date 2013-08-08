@@ -4,7 +4,7 @@ var GreenDino = function(){
   this.update = function(Game, time){
     if (this.running) {
       var timeDiff = (time-this.lastTime)/4;
-      var radians = getRadians(this.dinoObj.attrs.dir);
+      var radians = util.getRadians(this.dinoObj.attrs.dir);
       var pos = this.dinoObj.getPosition();
       this.dinoObj.setPosition(pos.x+Math.cos(radians)*timeDiff, pos.y+Math.sin(radians)*timeDiff);
       

@@ -15,7 +15,8 @@ var Game = function() {
   this.serverChickens;
   this.smartChickens;
 
-  var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
+  var socket = this.socket = io.connect(window.location.origin);
+  // var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
   var self = this;  
   this.room;
 
@@ -31,6 +32,8 @@ var Game = function() {
       self.serverChickens = serverChickens;
       self.smartChickens = smartChickens;
       $('.waiting').hide();
+      $('#titles').hide();
+      $('.fullScreen').css("top", "95%");
       self.loadImages(self.sources, self.loadStage);
     });
 
@@ -49,14 +52,14 @@ var Game = function() {
 
     socket.on('dinoCreated', function () {
       self.Opp = new RedDino();
-      layer.add(self.Opp.dinoObj); 
+      self.layer.add(self.Opp.dinoObj); 
       self.Opp.dinoObj.start();
     });
 
     socket.on('dinoupdated', function (dinoupdated) {
       if (self.Opp === undefined) {
         self.Opp = new RedDino();
-        layer.add(self.Opp.dinoObj); 
+        self.layer.add(self.Opp.dinoObj); 
         self.Opp.dinoObj.start();
       }
       self.dinocounter++;
@@ -235,7 +238,7 @@ Game.prototype.resizer = _.throttle(function() {
 Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
   var chompSize = 128/5;
   var chompDistance = 128/4;
-  var direction = getRadians(this.greenDino.dinoObj.attrs.dir);
+  var direction = util.getRadians(this.greenDino.dinoObj.attrs.dir);
   var playerCenterLeft = this.greenDino.dinoObj.attrs.x+128/2;
   var playerCenterTop = this.greenDino.dinoObj.attrs.y+128/2;
   var playerBoundingRect = {
@@ -252,7 +255,7 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
       width: 32,
       height: 32
     };
-    if(theyAreColliding(playerBoundingRect, itemBoundingRect)){
+    if(util.theyAreColliding(playerBoundingRect, itemBoundingRect)){
       if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]) {
         var deadChicken = this.serverChickens[instance];
         delete this.serverChickens[instance];
@@ -273,7 +276,7 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
       width: 32,
       height: 32
     };
-    if(theyAreColliding(playerBoundingRect, smartBoundingRect)){
+    if(util.theyAreColliding(playerBoundingRect, smartBoundingRect)){
       if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]) {
         var deadChicken = this.smartChickens[instance];
         delete this.smartChickens[instance];
