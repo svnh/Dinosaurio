@@ -49,23 +49,23 @@ body {
 }
 
 button {
-  position: fixed;
+  position: absolute;
   z-index: 2;
   background-color: transparent;
   color: white;
 }
 
 .play {
-  top: 50%;
+  top: 50px;
   left: 45%;
 
   border: 3px solid white;
 
-  font-size: 50px;
+  font-size: 20px;
 }
 
 .fullScreen {
-  top: 95%;
+  top: 50px;
   left: 20px;
   width: 105px;
 
@@ -76,20 +76,17 @@ button {
 
 span {
   z-index: 2;
-  position: fixed;
-
+  position: absolute;
   padding: 3px;
+  display: none;
 
   font-size: 15px;
 }
 
 .waiting {
-  top: 50%;
-  left: 40%;
-
-  display: none;
-
-  font-size: 30px;
+  top: 50px;
+  left: 45%;
+  font-size: 20px;
 }
 
 .chickenCounter {
@@ -103,4 +100,73 @@ span {
   left: 130px;
   width: 205px;
 }  
+
+/*sweet scrolling story*/
+#titles
+{
+  z-index: 2;
+  position: absolute;
+  width: 18em;
+  height: 50em;
+  bottom: 0;
+  left: 50%;
+  margin-left: -9em;
+  font-size: 350%;
+  text-align: justify;
+  overflow: hidden;
+  -webkit-transform-origin: 50% 100%;
+  -moz-transform-origin: 50% 100%;
+  -ms-transform-origin: 50% 100%;
+  -o-transform-origin: 50% 100%;
+  transform-origin: 50% 100%;
+  -webkit-transform: perspective(300px) rotateX(25deg);
+  -moz-transform: perspective(300px) rotateX(25deg);
+  -ms-transform: perspective(300px) rotateX(25deg);
+  -o-transform: perspective(300px) rotateX(25deg);
+  transform: perspective(300px) rotateX(25deg);
+}
+
+#titles p.center
+{
+  z-index: 2;
+  text-align: center;
+}
+
+#titlecontent
+{
+  z-index: 2;
+  position: absolute;
+  top: 100%;
+  -webkit-animation: scroll 100s linear 4s infinite;
+  -moz-animation: scroll 100s linear 4s infinite;
+  -ms-animation: scroll 100s linear 4s infinite;
+  -o-animation: scroll 100s linear 4s infinite;
+  animation: scroll 100s linear 4s infinite;
+}
+
+/* animation */
+@-webkit-keyframes scroll {
+  0% { top: 100%; }
+  100% { top: -120%; }
+}
+
+@-moz-keyframes scroll {
+  0% { top: 100%; }
+  100% { top: -170%; }
+}
+
+@-ms-keyframes scroll {
+  0% { top: 100%; }
+  100% { top: -170%; }
+}
+
+@-o-keyframes scroll {
+  0% { top: 100%; }
+  100% { top: -170%; }
+}
+
+@keyframes scroll {
+  0% { top: 100%; }
+  100% { top: -120%; }
+}
 
