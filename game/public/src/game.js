@@ -2,7 +2,10 @@ var Game = function() {
   this.sources = {
     greendino: '/dino-green/dino-sprite.png',
     chicken: '/chicken/chicken-sprite.png',
-    reddino: '/dino-red/dino-sprite.png'
+    reddino: '/dino-red/dino-sprite.png',
+    palmtree: '/trees/palmtree.png',
+    otpalm: '/trees/left.png',
+    forward: '/trees/forward.png'
   };
 
   this.images;
@@ -15,8 +18,8 @@ var Game = function() {
   this.serverChickens;
   this.smartChickens;
 
-  var socket = this.socket = io.connect(window.location.origin);
-  // var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
+  var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
+
   var self = this;  
   this.room;
 
@@ -141,6 +144,20 @@ Game.prototype.loadStage = function(images) {
     newSmartChicken = this.newSmartChicken = new Chicken(iden, randomX, randomY);
     layer.add(newSmartChicken.chickenObj);
     this.smartChickenObjs[iden] = newSmartChicken;
+  }
+
+  this.palmTrees = [];
+  var palmTree;
+  for (var i = 0; i < 5; i++) {
+    palmTree = this.palmTree = new Tree(images.palmtree);
+    layer.add(palmTree.treeObj);
+    this.palmTrees.push(palmTree.treeObj);
+    palmTree = this.palmTree = new Tree(images.forward);
+    layer.add(palmTree.treeObj);
+    this.palmTrees.push(palmTree.treeObj);
+    palmTree = this.palmTree = new Tree(images.otpalm);
+    layer.add(palmTree.treeObj);
+    this.palmTrees.push(palmTree.treeObj);
   }
 
   stage.add(this.layer);

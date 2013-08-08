@@ -16,6 +16,7 @@ var Chicken = function(iden, randomX, randomY){
   };
 
   getAnimArray(this.animationDefs, this, 64);
+
   this.chickenObj = new Kinetic.Sprite({
     x: randomX,
     y: randomY,
