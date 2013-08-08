@@ -99,19 +99,22 @@ var loop = function (time) {
   }, 1000/60);
 };
 
-var killChicken = function (chickenIndex) {
-  delete serverChickens[chickenIndex];
-};
-
-var room = "room";
+var room;
 
 var initcount = 0;
+var roomcount = 0;
+
+var roomList = {};
 
 io.sockets.on('connection', function (userSocket) {
-  initcount += 1;
-  if (initcount % 2 === 1) {
-    room = initcount.toString();
+  roomcount += 1;
+  if (initcount % 2 === 0) {
+    room = roomcount.toString();
+    roomList[room] = {user1: userSocket.id};
+  } else {
+    roomList[room].user2 = userSocket.id
   }
+  initcount += 1;
   userSocket.join(room);
   userSocket.in(room).emit('join', room);
   userSocket.on('init', function (room) {
@@ -128,7 +131,6 @@ io.sockets.on('connection', function (userSocket) {
 
   userSocket.on('chickenDown', function (room, chickenIndex) {
       userSocket.in(room).broadcast.emit('killedChicken', chickenIndex);
-      // killChicken(chickenIndex);
   });
 
   userSocket.on('dinoCreated', function (room) {
@@ -148,9 +150,15 @@ io.sockets.on('connection', function (userSocket) {
   });
 
   userSocket.on('disconnect', function () {
-    userSocket.in(room).broadcast.emit('oppDisconnected', room);
-    if (initcount % 2 === 1) {
-      initcount -= 1;
+    var disconUser = userSocket.id;
+    for (var prop in roomList) {
+      if (disconUser === roomList[prop].user1 || disconUser === roomList[prop].user2 ){
+        userSocket.in(prop).broadcast.emit('oppDisconnected', room);
+        if (roomList[prop].user2 == undefined) {
+          initcount += 1;
+          console.log('adding')
+        }
+      }
     }
   });
 
