@@ -46,7 +46,7 @@
   var lastTime;
 
   var serverMoveChicken = function(time, chickenType){
-    var randomSpeed = Math.floor(Math.random() * 2);
+    var randomSpeed = (Math.random() * 2);
     var random = Math.floor(Math.random() * 3);
     var radians = util.getRadians(chickenType.dir);
     var pos = chickenType.pos;
@@ -140,7 +140,7 @@
           var direction = (util.getDirection(radians) + 4) % 8;
           smartChickens[prop].dir = direction;
           smartChickens[prop].animation = 0;
-          smartChickens[prop].pos = [smartChickens[prop].pos[0] + Math.cos(radians) * 1.5, smartChickens[prop].pos[1] + Math.sin(radians) * 1.5];
+          smartChickens[prop].pos = [smartChickens[prop].pos[0] + Math.cos(radians), smartChickens[prop].pos[1] + Math.sin(radians)];
         } else {
           serverMoveChicken(time, smartChickens[prop])
         }  
