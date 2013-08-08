@@ -20,3 +20,7 @@ var theyAreColliding = function(rectA, rectB) {
   )
   return true;
 };
+
+var getDirection = function(r) {
+  return (Math.floor((8 / (Math.PI * 2)) * (r + Math.PI / 2)) + 6) % 8;
+};

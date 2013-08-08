@@ -11,14 +11,32 @@ var getRadians = function(direction) {
   return Math.PI * 2 / (8 / direction) - Math.PI / 2;
 };
 
+var getDirection = function(r) {
+  return (Math.floor((8 / (Math.PI * 2)) * (r + Math.PI / 2)) + 6) % 8;
+};
+
 var serverChickens = {};
+var smartChickens = {};
 
 var initGame = function () {
-  for (var i = 0; i < 30; i++) {
+  for (var i = 0; i < 5; i++) {
     var randomX = Math.floor((Math.random() * 2048) + 1);
     var randomY = Math.floor((Math.random() * 2048) + 1);
 
     serverChickens[i] = {
+      iden: i,
+      pos: [randomX, randomY],
+      dir: 0,
+      random: 0,
+      lastUpdate: 0,
+      animation: 0,
+    }
+  }
+  for (var i = 0; i < 30; i++) {
+    var randomX = Math.floor((Math.random() * 2048) + 1);
+    var randomY = Math.floor((Math.random() * 2048) + 1);
+
+    smartChickens[i] = {
       iden: i,
       pos: [randomX, randomY],
       dir: 0,
@@ -33,62 +51,105 @@ var initGame = function () {
 var startTime = new Date().getTime();
 var lastTime;
 
+var moveChicken = function(time, chickenType){
+  var randomSpeed = Math.floor(Math.random() * 2);
+  var random = Math.floor(Math.random() * 3);
+  var radians = getRadians(chickenType.dir);
+  var pos = chickenType.pos;
+  var left = chickenType.pos[0];
+  var top = chickenType.pos[1];
+  var size = 64;
+  var doRotate = false;
+
+  chickenType.random = random;
+
+  if (left + size/4 <= 0) {
+    left = -size/4;
+    doRotate = true;
+  }
+
+  if (top + size/4 <= 0) {
+    top = -size/4;
+    doRotate = true;
+  }
+
+  if (left + size*3/4 >= 2048) {
+    left = 2048 - size*3/4;
+    doRotate = true;
+  }
+
+  if (top + size*3/4 >= 2048) {
+    top = 2048 - size*3/4;
+    doRotate = true;
+  }
+
+  if (doRotate) {
+    chickenType.dir = Math.floor((chickenType.dir + 2) % 8);
+
+    radians = getRadians(chickenType.dir);
+
+    chickenType.pos = [chickenType.pos[0] + Math.cos(radians) * randomSpeed, chickenType.pos[1] + Math.sin(radians) * randomSpeed];
+    chickenType.animation = 0;
+
+  } if (time - chickenType.lastUpdate > 3000) {
+    chickenType.lastUpdate = time;
+    chickenType.animation = random;
+    if (random === 0 || random === 1) {
+      chickenType.dir = chickenType.dir === 7 ? 0 : chickenType.dir+1;
+      chickenType.pos = [chickenType.pos[0] + Math.cos(radians) * randomSpeed, chickenType.pos[1] + Math.sin(radians) * randomSpeed];
+    }
+
+  } else {
+    if (chickenType.animation === 0 || chickenType.animation === 1) {
+      chickenType.pos = [chickenType.pos[0] + Math.cos(radians) * randomSpeed, chickenType.pos[1] + Math.sin(radians) * randomSpeed];
+    } if (chickenType.animation === 2) {
+      chickenType.pos = [chickenType.pos[0], chickenType.pos[1]];
+      chickenType.animation = 2;
+    }
+  }
+}
+
 var loop = function (time) {
   for (var prop in serverChickens) {
-    var randomSpeed = Math.floor(Math.random() * 2);
-    var random = Math.floor(Math.random() * 3);
-    var radians = getRadians(serverChickens[prop].dir);
-    var pos = serverChickens[prop].pos;
-    var left = serverChickens[prop].pos[0];
-    var top = serverChickens[prop].pos[1];
+    moveChicken(time, serverChickens[prop]);
+  }
+
+  for (var prop in smartChickens) {
+    var randomSpeed = Math.floor(Math.random() * 10);
+    var random = Math.floor(Math.random() * 2);
+    var radians = getRadians(smartChickens[prop].dir);
+    var pos = smartChickens[prop].pos;
+    var left = smartChickens[prop].pos[0];
+    var top = smartChickens[prop].pos[1];
     var size = 64;
     var doRotate = false;
+    var scaredDistance = 200
 
-    serverChickens[prop].random = random;
+    smartChickens[prop].random = random;
+    if (playerPosition !== undefined) {
+      var adjacent = playerPosition[0]+(128/4) - smartChickens[prop].pos[0]+(64/4);
+      var hypotenuse = playerPosition[1]+(128/4) - smartChickens[prop].pos[1]+(64/4);
 
-    if (left + size/4 <= 0) {
-      left = -size/4;
-      doRotate = true;
-    }
+      var playerDistance = Math.sqrt(
+        Math.pow(adjacent, 2) + Math.pow(hypotenuse, 2)
+      );
 
-    if (top + size/4 <= 0) {
-      top = -size/4;
-      doRotate = true;
-    }
+      if (playerDistance < scaredDistance
+        && smartChickens[prop].pos[0] > 0
+        && smartChickens[prop].pos[0] < 2000
+        && smartChickens[prop].pos[1] > 0
+        && smartChickens[prop].pos[1] < 2000
+      ) {
 
-    if (left + size*3/4 >= 2048) {
-      left = 2048 - size*3/4;
-      doRotate = true;
-    }
-
-    if (top + size*3/4 >= 2048) {
-      top = 2048 - size*3/4;
-      doRotate = true;
-    }
-
-    if (doRotate) {
-      serverChickens[prop].dir = Math.floor((serverChickens[prop].dir + 2) % 8);
-
-      radians = getRadians(serverChickens[prop].dir);
-
-      serverChickens[prop].pos = [serverChickens[prop].pos[0] + Math.cos(radians) * randomSpeed, serverChickens[prop].pos[1] + Math.sin(radians) * randomSpeed];
-      serverChickens[prop].animation = 0;
-
-    } if (time - serverChickens[prop].lastUpdate > 3000) {
-      serverChickens[prop].lastUpdate = time;
-      serverChickens[prop].animation = random;
-      if (random === 0 || random === 1) {
-        serverChickens[prop].dir = serverChickens[prop].dir === 7 ? 0 : serverChickens[prop].dir+1;
-        serverChickens[prop].pos = [serverChickens[prop].pos[0] + Math.cos(radians) * randomSpeed, serverChickens[prop].pos[1] + Math.sin(radians) * randomSpeed];
-      }
-
-    } else {
-      if (serverChickens[prop].animation === 0 || serverChickens[prop].animation === 1) {
-        serverChickens[prop].pos = [serverChickens[prop].pos[0] + Math.cos(radians) * randomSpeed, serverChickens[prop].pos[1] + Math.sin(radians) * randomSpeed];
-      } if (serverChickens[prop].animation === 2) {
-        serverChickens[prop].pos = [serverChickens[prop].pos[0], serverChickens[prop].pos[1]];
-        serverChickens[prop].animation = 2;
-      }
+        // Calculate heading
+        var radians = Math.atan2(hypotenuse, adjacent) + Math.PI / 2;
+        var direction = (getDirection(radians) + 4) % 8;
+        smartChickens[prop].dir = direction;
+        smartChickens[prop].animation = 0;
+        smartChickens[prop].pos = [smartChickens[prop].pos[0] + Math.cos(radians) * 5, smartChickens[prop].pos[1] + Math.sin(radians) * 3];
+      } else {
+        moveChicken(time, smartChickens[prop])
+      }  
     }
   }
 
@@ -98,13 +159,11 @@ var loop = function (time) {
   }, 1000/60);
 };
 
+var playerPosition;
 var room;
-
 var initcount = 0;
 var roomcount = 0;
-
 var roomList = {};
-
 io.sockets.on('connection', function (userSocket) {
   roomcount += 1;
   if (initcount % 2 === 0) {
@@ -119,13 +178,14 @@ io.sockets.on('connection', function (userSocket) {
   userSocket.on('init', function (room) {
     initGame();
     if (initcount % 2 === 0){
-      userSocket.in(room).broadcast.emit('serverChickens', serverChickens);
-      userSocket.in(room).emit('serverChickens', serverChickens);
+      userSocket.in(room).broadcast.emit('serverChickens', serverChickens, smartChickens);
+      userSocket.in(room).emit('serverChickens', serverChickens, smartChickens);
     }
   });
 
-  userSocket.on('needchickenpos', function (room) {
-    userSocket.in(room).emit('chickenUpdated', serverChickens);
+  userSocket.on('needchickenpos', function (room, playerpos) {
+    playerPosition = playerpos;
+    userSocket.in(room).emit('chickenUpdated', serverChickens, smartChickens);
   });
 
   userSocket.on('chickenDown', function (room, chickenIndex) {
@@ -155,7 +215,6 @@ io.sockets.on('connection', function (userSocket) {
         userSocket.in(prop).broadcast.emit('oppDisconnected', room);
         if (roomList[prop].user2 == undefined) {
           initcount += 1;
-          console.log('adding')
         }
       }
     }

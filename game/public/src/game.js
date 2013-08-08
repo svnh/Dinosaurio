@@ -8,10 +8,13 @@ var Game = function() {
   this.images;
   this.Opp;
   this.chickens = {};
+  this.smartChickenObjs = {};
   this.score = 0;
 
   this.dinocounter = 0;
   this.serverChickens;
+  this.smartChickens;
+
 
   var socket = this.socket = io.connect(window.location.origin);
   var self = this;  
@@ -25,14 +28,16 @@ var Game = function() {
       socket.emit('init', room);
     });
 
-    socket.on('serverChickens', function (serverChickens) {
+    socket.on('serverChickens', function (serverChickens, smartChickens) {
       self.serverChickens = serverChickens;
+      self.smartChickens = smartChickens;
       $('.waiting').hide();
       self.loadImages(self.sources, self.loadStage);
     });
 
-    socket.on('chickenUpdated', function (serverChickens) {
+    socket.on('chickenUpdated', function (serverChickens, smartChickens) {
       self.serverChickens = serverChickens;
+      self.smartChickens = smartChickens;
     });
     
     socket.on('killedChicken', function (chickenIndex) {
@@ -126,10 +131,24 @@ Game.prototype.loadStage = function(images) {
     this.chickens[iden] = newChicken;
   }
 
+  var newSmartChicken;
+  for (var prop in this.smartChickens) {
+    var iden = this.smartChickens[prop].iden;
+    var randomX = this.smartChickens[prop].pos[0];
+    var randomY = this.smartChickens[prop].pos[1];
+    newSmartChicken = this.newSmartChicken = new Chicken(iden, randomX, randomY);
+    layer.add(newSmartChicken.chickenObj);
+    this.smartChickenObjs[iden] = newSmartChicken;
+  }
+
   stage.add(this.layer);
 
   for (var prop in this.serverChickens) {
     this.chickens[prop].chickenObj.start();
+  }
+
+  for (var prop in this.smartChickens) {
+    this.smartChickenObjs[prop].chickenObj.start();
   }
 
   greenDino.dinoObj.start();
@@ -257,11 +276,19 @@ Game.prototype.gameLoop = function(time) {
   this.collisionHandler(this.greenDino, this.serverChickens);
   this.greenDino.update(this, time);
 
-  this.socket.emit('needchickenpos', this.room);
+  var playerPosition = [this.greenDino.dinoObj.attrs.x, this.greenDino.dinoObj.attrs.y];
+
+  this.socket.emit('needchickenpos', this.room, playerPosition);
 
   for (var prop in this.serverChickens) {
     if (this.chickens[prop]){
       this.chickens[prop].update(this, this.serverChickens[prop]);
+    }
+  }
+
+  for (var prop in this.smartChickens) {
+    if (this.smartChickenObjs[prop]){
+      this.smartChickenObjs[prop].update(this, this.smartChickens[prop]);
     }
   }
 

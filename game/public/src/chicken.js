@@ -26,7 +26,6 @@ var Chicken = function(iden, randomX, randomY){
     dir:0,
     hit: false,
   });
-
 };
 
 Chicken.prototype.update = function(Game, serverChicken) {
