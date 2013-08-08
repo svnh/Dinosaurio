@@ -40,6 +40,14 @@ body {
   display: block !important;
 }
 
+.fork {
+  z-index: 2;
+  position: absolute; 
+  top: 0; 
+  right: 0; 
+  border: 0;
+}
+
 button {
   position: fixed;
   z-index: 2;
@@ -57,8 +65,8 @@ button {
 }
 
 .fullScreen {
-  top: 20px;
-  left: 80%;
+  top: 95%;
+  left: 20px;
   width: 105px;
 
   border: 1px solid white;
