@@ -1,51 +1,62 @@
-var serverChicken = {};
 var util = require('../public/src/util.js');
+var chicken = require('./serverchicken.js');
 
-serverChicken.moveChicken = function(time, chickenType){
-    var randomSpeed = (Math.random() * 2);
-    var random = Math.floor(Math.random() * 3);
-    var radians = util.getRadians(chickenType.dir);
-    var pos = chickenType.pos;
-    var left = chickenType.pos[0];
-    var top = chickenType.pos[1];
-    var size = 64;
-    var newLeft = left + Math.cos(radians) * randomSpeed;
-    var newTop = top + Math.sin(radians) * randomSpeed;
+var serverGame = {
+  serverChickens: {},
+  smartChickens: {},
+  startTime: new Date().getTime(),
+  lastTime: null,
+  playerPosition: [0,0]
+}
 
-    chickenType.random = random;
+serverGame.initGame = function () {
+  for (var i = 0; i < 15; i++) {
+    var randomX = util.randomCord();
+    var randomY = util.randomCord();
 
-    var doRotate = util.isOutOfBounds(left, size, top);
+    serverGame.serverChickens[i] = {
+      iden: i,
+      pos: [randomX, randomY],
+      dir: 0,
+      random: 0,
+      lastUpdate: 0,
+      animation: 0,
+    }
+  }
+  for (var i = 0; i < 15; i++) {
+    var randomX = util.randomCord();
+    var randomY = util.randomCord();
 
-    if (doRotate[0] === true) {
-      newLeft = doRotate[1] + Math.cos(radians) * randomSpeed;
-      newTop = doRotate[1] + Math.sin(radians) * randomSpeed
+    serverGame.smartChickens[i] = {
+      iden: i,
+      pos: [randomX, randomY],
+      dir: 0,
+      random: 0,
+      lastUpdate: 0,
+      animation: 0,
+    }
+  }
+  serverGame.loop(0);
+}
+  
+serverGame.loop = function (time) {
+  for (var prop in serverGame.serverChickens) {
+    //hasownproperty
+    chicken.serverMoveChicken(time, serverGame.serverChickens[prop]);
+  }
 
-      chickenType.dir = Math.floor((chickenType.dir + 2) % 8);
-
-      radians = util.getRadians(chickenType.dir);
-
-      chickenType.pos = [newLeft, newTop];
-      chickenType.animation = 0;
-
-    } if (time - chickenType.lastUpdate > 3000) {
-      chickenType.lastUpdate = time;
-      chickenType.animation = random;
-      if (random === 0 || random === 1) {
-        chickenType.dir = chickenType.dir === 7 ? 0 : chickenType.dir+1;
-        chickenType.pos = [newLeft, newTop];
-      }
-
-    } else {
-      if (chickenType.animation === 0 || chickenType.animation === 1) {
-        chickenType.pos = [newLeft, newTop];
-      } if (chickenType.animation === 2) {
-        chickenType.pos = [chickenType.pos[0], chickenType.pos[1]];
-        chickenType.animation = 2;
-      }
+  for (var prop in serverGame.smartChickens) {
+    if (serverGame.smartChickens.hasOwnProperty(prop)) {
+      chicken.moveSmartChicken(time, serverGame.smartChickens[prop], serverGame.playerPosition);
     }
   }
 
+  setTimeout(function() {
+    lastTime = new Date().getTime();
+    serverGame.loop(lastTime-serverGame.startTime);
+  }, 1000/60);
+};
 
 if (typeof module !== 'undefined') {
-  module.exports = serverChicken;
+  module.exports = serverGame;
 }
