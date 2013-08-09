@@ -18,8 +18,7 @@ var Game = function() {
   this.serverChickens;
   this.smartChickens;
 
-  var socket = this.socket = io.connect(window.location.origin);
-  // var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
+  var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
   var self = this;  
   this.room;
 
