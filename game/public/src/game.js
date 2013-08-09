@@ -12,11 +12,15 @@ var Game = function() {
   this.Opp;
   this.chickens = {};
   this.smartChickenObjs = {};
-  this.score = 0;
+  this.palmTrees = [];
 
+  this.score = 0;
   this.dinocounter = 0;
+
   this.serverChickens;
   this.smartChickens;
+
+  this.chickenSound = document.getElementById('cluck');
 
   var socket = this.socket = io.connect(window.location.origin);
   // var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
@@ -47,8 +51,7 @@ var Game = function() {
     });
     
     socket.on('killedChicken', function (chickenIndex) {
-      var chickenSound = document.getElementById('cluck');
-      chickenSound.play();
+      self.chickenSound.play();
       if (self.chickens[chickenIndex] !== undefined){
         delete self.serverChickens[chickenIndex];
         self.chickens[chickenIndex].chickenObj.remove()
@@ -117,6 +120,18 @@ Game.prototype.loadImages = function(sources, callback) {
   }
 };
 
+Game.prototype.bulkServerObjLoad = function(serverObjType, gameObj, ClassType){
+  var newObj;
+  for (var prop in serverObjType) {
+    var iden = serverObjType[prop].iden;
+    var xCord = serverObjType[prop].pos[0];
+    var yCord = serverObjType[prop].pos[1];
+    newObj = this.newObj = new ClassType(iden, xCord, yCord);
+    this.layer.add(newObj.chickenObj);
+    gameObj[iden] = newObj;
+  }
+}
+
 Game.prototype.loadStage = function(images) {
   var background = document.getElementById('background');
 
@@ -131,27 +146,9 @@ Game.prototype.loadStage = function(images) {
   var greenDino = this.greenDino = new GreenDino();
   layer.add(greenDino.dinoObj);
 
-  var newChicken;
-  for (var prop in this.serverChickens) {
-    var iden = this.serverChickens[prop].iden;
-    var randomX = this.serverChickens[prop].pos[0];
-    var randomY = this.serverChickens[prop].pos[1];
-    newChicken = this.newChicken = new Chicken(iden, randomX, randomY);
-    layer.add(newChicken.chickenObj);
-    this.chickens[iden] = newChicken;
-  }
+  this.bulkServerObjLoad(this.serverChickens, this.chickens, Chicken);
+  this.bulkServerObjLoad(this.smartChickens, this.smartChickenObjs, Chicken);
 
-  var newSmartChicken;
-  for (var prop in this.smartChickens) {
-    var iden = this.smartChickens[prop].iden;
-    var randomX = this.smartChickens[prop].pos[0];
-    var randomY = this.smartChickens[prop].pos[1];
-    newSmartChicken = this.newSmartChicken = new Chicken(iden, randomX, randomY);
-    layer.add(newSmartChicken.chickenObj);
-    this.smartChickenObjs[iden] = newSmartChicken;
-  }
-
-  this.palmTrees = [];
   var palmTree;
   for (var i = 0; i < 5; i++) {
     palmTree = this.palmTree = new Tree(images.palmtree);
@@ -279,8 +276,7 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
     };
     if(util.theyAreColliding(playerBoundingRect, itemBoundingRect)){
       if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]) {
-        var chickenSound = document.getElementById('cluck');
-        chickenSound.play();
+        this.chickenSound.play();
         var deadChicken = this.serverChickens[instance];
         delete this.serverChickens[instance];
         this.chickens[instance].chickenObj.remove()
@@ -353,9 +349,7 @@ Game.prototype.endGame = function() {
 
   setInterval(function(){
     iden = 1;
-    var randomX = Math.floor((Math.random() * 2048) + 1);
-    var randomY = Math.floor((Math.random() * 2048) + 1);
-    var endChicken = self.endChicken = new Chicken(iden, randomX, randomY);
+    var endChicken = self.endChicken = new Chicken(iden, util.randomCord(), util.randomCord());
     this.layer.add(endChicken.chickenObj);
-  }, 100);
+  }, 200);
 };

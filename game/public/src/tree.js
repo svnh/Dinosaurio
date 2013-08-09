@@ -8,12 +8,9 @@ var Tree = function(image){
 
   getAnimArray(this.animationDefs, this, 126);
 
-  var randomX = Math.floor((Math.random() * 2048) + 1);
-  var randomY = Math.floor((Math.random() * 2048) + 1);
-
   this.treeObj = new Kinetic.Sprite({
-    x: randomX,
-    y: randomY,
+    x: util.randomCord(),
+    y: util.randomCord(),
     image: image,
     animation: 'still_e',
     animations: this.animations,
