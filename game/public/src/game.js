@@ -15,7 +15,6 @@ var Game = function() {
   this.palmTrees = [];
 
   this.score = 0;
-  this.dinocounter = 0;
 
   this.serverChickens;
   this.smartChickens;
@@ -73,16 +72,11 @@ var Game = function() {
         self.layer.add(self.Opp.dinoObj); 
         self.Opp.dinoObj.start();
       }
-      self.dinocounter++;
-      if (self.dinocounter > 2){
         self.Opp.update(dinoupdated[0].x, dinoupdated[0].y, dinoupdated[1]);
-      }
     });
     
     socket.on('dinochangeanim', function (dinochangeanim) {
-      if (self.dinocounter > 0){
         self.Opp.dinoObj.setAnimation(dinochangeanim);
-      }
     });
     
     socket.on('counterChange', function (counterChange) {
