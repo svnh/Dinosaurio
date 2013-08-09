@@ -38,6 +38,9 @@ var keyBindings = function(Game, DinoClass, dinoinstance, run, left, right, atta
     DinoClass.attacking = false;
     dinoinstance.setAnimation('paused_'+DinoClass.directions[dinoinstance.attrs.dir]);
     Game.socket.emit('dinochangeanim', Game.room, dinoinstance.getAnimation());
+    var sound = document.getElementById('bite');
+    sound.pause();
+    sound.play();
   }, 'keyup');
   Mousetrap.bind(attack, function(){
     DinoClass.running = false;
@@ -46,6 +49,8 @@ var keyBindings = function(Game, DinoClass, dinoinstance, run, left, right, atta
       Game.socket.emit('dinochangeanim', Game.room, dinoinstance.getAnimation());
     }
     DinoClass.attacking = true;
+    var sound = document.getElementById('bite');
+    sound.play();
   }, 'keydown');
 
   Mousetrap.bind(roar, function(){

@@ -19,6 +19,7 @@ var Game = function() {
   this.smartChickens;
 
   var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
+
   var self = this;  
   this.room;
 
@@ -45,6 +46,8 @@ var Game = function() {
     });
     
     socket.on('killedChicken', function (chickenIndex) {
+      var chickenSound = document.getElementById('cluck');
+      chickenSound.play();
       if (self.chickens[chickenIndex] !== undefined){
         delete self.serverChickens[chickenIndex];
         self.chickens[chickenIndex].chickenObj.remove()
