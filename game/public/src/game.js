@@ -51,11 +51,7 @@ var Game = function() {
     
     socket.on('killedChicken', function (chickenIndex) {
       self.chickenSound.play();
-      if (self.chickens[chickenIndex] !== undefined){
-        delete self.serverChickens[chickenIndex];
-        self.chickens[chickenIndex].chickenObj.remove()
-        delete self.chickens[chickenIndex];
-      }
+      self.killChicken(chickenIndex);
       var dinoSound = document.getElementById('bite');
       dinoSound.play();
     });
@@ -334,6 +330,14 @@ Game.prototype.gameLoop = function(time) {
     requestAnimationFrame(this.gameLoop);
   } else {
     this.endGame();    
+  }
+};
+
+Game.prototype.killChicken = function(chickenIndex){
+  if (this.chickens[chickenIndex] !== undefined){
+    delete this.serverChickens[chickenIndex];
+    this.chickens[chickenIndex].chickenObj.remove()
+    delete this.chickens[chickenIndex];
   }
 };
 
