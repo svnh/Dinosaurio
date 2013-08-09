@@ -28,26 +28,26 @@ util.getDirection = function(r) {
 
 
 util.isOutOfBounds = function(left, size, top){
-    if (left + size/4 <= 0) {
+  if (left + size/4 <= 0) {
     left = -size/4;
-    return true;
+    return [true, left, top];
   }
 
   if (top + size/4 <= 0) {
     top = -size/4;
-    return true;
+    return [true, left, top];
   }
 
   if (left + size*3/4 >= 2048) {
     left = 2048 - size*3/4;
-    return true;
+    return [true, left, top];
   }
 
   if (top + size*3/4 >= 2048) {
     top = 2048 - size*3/4;
-    return true;
+    return [true, left, top];
   }
-  return false;
+  return [false, left, top];
 };
 
 util.randomCord = function(){

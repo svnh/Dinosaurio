@@ -14,8 +14,8 @@
 
   var initGame = function () {
     for (var i = 0; i < 15; i++) {
-      var randomX = Math.floor((Math.random() * 2048) + 1);
-      var randomY = Math.floor((Math.random() * 2048) + 1);
+      var randomX = util.randomCord();
+      var randomY = util.randomCord();
 
       serverChickens[i] = {
         iden: i,
@@ -27,8 +27,8 @@
       }
     }
     for (var i = 0; i < 15; i++) {
-      var randomX = Math.floor((Math.random() * 2048) + 1);
-      var randomY = Math.floor((Math.random() * 2048) + 1);
+      var randomX = util.randomCord();
+      var randomY = util.randomCord();
 
       smartChickens[i] = {
         iden: i,
@@ -53,36 +53,22 @@
     var left = chickenType.pos[0];
     var top = chickenType.pos[1];
     var size = 64;
-    var doRotate = false;
+    var newLeft = left + Math.cos(radians) * randomSpeed;
+    var newTop = top + Math.sin(radians) * randomSpeed;
 
     chickenType.random = random;
 
-    if (left + size/4 <= 0) {
-      left = -size/4;
-      doRotate = true;
-    }
+    var doRotate = util.isOutOfBounds(left, size, top);
 
-    if (top + size/4 <= 0) {
-      top = -size/4;
-      doRotate = true;
-    }
+    if (doRotate[0] === true) {
+      newLeft = left + Math.cos(radians) * randomSpeed;
+      newTop = top + Math.sin(radians) * randomSpeed
 
-    if (left + size*3/4 >= 2048) {
-      left = 2048 - size*3/4;
-      doRotate = true;
-    }
-
-    if (top + size*3/4 >= 2048) {
-      top = 2048 - size*3/4;
-      doRotate = true;
-    }
-
-    if (doRotate) {
       chickenType.dir = Math.floor((chickenType.dir + 2) % 8);
 
       radians = util.getRadians(chickenType.dir);
 
-      chickenType.pos = [chickenType.pos[0] + Math.cos(radians) * randomSpeed, chickenType.pos[1] + Math.sin(radians) * randomSpeed];
+      chickenType.pos = [newLeft, newTop];
       chickenType.animation = 0;
 
     } if (time - chickenType.lastUpdate > 3000) {
@@ -90,12 +76,12 @@
       chickenType.animation = random;
       if (random === 0 || random === 1) {
         chickenType.dir = chickenType.dir === 7 ? 0 : chickenType.dir+1;
-        chickenType.pos = [chickenType.pos[0] + Math.cos(radians) * randomSpeed, chickenType.pos[1] + Math.sin(radians) * randomSpeed];
+        chickenType.pos = [newLeft, newTop];
       }
 
     } else {
       if (chickenType.animation === 0 || chickenType.animation === 1) {
-        chickenType.pos = [chickenType.pos[0] + Math.cos(radians) * randomSpeed, chickenType.pos[1] + Math.sin(radians) * randomSpeed];
+        chickenType.pos = [newLeft, newTop];
       } if (chickenType.animation === 2) {
         chickenType.pos = [chickenType.pos[0], chickenType.pos[1]];
         chickenType.animation = 2;
