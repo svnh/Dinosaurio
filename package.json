@@ -1,6 +1,6 @@
 {
   "name": "DinosaurSprites",
-  "version": "0.0.0-15",
+  "version": "0.0.0-16",
   "description": "",
   "main": "/game/app.js",
   "scripts": {
@@ -23,5 +23,9 @@
   "subdomain": "dinosaurio",
   "engines": {
     "node": "0.8.x"
+  },
+  "devDependencies": {
+    "chai": "~1.7.2",
+    "mocha": "~1.12.0"
   }
 }
