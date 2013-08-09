@@ -27,7 +27,7 @@ util.getDirection = function(r) {
 };
 
 
-util.isOutOfBounds = function(left, size, top){
+util.isOutOfBounds = function(size, left, top){
   if (left + size/4 <= 0) {
     left = -size/4;
     return [true, left, top];

@@ -58,11 +58,13 @@
 
     chickenType.random = random;
 
-    var doRotate = util.isOutOfBounds(left, size, top);
+    var doRotate;
+    doRotate = util.isOutOfBounds(size, left, top);
 
     if (doRotate[0] === true) {
-      newLeft = left + Math.cos(radians) * randomSpeed;
-      newTop = top + Math.sin(radians) * randomSpeed
+      console.log(doRotate)
+      newLeft = doRotate[1] + Math.cos(radians) * randomSpeed;
+      newTop = doRotate[2] + Math.sin(radians) * randomSpeed
 
       chickenType.dir = Math.floor((chickenType.dir + 2) % 8);
 
