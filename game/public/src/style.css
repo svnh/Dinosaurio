@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   color: white;
-  font-family: helvetica;
+  font-family: 'Monda', sans-serif;
 }
 
 #container {
@@ -52,7 +52,25 @@ button {
   position: absolute;
   z-index: 2;
   background-color: transparent;
+
+  transition: color 0.5s ease;
+
+  -webkit-box-shadow:rgba(0,0,0,0.98) 0 1px 0 0;
+  -moz-box-shadow:rgba(0,0,0,0.98) 0 1px 0 0;
+  box-shadow:rgba(0,0,0,0.98) 0 1px 0 0;
+  border-radius:0;
+  -webkit-border-radius:0;
+  -moz-border-radius:0;
+
   color: white;
+  border:1px solid #999;
+  font-size:11px;
+  font-weight:700;
+  padding:2px 6px;
+}
+
+button:hover {
+  color: black;
 }
 
 .play {
@@ -78,8 +96,6 @@ span {
   z-index: 2;
   position: absolute;
   padding: 3px;
-  display: none;
-
   font-size: 15px;
 }
 
@@ -87,19 +103,30 @@ span {
   top: 50px;
   left: 45%;
   font-size: 20px;
+  display: none;
 }
 
 .chickenCounter {
   top: 22px;
   left: 20px;
   width: 105px;
+  display: none;
 }
 
 .oppCounter {
   top: 22px;
   left: 130px;
   width: 205px;
+  display: none;
 }  
+
+.keyboard {
+  display: ;
+
+  top: 90px;
+  left: 20px;
+  width: 160px;
+} 
 
 /*sweet scrolling story*/
 #titles

@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
   <head>
+    <link href='http://fonts.googleapis.com/css?family=Monda' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="./src/style.css" />
     <script src="/socket.io/socket.io.js"></script>  
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -46,6 +47,7 @@
 
       </div>
     </div>
+
     <a href="https://github.com/sekunovsky/Dinosaurio"><img class="fork" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a></div>
     <button class="fullScreen" onclick="goFullScreen();">FULLSCREEN</button>
     <div id="gameScreen">
@@ -53,11 +55,13 @@
       <span class="oppCounter">OPPONENT CHICKENS: 0</span>
       <button class="play" onclick="init();">PLAY</button>
       <span class="waiting">waiting for opponent</span>
+      <span class="keyboard">⇡ move <br> ⇠ rotate left <br> ⇢ rotate right <br> spacebar: attack</span>
       <div id="container">
         <div id="background"></div>
         <div id="game"></div>
       </div>
     </div>
+
   </body>
 
 </html>
