@@ -53,6 +53,8 @@ var Game = function() {
         self.chickens[chickenIndex].chickenObj.remove()
         delete self.chickens[chickenIndex];
       }
+      var dinoSound = document.getElementById('bite');
+      dinoSound.play();
     });
 
     socket.on('dinoCreated', function () {
@@ -276,6 +278,8 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
     };
     if(util.theyAreColliding(playerBoundingRect, itemBoundingRect)){
       if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]) {
+        var chickenSound = document.getElementById('cluck');
+        chickenSound.play();
         var deadChicken = this.serverChickens[instance];
         delete this.serverChickens[instance];
         this.chickens[instance].chickenObj.remove()
