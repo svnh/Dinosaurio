@@ -28,6 +28,14 @@ module.exports = function(io) {
       userSocket.in(room).emit('chickenUpdated', serverGame.serverChickens, serverGame.serverSpiders);
     });
 
+    userSocket.on('spiderattack', function (room, index) {
+      serverGame.serverSpiders[index].attacking = true;
+    });
+
+    userSocket.on('spiderwalk', function (room, index) {
+      serverGame.serverSpiders[index].attacking = false;
+    });
+
     userSocket.on('chickenDown', function (room, chickenIndex) {
         userSocket.in(room).broadcast.emit('killedChicken', chickenIndex);
     });

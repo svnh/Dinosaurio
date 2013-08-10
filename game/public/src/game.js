@@ -308,6 +308,9 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
         }, 200);
         $('.chickenCounter').text('MY SUSTENANCE ' + this.score)
         this.socket.emit('counterChange', this.room, this.score);
+        this.socket.emit('spiderattack', this.room, index);
+      } else {
+        this.socket.emit('spiderwalk', this.room, index);        
       }
       if(util.theyAreColliding(chickenBoundingRect, spiderBoundingRect)){
         if (this.chickens[instance] !== undefined){
@@ -316,6 +319,7 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
           this.chickens[instance].chickenObj.remove()
           delete this.chickens[instance];
           this.socket.emit('chickenDown', this.room, instance);
+          this.socket.emit('spiderattack', this.room, index);
         }
       }
     }

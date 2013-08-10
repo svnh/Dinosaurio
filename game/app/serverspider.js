@@ -4,6 +4,8 @@ var Actor = require('./serveractor.js');
 var Spider = function(options){
   Actor.call(this, options);
   this.speed = 1/2;
+  this.attacking = false;
+
   this.move = function(time, playerPosition){
     var left = this.pos[0];
     var top = this.pos[1];
@@ -11,7 +13,9 @@ var Spider = function(options){
 
     if (playerPosition !== undefined) {
       var close = util.findDistance(playerPosition, attackDistance, left, top);
-      if (close[0]) {
+      if (this.attacking){
+        this.animation = 2;
+      } else if (close[0]) {
         var radians = Math.atan2(close[1], close[2]) + Math.PI / 2;
         this.dir = (util.getDirection(radians) + 8) % 8;
         this.animation = 0;
