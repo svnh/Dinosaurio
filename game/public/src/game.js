@@ -298,7 +298,13 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
         width: 32,
         height: 32
       };
-      if(util.theyAreColliding(playerBoundingRect, spiderBoundingRect)){
+      var playerLargeBoundingRect = {
+        left: parseInt(this.greenDino.dinoObj.attrs.x+128/2),
+        top: parseInt(this.greenDino.dinoObj.attrs.y+128/2),
+        width: 64,
+        height: 64
+      };
+      if(util.theyAreColliding(playerLargeBoundingRect, spiderBoundingRect)){
         if(this.notKilling){
           this.score -= 1;
           this.notKilling = false;
