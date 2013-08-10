@@ -83,7 +83,7 @@ button:hover {
 }
 
 .fullScreen {
-  top: 50px;
+  top: 10px;
   left: 20px;
   width: 105px;
 
@@ -107,15 +107,15 @@ span {
 }
 
 .chickenCounter {
-  top: 22px;
+  top: 30px;
   left: 20px;
-  width: 105px;
+  width: 120px;
   display: none;
 }
 
 .oppCounter {
-  top: 22px;
-  left: 130px;
+  top: 48px;
+  left: 20px;
   width: 205px;
   display: none;
 }  
