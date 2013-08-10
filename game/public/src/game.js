@@ -23,8 +23,7 @@ var Game = function() {
 
   this.chickenSound = document.getElementById('cluck');
 
-  var socket = this.socket = io.connect(window.location.origin);
-  // var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
+  var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
 
   var self = this;  
   this.room;
@@ -179,6 +178,7 @@ Game.prototype.loadStage = function(images) {
   this.socket.emit('dinoCreated', this.room);
 
   requestAnimationFrame(this.gameLoop);
+
 };
 
 Game.prototype.checkBoundaries = function(){
@@ -216,8 +216,8 @@ Game.prototype.checkBoundaries = function(){
 };
 
 Game.prototype.translateScreen = function(){
-  var dinoX = this.greenDino.dinoObj.getPosition().x + 128/2;
-  var dinoY = this.greenDino.dinoObj.getPosition().y + 128/2;
+  var dinoX = this.greenDino.dinoObj.getPosition().x + 64;
+  var dinoY = this.greenDino.dinoObj.getPosition().y + 64;
 
   var width = window.innerWidth;
   var height = window.innerHeight;
@@ -261,8 +261,8 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
   var chompSize = 128/5;
   var chompDistance = 128/4;
   var direction = util.getRadians(this.greenDino.dinoObj.attrs.dir);
-  var playerCenterLeft = this.greenDino.dinoObj.attrs.x+128/2;
-  var playerCenterTop = this.greenDino.dinoObj.attrs.y+128/2;
+  var playerCenterLeft = this.greenDino.dinoObj.attrs.x + 64;
+  var playerCenterTop = this.greenDino.dinoObj.attrs.y + 64;
   var playerBoundingRect = {
     left: playerCenterLeft-chompSize/2+Math.cos(direction)*chompDistance,
     top: playerCenterTop-chompSize/2+Math.sin(direction)*chompDistance,
@@ -272,8 +272,8 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
 
   for (var instance in this.chickens) {
     var chickenBoundingRect = {
-      left: parseInt(this.chickens[instance].chickenObj.attrs.x)+24,
-      top: parseInt(this.chickens[instance].chickenObj.attrs.y)+24,
+      left: parseInt(this.chickens[instance].chickenObj.attrs.x) + 24,
+      top: parseInt(this.chickens[instance].chickenObj.attrs.y) + 24,
       width: 32,
       height: 32
     };
@@ -293,14 +293,14 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
       }
     } for (var index in this.spiders) {
       var spiderBoundingRect = {
-        left: parseInt(this.spiders[index].spiderObj.attrs.x)+24,
-        top: parseInt(this.spiders[index].spiderObj.attrs.y)+24,
+        left: parseInt(this.spiders[index].spiderObj.attrs.x) + 24,
+        top: parseInt(this.spiders[index].spiderObj.attrs.y) + 24,
         width: 32,
         height: 32
       };
       var playerLargeBoundingRect = {
-        left: parseInt(this.greenDino.dinoObj.attrs.x+128/2),
-        top: parseInt(this.greenDino.dinoObj.attrs.y+128/2),
+        left: parseInt(this.greenDino.dinoObj.attrs.x + 64),
+        top: parseInt(this.greenDino.dinoObj.attrs.y + 64),
         width: 64,
         height: 64
       };
@@ -355,10 +355,10 @@ Game.prototype.gameLoop = function(time) {
       this.spiders[prop].update(this, this.serverSpiders[prop]);
     }
   }
+  // this.resizer();
 
   this.checkBoundaries();
-  this.translateScreen(); 
-  this.resizer();
+  this.translateScreen();
 
   if (remainingChickens > 0){
     requestAnimationFrame(this.gameLoop);
