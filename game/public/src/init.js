@@ -6,5 +6,5 @@ var init = function() {
   $('.chickenCounter').show();
   $('.oppCounter').show();
   this.game = new Game();
-  $(window).resize(Game.resizer);
+  $(window).resize(Game.resizer());
 }

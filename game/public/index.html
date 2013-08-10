@@ -23,32 +23,6 @@
 
   <body>
 
-    <div id="titles">
-      <div id="titlecontent">
-
-        <p class="center">EPISODE IV:<br />DVC</p>
-        
-        <p>There is a place where only the most vicious go. A phantasmigorical land of pecking and savagery. A Place of the past, of destruction and apocalypse. </p>
-        
-        <p>Now, jump into the late Cretaceous. Scale up Dinosauria and into the depths of Saurischia. Bypass the beginnings of Theropoda and stretch your Brontosaurus sized imagination into the grasps of the most feared land predator of all time: Tyrannosaurus.</p>
-
-        <p>Ignore his gangly forelimbs and impress upon yourself the possibilities of havoc that may arise from a single chomp of his mighty beak (approx between 1,440 and 3,011 pounds of force). His skull is so solid that it can easily twist and pull apart a carcass, hyperextending his mandible to drop his jaw and then using his upper teeth like a hatched to wretch off huge hunks of prey.</p>
-
-        <p>However, this beast of such brute strength lacked the most crucial components of survival: foresight and intellect. Soon after reaching the peak of his physical evolution, the t-rex ran out of prey.</p>
-
-        <p>Luckily these creatures lived in packs. In desperation, a pair decided to travel throughout the seven kingdoms, searching for the pheramone of warm flesh. Sadly, they found nothing.</p>
-
-        <p>In a last act of desperation, they set off into the sea.</p>
-
-        <p>After swimming for days (which must have been rather difficult with such short arms), they stumbled upon an island. Crawling on to the shore, they smelled an unfamiliar yet particularly enticing scent. Suddenly, a giant chicken appeared on the far side of the beach.</p> 
-
-        <p>But now remember: dinosaurs had feathers, and this is cannibalism.</p> 
-
-        <p class="center">Dino attack.</p>
-
-      </div>
-    </div>
-
     <audio id="bite" preload="auto">
       <source src="./sounds/bite.mp3" />  
     </audio>
@@ -69,8 +43,34 @@
       });
     </script>
 
-    <button class="fullScreen" onclick="goFullScreen();">FULLSCREEN</button>
+    <button class="fullScreen" onclick="util.goFullScreen();">FULLSCREEN</button>
+
     <div id="gameScreen">
+      <div id="titles">
+        <div id="titlecontent">
+
+          <p class="center">EPISODE IV:<br />DVC</p>
+          
+          <p>There is a place where only the most vicious go. A phantasmigorical land of pecking and savagery. A Place of the past, of destruction and apocalypse. </p>
+          
+          <p>Now, jump into the late Cretaceous. Scale up Dinosauria and into the depths of Saurischia. Bypass the beginnings of Theropoda and stretch your Brontosaurus sized imagination into the grasps of the most feared land predator of all time: Tyrannosaurus.</p>
+
+          <p>Ignore his gangly forelimbs and impress upon yourself the possibilities of havoc that may arise from a single chomp of his mighty beak (approx between 1,440 and 3,011 pounds of force). His skull is so solid that it can easily twist and pull apart a carcass, hyperextending his mandible to drop his jaw and then using his upper teeth like a hatched to wretch off huge hunks of prey.</p>
+
+          <p>However, this beast of such brute strength lacked the most crucial components of survival: foresight and intellect. Soon after reaching the peak of his physical evolution, the t-rex ran out of prey.</p>
+
+          <p>Luckily these creatures lived in packs. In desperation, a pair decided to travel throughout the seven kingdoms, searching for the pheramone of warm flesh. Sadly, they found nothing.</p>
+
+          <p>In a last act of desperation, they set off into the sea.</p>
+
+          <p>After swimming for days (which must have been rather difficult with such short arms), they stumbled upon an island. Crawling on to the shore, they smelled an unfamiliar yet particularly enticing scent. Suddenly, a giant chicken appeared on the far side of the beach.</p> 
+
+          <p>But now remember: dinosaurs had feathers, and this is cannibalism.</p> 
+
+          <p class="center">Dino attack.</p>
+
+        </div>
+      </div>
       <span class="chickenCounter">CHICKENS: 0</span>
       <span class="oppCounter">OPPONENT CHICKENS: 0</span>
       <button class="play" onclick="init();">PLAY</button>
@@ -81,8 +81,10 @@
         <div id="game"></div>
       </div>
     </div>
-
-
+                            <script>
+                            //TODO: 
+                            // spider score 
+                            </script>
   <script>
     var sound = document.getElementById('bite');
     sound.play();

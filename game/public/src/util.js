@@ -50,9 +50,9 @@ util.isOutOfBounds = function(size, left, top){
   return [false, left, top];
 };
 
-util.findDistance = function(playerPosition, testDistance, left, top){
-  var adjacent = playerPosition[0]+(128/4) - left+(64/4);
-  var hypotenuse = playerPosition[1]+(128/4) - top+(64/4);
+util.findDistance = function(playerCords, testDistance, left, top){
+  var adjacent = playerCords[0]+(128/4) - left+(64/4);
+  var hypotenuse = playerCords[1]+(128/4) - top+(64/4);
 
   var playerDistance = Math.sqrt(
     Math.pow(adjacent, 2) + Math.pow(hypotenuse, 2)

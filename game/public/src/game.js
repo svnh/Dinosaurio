@@ -245,15 +245,19 @@ Game.prototype.translateScreen = function(){
   background.style.webkitTransform = 'translate3d('+Math.floor(translateLeft*-1)+'px, '+Math.floor(translateTop*-1)+'px, 0)';
 };
 
-Game.prototype.resizer = _.throttle(function() {
-  var newWidth = window.innerWidth;
-  var newHeight = window.innerHeight;
+Game.prototype.resizer = function() {
+  var newWidth = window.outerWidth;
+  var newHeight = window.outerHeight;
   var background = document.getElementById('background');
-
+  var container = document.getElementById('container');
+  var canvas = document.getElementsByTagName("canvas");
+  console.log('canvas', canvas)
   background.style.width=newWidth;
   background.style.height=newHeight;
+  container.style.width=newWidth;
+  container.style.height=newHeight;
   this.stage.setSize(newWidth, newHeight);
-}, 75);
+};
 
 Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
   var chompSize = 128/5;
@@ -277,15 +281,17 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
     };
     if(util.theyAreColliding(playerBoundingRect, chickenBoundingRect)){
       if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]) {
-        this.chickenSound.play();
-        var deadChicken = this.serverChickens[instance];
-        delete this.serverChickens[instance];
-        this.chickens[instance].chickenObj.remove()
-        delete this.chickens[instance];
-        this.socket.emit('chickenDown', this.room, instance);
-        this.score++;
-        $('.chickenCounter').text('CHICKENS: ' + this.score)
-        this.socket.emit('counterChange', this.room, this.score);
+        if (this.chickens[instance] !== undefined){
+          this.chickenSound.play();
+          var deadChicken = this.serverChickens[instance];
+          delete this.serverChickens[instance];
+          this.chickens[instance].chickenObj.remove()
+          delete this.chickens[instance];
+          this.socket.emit('chickenDown', this.room, instance);
+          this.score++;
+          $('.chickenCounter').text('CHICKENS: ' + this.score)
+          this.socket.emit('counterChange', this.room, this.score);
+        }
       }
     } for (var index in this.spiders) {
       var spiderBoundingRect = {
@@ -300,11 +306,13 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
         this.socket.emit('counterChange', this.room, this.score);
       }
       if(util.theyAreColliding(chickenBoundingRect, spiderBoundingRect)){
-        var deadChicken = this.serverChickens[instance];
-        delete this.serverChickens[instance];
-        this.chickens[instance].chickenObj.remove()
-        delete this.chickens[instance];
-        this.socket.emit('chickenDown', this.room, instance);
+        if (this.chickens[instance] !== undefined){
+          var deadChicken = this.serverChickens[instance];
+          delete this.serverChickens[instance];
+          this.chickens[instance].chickenObj.remove()
+          delete this.chickens[instance];
+          this.socket.emit('chickenDown', this.room, instance);
+        }
       }
     }
   }
