@@ -6,7 +6,8 @@ var serverGame = {
   serverChickens: [],
   startTime: new Date().getTime(),
   lastTime: null,
-  playerPosition: [0,0]
+  playerPosition: [0,0], 
+  roomList: {}
 }
 
 serverGame.initGame = function () {
