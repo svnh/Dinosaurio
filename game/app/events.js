@@ -18,14 +18,14 @@ module.exports = function(io) {
     userSocket.on('init', function (room) {
       serverGame.initGame();
       if (initcount % 2 === 0){
-        userSocket.in(room).broadcast.emit('serverChickens', serverGame.serverChickens);
-        userSocket.in(room).emit('serverChickens', serverGame.serverChickens);
+        userSocket.in(room).broadcast.emit('serverChickens', serverGame.serverChickens, serverGame.serverSpiders);
+        userSocket.in(room).emit('serverChickens', serverGame.serverChickens, serverGame.serverSpiders);
       }
     });
 
     userSocket.on('needchickenpos', function (room, playerpos) {
       serverGame.playerPosition = playerpos;
-      userSocket.in(room).emit('chickenUpdated', serverGame.serverChickens);
+      userSocket.in(room).emit('chickenUpdated', serverGame.serverChickens, serverGame.serverSpiders);
     });
 
     userSocket.on('chickenDown', function (room, chickenIndex) {

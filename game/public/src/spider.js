@@ -1,4 +1,4 @@
-var Spider = function(image){
+var Spider = function(iden, randomX, randomY){
 
   this.animationDefs = {
     attack: {
@@ -18,25 +18,27 @@ var Spider = function(image){
   getAnimArray(this.animationDefs, this, 64);
 
   this.spiderObj = new Kinetic.Sprite({
-    x: util.randomCord(),
-    y: util.randomCord(),
-    image: image,
+    x: randomX,
+    y: randomY,
+    image: images.spider,
     animation: 'running_n',
     animations: this.animations,
     frameRate: 12,
     dir:0,
     hit: false,
-    lastTime: 0
   });
 };
 
-Spider.prototype.update = function(time) {
-  var timeDiff = (time-this.spiderObj.attrs.lastTime)/4;
-  var radians = util.getRadians(this.spiderObj.attrs.dir);
-  var pos = this.spiderObj.getPosition();
-  this.spiderObj.setPosition(pos.x+Math.cos(radians), pos.y+Math.sin(radians));
-  
-  var newpos = [this.spiderObj.getPosition(), this.spiderObj.attrs.dir];
-  this.spiderObj.attrs.lastTime = time;
-}; 
+Spider.prototype.update = function(Game, serverSpider) {
+  var direct = serverSpider.dir
+  var posx = serverSpider.pos[0];
+  var posy = serverSpider.pos[1];
+  var animation = serverSpider.animation;
+  var possibAnims = ['running_'+this.directions[direct],'running_'+this.directions[direct], 'attack_'+this.directions[direct]];
+
+  this.spiderObj.setPosition(posx, posy);      
+  if (this.spiderObj.getAnimation() !== possibAnims[animation]){
+    this.spiderObj.setAnimation(possibAnims[animation]);
+  }
+};
 

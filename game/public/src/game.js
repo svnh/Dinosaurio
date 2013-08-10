@@ -12,14 +12,13 @@ var Game = function() {
   this.images;
   this.Opp;
   this.chickens = {};
-  this.smartChickenObjs = {};
+  this.spiders = {};
   this.palmTrees = [];
-  this.spiders = [];
 
   this.score = 0;
 
   this.serverChickens;
-  this.smartChickens;
+  this.serverSpiders;
 
   this.chickenSound = document.getElementById('cluck');
 
@@ -37,18 +36,18 @@ var Game = function() {
       socket.emit('init', room);
     });
 
-    socket.on('serverChickens', function (serverChickens, smartChickens) {
+    socket.on('serverChickens', function (serverChickens, serverSpiders) {
       self.serverChickens = serverChickens;
-      self.smartChickens = smartChickens;
+      self.serverSpiders = serverSpiders;
       $('.waiting').hide();
       $('#titles').hide();
       $('.fullScreen').css("top", "95%");
       self.loadImages(self.sources, self.loadStage);
     });
 
-    socket.on('chickenUpdated', function (serverChickens, smartChickens) {
+    socket.on('chickenUpdated', function (serverChickens, serverSpiders) {
       self.serverChickens = serverChickens;
-      self.smartChickens = smartChickens;
+      self.serverSpiders = serverSpiders;
     });
     
     socket.on('killedChicken', function (chickenIndex) {
@@ -112,7 +111,7 @@ Game.prototype.loadImages = function(sources, callback) {
   }
 };
 
-Game.prototype.bulkServerObjLoad = function(serverObjType, gameObj, ClassType){
+Game.prototype.bulkServerObjLoad = function(serverObjType, gameObj, ClassType, objType){
   var newObj;
   for (var prop in serverObjType) {
     var iden = serverObjType[prop].iden;
@@ -139,7 +138,17 @@ Game.prototype.loadStage = function(images) {
   layer.add(greenDino.dinoObj);
 
   this.bulkServerObjLoad(this.serverChickens, this.chickens, Chicken);
-  this.bulkServerObjLoad(this.smartChickens, this.smartChickenObjs, Chicken);
+  // this.bulkServerObjLoad(this.serverSpiders, this.spiders, Spider);
+
+  var newSpider;
+  for (var prop in this.serverSpiders) {
+    var iden = this.serverSpiders[prop].iden;
+    var xCord = this.serverSpiders[prop].pos[0];
+    var yCord = this.serverSpiders[prop].pos[1];
+    newSpider = this.newSpider = new Spider(iden, xCord, yCord);
+    layer.add(newSpider.spiderObj);
+    this.spiders[iden] = newSpider;
+  }
 
   var palmTree;
   for (var i = 0; i < 5; i++) {
@@ -154,25 +163,14 @@ Game.prototype.loadStage = function(images) {
     this.palmTrees.push(palmTree.treeObj);
   }
 
-  var spider;
-  for (var i = 0; i < 10; i++) {
-    spider = this.spider = new Spider(images.spider);
-    layer.add(spider.spiderObj);
-    this.spiders.push(spider)
-  }
-
   stage.add(this.layer);
 
-  for (var i = 0; i < this.spiders.length; i++) {
-    this.spiders[i].spiderObj.start();
+  for (var prop in this.serverSpiders) {
+    this.spiders[prop].spiderObj.start();
   }
 
   for (var prop in this.serverChickens) {
     this.chickens[prop].chickenObj.start();
-  }
-
-  for (var prop in this.smartChickens) {
-    this.smartChickenObjs[prop].chickenObj.start();
   }
 
   greenDino.dinoObj.start();
@@ -292,19 +290,19 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
     }
   }
 
-  for (var instance in this.smartChickenObjs) {
+  for (var instance in this.spiders) {
     var smartBoundingRect = {
-      left: parseInt(this.smartChickenObjs[instance].chickenObj.attrs.x)+24,
-      top: parseInt(this.smartChickenObjs[instance].chickenObj.attrs.y)+24,
+      left: parseInt(this.spiders[instance].spiderObj.attrs.x)+24,
+      top: parseInt(this.spiders[instance].spiderObj.attrs.y)+24,
       width: 32,
       height: 32
     };
     if(util.theyAreColliding(playerBoundingRect, smartBoundingRect)){
       if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]) {
-        var deadChicken = this.smartChickens[instance];
-        delete this.smartChickens[instance];
-        this.smartChickenObjs[instance].chickenObj.remove()
-        delete this.smartChickenObjs[instance];
+        var deadChicken = this.serverSpiders[instance];
+        delete this.serverSpiders[instance];
+        this.spiders[instance].spiderObj.remove()
+        delete this.spiders[instance];
         this.socket.emit('chickenDown', this.room, instance);
         this.score++;
         $('.chickenCounter').text('CHICKENS: ' + this.score)
@@ -334,9 +332,9 @@ Game.prototype.gameLoop = function(time) {
     }
   }
 
-  for (var prop in this.smartChickens) {
-    if (this.smartChickenObjs[prop]){
-      this.smartChickenObjs[prop].update(this, this.smartChickens[prop]);
+  for (var prop in this.serverSpiders) {
+    if (this.spiders[prop]){
+      this.spiders[prop].update(this, this.serverSpiders[prop]);
     }
   }
 
