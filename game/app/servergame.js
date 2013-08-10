@@ -1,7 +1,6 @@
 var util = require('../public/src/util.js');
-var Chicken = require('./serverchicken.js');
+var Actor = require('./serveractor.js');
 var SmartChicken = require('./smartchickens.js');
-var Spider = require('./serverspider.js');
 
 var serverGame = {
   serverSpiders: [],
@@ -14,7 +13,7 @@ var serverGame = {
 
 serverGame.initGame = function () {
   for (var i = 0; i < 15; i++) {
-    serverGame.serverChickens[i] = new Chicken({
+    serverGame.serverChickens[i] = new Actor({
       iden: i
     })
   }
@@ -24,7 +23,7 @@ serverGame.initGame = function () {
     })
   }
   for (var i = 0; i < 10; i++) {
-    serverGame.serverSpiders[i] = new Spider({
+    serverGame.serverSpiders[i] = new Actor({
       iden: i
     })
   }

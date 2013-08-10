@@ -1,8 +1,8 @@
 var util = require('../public/src/util.js');
-var Chicken = require('./serverchicken.js');
+var Actor = require('./serveractor.js');
 
 var SmartChicken = function(options){
-  Chicken.call(this, options);
+  Actor.call(this, options);
   
   this.move = function(time, playerPosition){
     var pos = this.pos;
@@ -31,13 +31,13 @@ var SmartChicken = function(options){
       this.animation = 0;
       this.pos = [left + Math.cos(radians), top + Math.sin(radians)];
       } else {
-        Chicken.prototype.move.call(this, time);
+        Actor.prototype.move.call(this, time);
       }  
     }
   };
 };
 
-SmartChicken.prototype = Object.create(Chicken.prototype);
+SmartChicken.prototype = Object.create(Actor.prototype);
 SmartChicken.prototype.constructor = SmartChicken;
 
 if (typeof module !== 'undefined') {

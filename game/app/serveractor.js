@@ -1,6 +1,6 @@
 var util = require('../public/src/util.js');
 
-var Spider = function(options){
+var Actor = function(options){
   options = options || {};
   options.posx = options.posx || util.randomCord();
   options.posy = options.posy || util.randomCord();
@@ -14,7 +14,7 @@ var Spider = function(options){
   this.animation = options.animation || 0;
 }
 
-Spider.prototype.move = function(time){
+Actor.prototype.move = function(time){
   var randomSpeed = (Math.random() * 2);
   var random = this.random = Math.floor(Math.random() * 3);
   var radians = util.getRadians(this.dir);
@@ -57,6 +57,6 @@ Spider.prototype.move = function(time){
 };
 
 if (typeof module !== 'undefined') {
-  module.exports = Spider;
+  module.exports = Actor;
 }
 
