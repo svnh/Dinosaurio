@@ -16,16 +16,14 @@ var Chicken = function(options){
 
 Chicken.prototype.move = function(time){
   var randomSpeed = (Math.random() * 2);
-  var random = Math.floor(Math.random() * 3);
+  var random = this.random = Math.floor(Math.random() * 3);
   var radians = util.getRadians(this.dir);
-  var pos = this.pos;
   var left = this.pos[0];
   var top = this.pos[1];
   var size = 64;
   var newLeft = left + Math.cos(radians) * randomSpeed;
   var newTop = top + Math.sin(radians) * randomSpeed;
 
-  this.random = random;
 
   var doRotate;
   doRotate = util.isOutOfBounds(size, left, top);

@@ -35,7 +35,6 @@
 
     userSocket.on('needchickenpos', function (room, playerpos) {
       serverGame.playerPosition = playerpos;
-      // console.log('socket', serverGame.playerPosition)
       userSocket.in(room).emit('chickenUpdated', serverGame.serverChickens);
     });
 
