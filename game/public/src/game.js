@@ -5,7 +5,8 @@ var Game = function() {
     reddino: '/dino-red/dino-sprite.png',
     palmtree: '/trees/palmtree.png',
     otpalm: '/trees/left.png',
-    forward: '/trees/forward.png'
+    forward: '/trees/forward.png',
+    spider: '/spider/spider.png'
   };
 
   this.images;
@@ -13,6 +14,7 @@ var Game = function() {
   this.chickens = {};
   this.smartChickenObjs = {};
   this.palmTrees = [];
+  this.spiders = [];
 
   this.score = 0;
 
@@ -152,7 +154,18 @@ Game.prototype.loadStage = function(images) {
     this.palmTrees.push(palmTree.treeObj);
   }
 
+  var spider;
+  for (var i = 0; i < 10; i++) {
+    spider = this.spider = new Spider(images.spider);
+    layer.add(spider.spiderObj);
+    this.spiders.push(spider)
+  }
+
   stage.add(this.layer);
+
+  for (var i = 0; i < this.spiders.length; i++) {
+    this.spiders[i].spiderObj.start();
+  }
 
   for (var prop in this.serverChickens) {
     this.chickens[prop].chickenObj.start();
@@ -306,6 +319,10 @@ Game.prototype.gameLoop = function(time) {
 
   this.collisionHandler(this.greenDino, this.serverChickens);
   this.greenDino.update(this, time);
+
+  for (var i = 0; i < this.spiders.length; i++) {  
+    this.spiders[i].update(time);
+  }
 
   var playerPosition = [this.greenDino.dinoObj.attrs.x, this.greenDino.dinoObj.attrs.y];
 
