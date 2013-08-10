@@ -269,13 +269,13 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
   };
 
   for (var instance in this.chickens) {
-    var itemBoundingRect = {
+    var chickenBoundingRect = {
       left: parseInt(this.chickens[instance].chickenObj.attrs.x)+24,
       top: parseInt(this.chickens[instance].chickenObj.attrs.y)+24,
       width: 32,
       height: 32
     };
-    if(util.theyAreColliding(playerBoundingRect, itemBoundingRect)){
+    if(util.theyAreColliding(playerBoundingRect, chickenBoundingRect)){
       if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]) {
         this.chickenSound.play();
         var deadChicken = this.serverChickens[instance];
@@ -287,26 +287,24 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
         $('.chickenCounter').text('CHICKENS: ' + this.score)
         this.socket.emit('counterChange', this.room, this.score);
       }
-    }
-  }
-
-  for (var instance in this.spiders) {
-    var smartBoundingRect = {
-      left: parseInt(this.spiders[instance].spiderObj.attrs.x)+24,
-      top: parseInt(this.spiders[instance].spiderObj.attrs.y)+24,
-      width: 32,
-      height: 32
-    };
-    if(util.theyAreColliding(playerBoundingRect, smartBoundingRect)){
-      if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]) {
-        var deadChicken = this.serverSpiders[instance];
-        delete this.serverSpiders[instance];
-        this.spiders[instance].spiderObj.remove()
-        delete this.spiders[instance];
-        this.socket.emit('chickenDown', this.room, instance);
-        this.score++;
+    } for (var index in this.spiders) {
+      var spiderBoundingRect = {
+        left: parseInt(this.spiders[index].spiderObj.attrs.x)+24,
+        top: parseInt(this.spiders[index].spiderObj.attrs.y)+24,
+        width: 32,
+        height: 32
+      };
+      if(util.theyAreColliding(playerBoundingRect, spiderBoundingRect)){
+        this.score -= 1/4;
         $('.chickenCounter').text('CHICKENS: ' + this.score)
         this.socket.emit('counterChange', this.room, this.score);
+      }
+      if(util.theyAreColliding(chickenBoundingRect, spiderBoundingRect)){
+        var deadChicken = this.serverChickens[instance];
+        delete this.serverChickens[instance];
+        this.chickens[instance].chickenObj.remove()
+        delete this.chickens[instance];
+        this.socket.emit('chickenDown', this.room, instance);
       }
     }
   }
