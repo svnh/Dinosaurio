@@ -3,8 +3,6 @@
   var app = express();
   var server = require('http').createServer(app);
   var io = require('socket.io').listen(server, { log: false });
-  var util = require('./public/src/util.js');
-  var chicken = require('./app/serverchicken.js');
   var serverGame = require('./app/servergame.js');
 
   app.use(express.static(__dirname + '/public/'));
@@ -30,14 +28,15 @@
     userSocket.on('init', function (room) {
       serverGame.initGame();
       if (initcount % 2 === 0){
-        userSocket.in(room).broadcast.emit('serverChickens', serverGame.serverChickens, serverGame.smartChickens);
-        userSocket.in(room).emit('serverChickens', serverGame.serverChickens, serverGame.smartChickens);
+        userSocket.in(room).broadcast.emit('serverChickens', serverGame.serverChickens);
+        userSocket.in(room).emit('serverChickens', serverGame.serverChickens);
       }
     });
 
     userSocket.on('needchickenpos', function (room, playerpos) {
       serverGame.playerPosition = playerpos;
-      userSocket.in(room).emit('chickenUpdated', serverGame.serverChickens, serverGame.smartChickens);
+      // console.log('socket', serverGame.playerPosition)
+      userSocket.in(room).emit('chickenUpdated', serverGame.serverChickens);
     });
 
     userSocket.on('chickenDown', function (room, chickenIndex) {
@@ -62,10 +61,10 @@
 
     userSocket.on('disconnect', function () {
       var disconUser = userSocket.id;
-      for (var prop in serverGame.roomList) {
-        if (disconUser === serverGame.roomList[prop].user1 || disconUser === serverGame.roomList[prop].user2 ){
+      for (var prop in roomList) {
+        if (disconUser === roomList[prop].user1 || disconUser === roomList[prop].user2 ){
           userSocket.in(prop).broadcast.emit('oppDisconnected', room);
-          if (serverGame.roomList[prop].user2 === undefined) {
+          if (roomList[prop].user2 === undefined) {
             initcount += 1;
           }
         }
