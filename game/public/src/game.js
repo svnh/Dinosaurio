@@ -37,6 +37,7 @@ var Game = function() {
     });
 
     socket.on('serverChickens', function (serverChickens, serverSpiders) {
+
       self.serverChickens = serverChickens;
       self.serverSpiders = serverSpiders;
       $('.waiting').hide();
@@ -85,7 +86,6 @@ var Game = function() {
     });
 
   });
-
   this.gameLoop = this.gameLoop.bind(this);
 };
 
@@ -245,19 +245,16 @@ Game.prototype.translateScreen = function(){
   background.style.webkitTransform = 'translate3d('+Math.floor(translateLeft*-1)+'px, '+Math.floor(translateTop*-1)+'px, 0)';
 };
 
-Game.prototype.resizer = function() {
-  var newWidth = window.outerWidth;
-  var newHeight = window.outerHeight;
+Game.prototype.resizer = _.throttle(function() {
+  var newWidth = window.innerWidth;
+  var newHeight = window.innerHeight;
   var background = document.getElementById('background');
-  var container = document.getElementById('container');
-  var canvas = document.getElementsByTagName("canvas");
-  console.log('canvas', canvas)
+  var background = document.getElementById('background');
+
   background.style.width=newWidth;
   background.style.height=newHeight;
-  container.style.width=newWidth;
-  container.style.height=newHeight;
   this.stage.setSize(newWidth, newHeight);
-};
+}, 75);
 
 Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
   var chompSize = 128/5;
@@ -346,6 +343,7 @@ Game.prototype.gameLoop = function(time) {
 
   this.checkBoundaries();
   this.translateScreen(); 
+  this.resizer();
 
   if (remainingChickens > 0){
     requestAnimationFrame(this.gameLoop);
