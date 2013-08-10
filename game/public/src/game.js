@@ -23,7 +23,8 @@ var Game = function() {
 
   this.chickenSound = document.getElementById('cluck');
 
-  var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
+  var socket = this.socket = io.connect(window.location.origin);
+  // var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
 
   var self = this;  
   this.room;
@@ -304,22 +305,21 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
         width: 64,
         height: 64
       };
-      if(util.theyAreColliding(playerLargeBoundingRect, spiderBoundingRect)){
-        if(this.notKilling){
+      if (util.theyAreColliding(playerLargeBoundingRect, spiderBoundingRect)) {
+        if (this.notKilling) {
           this.score -= 1;
           this.notKilling = false;
           var self = this;
-        } setTimeout(function(){
-          self.notKilling = true;
-        }, 200);
+          setTimeout(function(){
+            self.notKilling = true;
+          }, 200);
+        }
         $('.chickenCounter').text('MY SUSTENANCE ' + this.score)
         this.socket.emit('counterChange', this.room, this.score);
         this.socket.emit('spiderattack', this.room, index);
-      } else {
-        this.socket.emit('spiderwalk', this.room, index);        
-      }
-      if(util.theyAreColliding(chickenBoundingRect, spiderBoundingRect)){
-        if (this.chickens[instance] !== undefined){
+      } 
+      if (util.theyAreColliding(chickenBoundingRect, spiderBoundingRect)) {
+        if (this.chickens[instance] !== undefined) {
           var deadChicken = this.serverChickens[instance];
           delete this.serverChickens[instance];
           this.chickens[instance].chickenObj.remove()

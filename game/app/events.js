@@ -30,10 +30,10 @@ module.exports = function(io) {
 
     userSocket.on('spiderattack', function (room, index) {
       serverGame.serverSpiders[index].attacking = true;
-    });
-
-    userSocket.on('spiderwalk', function (room, index) {
-      serverGame.serverSpiders[index].attacking = false;
+      setTimeout(function(){
+        serverGame.serverSpiders[index].attacking = false;
+        serverGame.serverSpiders[index].pos = [serverGame.serverSpiders[index].pos[0] - 1/20, serverGame.serverSpiders[index].pos[1] - 1/20];
+      }, 2000);
     });
 
     userSocket.on('chickenDown', function (room, chickenIndex) {

@@ -13,7 +13,7 @@ var Spider = function(options){
 
     if (playerPosition !== undefined) {
       var close = util.findDistance(playerPosition, attackDistance, left, top);
-      if (this.attacking){
+      if (this.attacking === true){
         this.animation = 2;
       } else if (close[0]) {
         var radians = Math.atan2(close[1], close[2]) + Math.PI / 2;
