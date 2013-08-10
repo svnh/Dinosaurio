@@ -29,7 +29,16 @@ var SmartChicken = function(options){
       var direction = (util.getDirection(radians) + 4) % 8;
       this.dir = direction;
       this.animation = 0;
-      this.pos = [left + Math.cos(radians), top + Math.sin(radians)];
+
+      var rotation = util.getRadians(this.dir);
+
+      var moveLeft = Math.cos(rotation) * 1.5;
+      var moveTop = Math.sin(rotation) * 1.5;
+
+      this.pos = [left + moveLeft, top + moveTop];
+
+      this.lastUpdate = time;
+
       } else {
         Actor.prototype.move.call(this, time);
       }  
