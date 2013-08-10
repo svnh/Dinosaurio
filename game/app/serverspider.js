@@ -3,7 +3,7 @@ var Actor = require('./serveractor.js');
 
 var Spider = function(options){
   Actor.call(this, options);
-  
+  this.speed = 1/2;
   this.move = function(time, playerPosition){
     var left = this.pos[0];
     var top = this.pos[1];
@@ -25,7 +25,7 @@ var Spider = function(options){
 
         this.lastUpdate = time;
       } else {
-        Actor.prototype.move.call(this, time);
+        Actor.prototype.move.call(this, time, this.speed);
       }  
     }
   };

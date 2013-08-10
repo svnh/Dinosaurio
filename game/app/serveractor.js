@@ -14,7 +14,7 @@ var Actor = function(options){
   this.animation = options.animation || 0;
 }
 
-Actor.prototype.move = function(time){
+Actor.prototype.move = function(time, speed){
   var randomSpeed = (Math.random() * 2);
   var random = this.random = Math.floor(Math.random() * 3);
   var radians = util.getRadians(this.dir);
@@ -23,7 +23,6 @@ Actor.prototype.move = function(time){
   var size = 64;
   var newLeft = left + Math.cos(radians) * randomSpeed;
   var newTop = top + Math.sin(radians) * randomSpeed;
-
 
   var doRotate;
   doRotate = util.isOutOfBounds(size, left, top);

@@ -14,6 +14,7 @@ var Game = function() {
   this.chickens = {};
   this.spiders = {};
   this.palmTrees = [];
+  this.notKilling = true;
 
   this.score = 0;
 
@@ -78,7 +79,7 @@ var Game = function() {
     });
     
     socket.on('counterChange', function (counterChange) {
-      $('.oppCounter').text('OPPONENT CHICKENS: ' + counterChange);
+      $('.oppCounter').text('THEY SUSTAIN ' + counterChange);
     });
 
     socket.on('oppDisconnected', function () {
@@ -285,8 +286,8 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
           this.chickens[instance].chickenObj.remove()
           delete this.chickens[instance];
           this.socket.emit('chickenDown', this.room, instance);
-          this.score++;
-          $('.chickenCounter').text('CHICKENS: ' + this.score)
+          this.score += Math.floor(Math.random()*10);
+          $('.chickenCounter').text('MY SUSTENANCE ' + this.score)
           this.socket.emit('counterChange', this.room, this.score);
         }
       }
@@ -298,8 +299,14 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
         height: 32
       };
       if(util.theyAreColliding(playerBoundingRect, spiderBoundingRect)){
-        this.score -= 1/4;
-        $('.chickenCounter').text('CHICKENS: ' + this.score)
+        if(this.notKilling){
+          this.score -= 1;
+          this.notKilling = false;
+          var self = this;
+        } setTimeout(function(){
+          self.notKilling = true;
+        }, 200);
+        $('.chickenCounter').text('MY SUSTENANCE ' + this.score)
         this.socket.emit('counterChange', this.room, this.score);
       }
       if(util.theyAreColliding(chickenBoundingRect, spiderBoundingRect)){
@@ -328,13 +335,11 @@ Game.prototype.gameLoop = function(time) {
   var playerPosition = [this.greenDino.dinoObj.attrs.x, this.greenDino.dinoObj.attrs.y];
 
   this.socket.emit('needchickenpos', this.room, playerPosition);
-
   for (var prop in this.serverChickens) {
     if (this.chickens[prop]){
       this.chickens[prop].update(this, this.serverChickens[prop]);
     }
   }
-
   for (var prop in this.serverSpiders) {
     if (this.spiders[prop]){
       this.spiders[prop].update(this, this.serverSpiders[prop]);

@@ -109,14 +109,14 @@ span {
 .chickenCounter {
   top: 30px;
   left: 20px;
-  width: 120px;
+  width: 300px;
   display: none;
 }
 
 .oppCounter {
   top: 48px;
   left: 20px;
-  width: 205px;
+  width: 300px;
   display: none;
 }  
 
