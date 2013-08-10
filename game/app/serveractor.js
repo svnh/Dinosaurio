@@ -15,7 +15,7 @@ var Actor = function(options){
 }
 
 Actor.prototype.move = function(time, speed){
-  var randomSpeed = (Math.random() * 2);
+  var randomSpeed = (Math.random()/2);
   var random = this.random = Math.floor(Math.random() * 3);
   var radians = util.getRadians(this.dir);
   var left = this.pos[0];

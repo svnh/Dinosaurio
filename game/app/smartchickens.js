@@ -19,8 +19,8 @@ var SmartChicken = function(options){
 
         var rotation = util.getRadians(this.dir);
 
-        var moveLeft = Math.cos(rotation) * 1.5;
-        var moveTop = Math.sin(rotation) * 1.5;
+        var moveLeft = Math.cos(rotation);
+        var moveTop = Math.sin(rotation);
 
         this.pos = [left + moveLeft, top + moveTop];
 
