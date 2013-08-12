@@ -74,8 +74,8 @@ button:hover {
 }
 
 .play {
-  top: 50px;
-  left: 45%;
+  top: 65%;
+  left: 50%;
 
   border: 3px solid white;
 
@@ -99,9 +99,17 @@ span {
   font-size: 15px;
 }
 
+.fight {
+  font-size: 100;
+  color: red;
+  top: 50%;
+  left: 50%;
+  font-size: 500%;
+}
+
 .waiting {
   top: 50px;
-  left: 45%;
+  left: 75%;
   font-size: 20px;
   display: none;
 }
@@ -123,13 +131,13 @@ span {
 .keyboard {
   display: ;
 
-  top: 90px;
+  top: 40px;
   left: 20px;
   width: 160px;
 } 
 
 /*sweet scrolling story*/
-#titles
+.titles
 {
   z-index: 2;
   position: absolute;
@@ -146,20 +154,20 @@ span {
   -ms-transform-origin: 50% 100%;
   -o-transform-origin: 50% 100%;
   transform-origin: 50% 100%;
-  -webkit-transform: perspective(300px) rotateX(25deg);
-  -moz-transform: perspective(300px) rotateX(25deg);
-  -ms-transform: perspective(300px) rotateX(25deg);
-  -o-transform: perspective(300px) rotateX(25deg);
-  transform: perspective(300px) rotateX(25deg);
+  -webkit-transform: perspective(300px) rotateX(15deg);
+  -moz-transform: perspective(300px) rotateX(15deg);
+  -ms-transform: perspective(300px) rotateX(15deg);
+  -o-transform: perspective(300px) rotateX(15deg);
+  transform: perspective(300px) rotateX(15deg);
 }
 
-#titles p.center
+.titles p.center
 {
   z-index: 2;
   text-align: center;
 }
 
-#titlecontent
+.titlecontent
 {
   z-index: 2;
   position: absolute;
@@ -197,3 +205,352 @@ span {
   100% { top: -120%; }
 }
 
+
+/*sweet beginning animations*/
+
+body {
+  -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-fill-mode: both;
+  -moz-animation-duration: 2s;
+    -moz-animation-iteration-count: 1;
+    -moz-animation-timing-function: ease;
+    -moz-animation-fill-mode: both;
+  -o-animation-duration: 2s;
+    -o-animation-iteration-count: 1;
+    -o-animation-timing-function: ease;
+    -o-animation-fill-mode: both;
+  animation-duration: 2s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+    animation-fill-mode: both;
+} 
+
+  @-webkit-keyframes body {
+    0% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @-moz-keyframes body {
+    0% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @-o-keyframes body {
+    0% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes body {
+    0% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+body {
+  -webkit-animation-name: body;
+  -moz-animation-name: body;
+  -o-animation-name: body;
+  animation-name: body;
+}
+
+.fork, .keyboard, .fullScreen, .play {
+  -webkit-animation-duration: 4s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-fill-mode: both;
+  -moz-animation-duration: 4s;
+    -moz-animation-iteration-count: 1;
+    -moz-animation-timing-function: ease;
+    -moz-animation-fill-mode: both;
+  -o-animation-duration: 4s;
+    -o-animation-iteration-count: 1;
+    -o-animation-timing-function: ease;
+    -o-animation-fill-mode: both;
+  animation-duration: 4s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+    animation-fill-mode: both;
+} 
+  @-webkit-keyframes fork {
+    0% {
+      -webkit-transform:   translateX(200px)
+    }
+    25% {
+      -webkit-transform:   translateX(200px)
+    }
+    63% {
+      -webkit-transform:   translateX(0px)
+    }
+    100% {
+      -webkit-transform:   translateX(0px)
+    }
+  }
+  @-moz-keyframes fork {
+    0% {
+      -moz-transform:   translateX(200px)
+    }
+    25% {
+      -moz-transform:   translateX(200px)
+    }
+    63% {
+      -moz-transform:   translateX(0px)
+    }
+    100% {
+      -moz-transform:   translateX(0px)
+    }
+  }
+  @-o-keyframes fork {
+    0% {
+      -o-transform:   translateX(200px)
+    }
+    25% {
+      -o-transform:   translateX(200px)
+    }
+    63% {
+      -o-transform:   translateX(0px)
+    }
+    100% {
+      -o-transform:   translateX(0px)
+    }
+  }
+  @keyframes fork {
+    0% {
+      transform:   translateX(200px)
+    }
+    25% {
+      transform:   translateX(200px)
+    }
+    63% {
+      transform:   translateX(0px)
+    }
+    100% {
+      transform:   translateX(0px)
+    }
+  }
+
+.fork {
+  -webkit-animation-name: fork;
+  -moz-animation-name: fork;
+  -o-animation-name: fork;
+  animation-name: fork;
+}
+
+  @-webkit-keyframes keyboard {
+    0% {
+      -webkit-transform:   translateX(-150px)
+    }
+    25% {
+      -webkit-transform:   translateX(-150px)
+    }
+    63% {
+      -webkit-transform:   translateX(0px)
+    }
+    100% {
+      -webkit-transform:   translateX(0px)
+    }
+  }
+  @-moz-keyframes keyboard {
+    0% {
+      -moz-transform:   translateX(-150px)
+    }
+    25% {
+      -moz-transform:   translateX(-150px)
+    }
+    63% {
+      -moz-transform:   translateX(0px)
+    }
+    100% {
+      -moz-transform:   translateX(0px)
+    }
+  }
+  @-o-keyframes keyboard {
+    0% {
+      -o-transform:   translateX(-150px)
+    }
+    25% {
+      -o-transform:   translateX(-150px)
+    }
+    63% {
+      -o-transform:   translateX(0px)
+    }
+    100% {
+      -o-transform:   translateX(0px)
+    }
+  }
+  @keyframes keyboard {
+    0% {
+      transform:   translateX(-150px)
+    }
+    25% {
+      transform:   translateX(-150px)
+    }
+    63% {
+      transform:   translateX(0px)
+    }
+    100% {
+      transform:   translateX(0px)
+    }
+  }
+
+.keyboard {
+  -webkit-animation-name: keyboard;
+  -moz-animation-name: keyboard;
+  -o-animation-name: keyboard;
+  animation-name: keyboard;
+}
+@-webkit-keyframes fullScreen {
+    0% {
+      -webkit-transform:  translateY(-90px)
+    }
+    25% {
+      -webkit-transform:  translateY(-90px)
+    }
+    63% {
+      -webkit-transform:  translateY(0px)
+    }
+    100% {
+      -webkit-transform:  translateY(0px)
+    }
+  }
+  @-moz-keyframes fullScreen {
+    0% {
+      -moz-transform:  translateY(-90px)
+    }
+    25% {
+      -moz-transform:  translateY(-90px)
+    }
+    63% {
+      -moz-transform:  translateY(0px)
+    }
+    100% {
+      -moz-transform:  translateY(0px)
+    }
+  }
+  @-o-keyframes fullScreen {
+    0% {
+      -o-transform:  translateY(-90px)
+    }
+    25% {
+      -o-transform:  translateY(-90px)
+    }
+    63% {
+      -o-transform:  translateY(0px)
+    }
+    100% {
+      -o-transform:  translateY(0px)
+    }
+  }
+  @keyframes fullScreen {
+    0% {
+      transform:  translateY(-90px)
+    }
+    25% {
+      transform:  translateY(-90px)
+    }
+    63% {
+      transform:  translateY(0px)
+    }
+    100% {
+      transform:  translateY(0px)
+    }
+  }
+
+.fullScreen {
+  -webkit-animation-name: fullScreen;
+  -moz-animation-name: fullScreen;
+  -o-animation-name: fullScreen;
+  animation-name: fullScreen;
+}
+
+@-webkit-keyframes play {
+    0% {
+      -webkit-transform:  translateY(-1000px)
+    }
+    25% {
+      -webkit-transform:  translateY(-1000px)
+    }
+    63% {
+      -webkit-transform:  translateY(0px)
+    }
+    100% {
+      -webkit-transform:  translateX(500%)
+    }
+  }
+  @-moz-keyframes play {
+    0% {
+      -moz-transform:  translateY(-600px)
+    }
+    25% {
+      -moz-transform:  translateY(-600px)
+    }
+    63% {
+      -moz-transform:  translateY(0px)
+    }
+    100% {
+      -moz-transform:  translateX(350px)
+    }
+  }
+  @-o-keyframes play {
+    0% {
+      -o-transform:  translateY(-600px)
+    }
+    25% {
+      -o-transform:  translateY(-600px)
+    }
+    63% {
+      -o-transform:  translateY(0px)
+    }
+    100% {
+      -o-transform:  translateX(350px)
+    }
+  }
+  @keyframes play {
+    0% {
+      transform:  translateY(-600px)
+    }
+    25% {
+      transform:  translateY(-600px)
+    }
+    63% {
+      transform:  translateY(0px)
+    }
+    100% {
+      transform:  translateX(350px)
+    }
+  }
+
+.play {
+  -webkit-animation-name: play;
+  -moz-animation-name: play;
+  -o-animation-name: play;
+  animation-name: play;
+}
