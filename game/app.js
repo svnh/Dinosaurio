@@ -4,7 +4,6 @@
   var server = require('http').createServer(app);
   var io = require('socket.io').listen(server, { log: false });
 
-  var oneYear = 31557600000;
   app.use(express.static(__dirname + '/public/'), { maxAge: 1 });
 
   server.listen(8080);
