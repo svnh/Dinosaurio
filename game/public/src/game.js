@@ -454,6 +454,8 @@ Game.prototype.endGame = function() {
       myChickens.push(endChicken.chickenObj)
       self.layer.add(endChicken.chickenObj);
       endChicken.chickenObj.start();
+      console.log('player', i)
+      console.log(endChicken)
     }
   }
   if (this.oppScore !== 0){
@@ -467,9 +469,10 @@ Game.prototype.endGame = function() {
       theyChickens.push(endChicken.chickenObj)
       self.layer.add(endChicken.chickenObj);
       endChicken.chickenObj.start();
+      console.log('opp', i)
     }
   }
-  setTimeout(function(){
-    window.history.go(0)
-  }, 5000);
+  // setTimeout(function(){
+  //   window.history.go(0)
+  // }, 5000);
 };
