@@ -18,14 +18,16 @@ util.theyAreColliding = function(rectA, rectB) {
   if (
     Math.abs(rectA.left - rectB.left) < (Math.abs(rectA.width + rectB.width) / 2) 
     && (Math.abs(rectA.top - rectB.top) < (Math.abs(rectA.height + rectB.height) / 2))
-  )
-  return true;
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 util.getDirection = function(r) {
   return (Math.floor((8 / (Math.PI * 2)) * (r + Math.PI / 2)) + 6) % 8;
 };
-
 
 util.isOutOfBounds = function(size, left, top){
   if (left + size/4 <= 0) {
