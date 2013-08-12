@@ -187,7 +187,6 @@ span {
   animation: scroll 100s linear 4s infinite;
 }
 
-/* animation */
 @-webkit-keyframes scroll {
   0% { top: 100%; }
   100% { top: -120%; }
@@ -215,7 +214,6 @@ span {
 
 
 /*sweet beginning animations*/
-
 body {
   -webkit-animation-duration: 2s;
     -webkit-animation-iteration-count: 1;

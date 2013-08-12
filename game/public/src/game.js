@@ -20,6 +20,7 @@ var Game = function() {
 
   this.spidercount = 10;
   this.score = 0;
+  this.oppScore = 0;
 
   this.serverChickens;
   this.serverSpiders;
@@ -94,9 +95,12 @@ var Game = function() {
     
     socket.on('counterChange', function (counterChange) {
       $('.oppCounter').text('THEY SUSTAIN ' + counterChange);
+      self.oppScore = counterChange;
     });
 
     socket.on('oppDisconnected', function () {
+    window.gameLoop=function(){return false;};
+    window.collisionHandler=function(){return false;};
       self.endGame();
     });
 
@@ -371,38 +375,42 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
 };
 
 Game.prototype.gameLoop = function(time) {
-  var remainingChickens = _.size(this.chickens);
+  if (this.greenDino !== undefined){
+    var remainingChickens = _.size(this.chickens);
 
-  this.collisionHandler(this.greenDino, this.serverChickens);
-  this.greenDino.update(this, time);
+    this.collisionHandler(this.greenDino, this.serverChickens);
+    this.greenDino.update(this, time);
 
-  var playerPosition = [this.greenDino.dinoObj.attrs.x, this.greenDino.dinoObj.attrs.y];
+    var playerPosition = [this.greenDino.dinoObj.attrs.x, this.greenDino.dinoObj.attrs.y];
 
-  this.socket.emit('needchickenpos', this.room, playerPosition);
-  
-  for (var prop in this.serverChickens) {
-    if (this.chickens[prop]) {
-      this.chickens[prop].update(this, this.serverChickens[prop]);
+    this.socket.emit('needchickenpos', this.room, playerPosition);
+    for (var prop in this.serverChickens) {
+      if (this.chickens[prop]) {
+        this.chickens[prop].update(this, this.serverChickens[prop]);
+      }
     }
-  }
-  for (var prop in this.serverSpiders) {
-    if (this.spiders[prop]) {
-      this.spiders[prop].update(this, this.serverSpiders[prop]);
+    for (var prop in this.serverSpiders) {
+      if (this.spiders[prop]) {
+        this.spiders[prop].update(this, this.serverSpiders[prop]);
+      }
     }
+    
+    this.resizer();
+    this.checkBoundaries();
+    this.translateScreen();
   }
-  
-  this.resizer();
-  this.checkBoundaries();
-  this.translateScreen();
-
   if (remainingChickens > 0){
     requestAnimationFrame(this.gameLoop);
   } else {
-    this.endGame();    
+    window.gameLoop=function(){return false;};
+    window.collisionHandler=function(){return false;};
+    var self = this;
+    setTimeout(function(){self.endGame()}, 300)    
   }
 };
 
 Game.prototype.killChicken = function(chickenIndex){
+    
   if (this.chickens[chickenIndex] !== undefined) {
     delete this.serverChickens[chickenIndex];
     this.chickens[chickenIndex].chickenObj.remove()
@@ -413,11 +421,55 @@ Game.prototype.killChicken = function(chickenIndex){
 Game.prototype.endGame = function() {
   delete this.greenDino;
   this.layer.removeChildren();
-  var self = this;
 
-  setInterval(function(){
-    iden = 1;
-    var endChicken = self.endChicken = new Chicken(iden, util.randomCord(), util.randomCord());
-    this.layer.add(endChicken.chickenObj);
-  }, 200);
+  var width = document.getElementById('container').offsetWidth-20;
+  var height = document.getElementById('container').offsetHeight-20;
+  
+  $('.chickenCounter').css('top', '50%');
+  $('.chickenCounter').css('left', '50%');
+  $('.oppCounter').css('top', '45%');
+  $('.oppCounter').css('left', '50%');
+
+
+  var self = this;
+  var myChickens = []
+  var theyChickens = []
+
+  if (this.score < 0) {
+    $('.chickenCounter').css('color', 'red'); 
+  }
+
+  if (this.oppScore < 0) {
+    $('.oppCounter').css('color', 'red'); 
+  }
+
+  if (this.score !== 0){
+    for (var i = 0; i < this.score + 1; i++) {
+      iden = 1;
+      var x = ((width/(this.score)*i))
+      if (this.score === 1){
+        x = width/2
+      }
+      var endChicken = self.endChicken = new Chicken(iden, x, height/2);
+      myChickens.push(endChicken.chickenObj)
+      self.layer.add(endChicken.chickenObj);
+      endChicken.chickenObj.start();
+    }
+  }
+  if (this.oppScore !== 0){
+    for (var i = 0; i < this.oppScore + 1; i++) {
+      iden = 1;
+      var x = ((width/(this.oppScore)*i))
+      if (this.oppScore === 1){
+        x = width/2
+      }
+      var endChicken = self.endChicken = new Chicken(iden, x, height/3);
+      theyChickens.push(endChicken.chickenObj)
+      self.layer.add(endChicken.chickenObj);
+      endChicken.chickenObj.start();
+    }
+  }
+  setTimeout(function(){
+    window.history.go(0)
+  }, 5000);
 };
