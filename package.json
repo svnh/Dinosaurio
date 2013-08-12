@@ -1,11 +1,11 @@
 {
   "name": "DinosaurSprites",
-  "version": "0.0.0-17",
+  "version": "0.0.0-18",
   "description": "",
   "main": "/game/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "/game/app.js"
+    "start": "node /game/app.js"
   },
   "repository": {
     "type": "git",
