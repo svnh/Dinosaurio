@@ -1,4 +1,6 @@
 var serverGame = require('./servergame.js');
+var Spider = require('./serverspider.js');
+
 var room;
 var initcount = 0;
 var roomcount = 0;
@@ -28,12 +30,22 @@ module.exports = function(io) {
       userSocket.in(room).emit('chickenUpdated', serverGame.serverChickens, serverGame.serverSpiders);
     });
 
+    userSocket.on('newspider', function (room, x, y) {
+      var newSpider = new Spider({
+        iden: serverGame.serverSpiders.length,
+        posx: x,
+        posy: y
+      });
+      serverGame.serverSpiders.push(newSpider)
+      userSocket.in(room).emit('newspidercreated', newSpider);
+    });
+
     userSocket.on('spiderattack', function (room, index) {
       serverGame.serverSpiders[index].attacking = true;
       setTimeout(function(){
         serverGame.serverSpiders[index].attacking = false;
         serverGame.serverSpiders[index].pos = [serverGame.serverSpiders[index].pos[0] - 1/20, serverGame.serverSpiders[index].pos[1] - 1/20];
-      }, 2000);
+      }, 1000);
     });
 
     userSocket.on('chickenDown', function (room, chickenIndex) {

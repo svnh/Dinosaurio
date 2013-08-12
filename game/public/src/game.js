@@ -14,8 +14,11 @@ var Game = function() {
   this.chickens = {};
   this.spiders = {};
   this.palmTrees = [];
+  this.treeBoundingRects = [];
   this.notKilling = true;
+  this.addingSpider = false;
 
+  this.spidercount = 10;
   this.score = 0;
 
   this.serverChickens;
@@ -38,7 +41,6 @@ var Game = function() {
     });
 
     socket.on('serverChickens', function (serverChickens, serverSpiders) {
-
       self.serverChickens = serverChickens;
       self.serverSpiders = serverSpiders;
       $('.waiting').hide();
@@ -73,7 +75,19 @@ var Game = function() {
       }
         self.Opp.update(dinoupdated[0].x, dinoupdated[0].y, dinoupdated[1]);
     });
-    
+
+    socket.on('newspidercreated', function (serverSpider) {
+      var iden = self.spidercount;
+      var xCord = serverSpider.pos[0];
+      var yCord = serverSpider.pos[1];
+      var newSpider = self.newSpider = new Spider(iden, xCord, yCord);
+      layer.add(newSpider.spiderObj);
+      self.spiders[iden] = newSpider;
+      self.serverSpiders[iden] = serverSpider;
+      self.newSpider.spiderObj.start();    
+      self.spidercount++;  
+    });
+
     socket.on('dinochangeanim', function (dinochangeanim) {
         self.Opp.dinoObj.setAnimation(dinochangeanim);
     });
@@ -112,7 +126,7 @@ Game.prototype.loadImages = function(sources, callback) {
   }
 };
 
-Game.prototype.bulkServerObjLoad = function(serverObjType, gameObj, ClassType, objType){
+Game.prototype.bulkServerObjLoad = function(serverObjType, gameObj, ClassType){
   var newObj;
   for (var prop in serverObjType) {
     var iden = serverObjType[prop].iden;
@@ -139,7 +153,6 @@ Game.prototype.loadStage = function(images) {
   layer.add(greenDino.dinoObj);
 
   this.bulkServerObjLoad(this.serverChickens, this.chickens, Chicken);
-  // this.bulkServerObjLoad(this.serverSpiders, this.spiders, Spider);
 
   var newSpider;
   for (var prop in this.serverSpiders) {
@@ -178,8 +191,17 @@ Game.prototype.loadStage = function(images) {
   keyBindings(this, greenDino, greenDino.dinoObj, 'up', 'left', 'right', 'space', '/');
   this.socket.emit('dinoCreated', this.room);
 
-  requestAnimationFrame(this.gameLoop);
+  for (var i = 0; i < this.palmTrees.length; i++){
+    var treeBoundingRect = {
+      left: parseInt(this.palmTrees[i].attrs.x) + 24,
+      top: parseInt(this.palmTrees[i].attrs.y) + 24,
+      width: 128,
+      height: 128
+    };
+    this.treeBoundingRects.push(treeBoundingRect);
+  }
 
+  requestAnimationFrame(this.gameLoop);
 };
 
 Game.prototype.checkBoundaries = function(){
@@ -259,17 +281,32 @@ Game.prototype.resizer = _.throttle(function() {
 }, 75);
 
 Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
-  var chompSize = 128/5;
-  var chompDistance = 128/4;
+  var chompSize = 128 / 5;
+  var chompDistance = 128 / 4;
   var direction = util.getRadians(this.greenDino.dinoObj.attrs.dir);
   var playerCenterLeft = this.greenDino.dinoObj.attrs.x + 64;
   var playerCenterTop = this.greenDino.dinoObj.attrs.y + 64;
   var playerBoundingRect = {
-    left: playerCenterLeft-chompSize/2+Math.cos(direction)*chompDistance,
-    top: playerCenterTop-chompSize/2+Math.sin(direction)*chompDistance,
+    left: playerCenterLeft - chompSize/ 2 + Math.cos(direction) * chompDistance,
+    top: playerCenterTop - chompSize / 2 + Math.sin(direction) * chompDistance,
     width: chompSize,
     height: chompSize
   };
+
+  for (var i = 0; i < this.palmTrees.length; i++){
+    if(util.theyAreColliding(playerBoundingRect, this.treeBoundingRects[i])){
+      if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]) {
+        if (!this.addingSpider) { 
+          this.socket.emit('newspider', this.room, this.greenDino.dinoObj.attrs.x, this.greenDino.dinoObj.attrs.y);
+          this.addingSpider = true;
+          var self = this;
+          setTimeout(function(){
+            self.addingSpider = false;
+          }, 2000);
+        }
+      }
+    }
+  }
 
   for (var instance in this.chickens) {
     var chickenBoundingRect = {
@@ -320,6 +357,7 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
       } 
       if (util.theyAreColliding(chickenBoundingRect, spiderBoundingRect)) {
         if (this.chickens[instance] !== undefined) {
+          this.chickenSound.play();
           var deadChicken = this.serverChickens[instance];
           delete this.serverChickens[instance];
           this.chickens[instance].chickenObj.remove()
@@ -338,25 +376,22 @@ Game.prototype.gameLoop = function(time) {
   this.collisionHandler(this.greenDino, this.serverChickens);
   this.greenDino.update(this, time);
 
-  for (var i = 0; i < this.spiders.length; i++) {  
-    this.spiders[i].update(time);
-  }
-
   var playerPosition = [this.greenDino.dinoObj.attrs.x, this.greenDino.dinoObj.attrs.y];
 
   this.socket.emit('needchickenpos', this.room, playerPosition);
+  
   for (var prop in this.serverChickens) {
-    if (this.chickens[prop]){
+    if (this.chickens[prop]) {
       this.chickens[prop].update(this, this.serverChickens[prop]);
     }
   }
   for (var prop in this.serverSpiders) {
-    if (this.spiders[prop]){
+    if (this.spiders[prop]) {
       this.spiders[prop].update(this, this.serverSpiders[prop]);
     }
   }
-  // this.resizer();
-
+  
+  this.resizer();
   this.checkBoundaries();
   this.translateScreen();
 
@@ -368,7 +403,7 @@ Game.prototype.gameLoop = function(time) {
 };
 
 Game.prototype.killChicken = function(chickenIndex){
-  if (this.chickens[chickenIndex] !== undefined){
+  if (this.chickens[chickenIndex] !== undefined) {
     delete this.serverChickens[chickenIndex];
     this.chickens[chickenIndex].chickenObj.remove()
     delete this.chickens[chickenIndex];
@@ -376,6 +411,7 @@ Game.prototype.killChicken = function(chickenIndex){
 };
 
 Game.prototype.endGame = function() {
+  delete this.greenDino;
   this.layer.removeChildren();
   var self = this;
 
