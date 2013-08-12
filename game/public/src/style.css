@@ -79,7 +79,15 @@ button:hover {
 
   border: 3px solid white;
 
-  font-size: 20px;
+  font-size: 25px;
+}
+
+.wat {
+  top: 90%;
+  left: 20px;
+  border: 1px solid white;
+
+  font-size: 15px;
 }
 
 .fullScreen {
@@ -502,7 +510,7 @@ body {
       -webkit-transform:  translateY(0px)
     }
     100% {
-      -webkit-transform:  translateX(500%)
+      -webkit-transform:  translateX(480%)
     }
   }
   @-moz-keyframes play {
