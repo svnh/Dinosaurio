@@ -4,47 +4,51 @@ var Spider = require('./serverspider.js');
 var room;
 var initcount = 0;
 var roomcount = 0;
-  
+var roomList = {};
+var game;
+
 module.exports = function(io) {
   io.sockets.on('connection', function (userSocket) {
     roomcount += 1;
     if (initcount % 2 === 0) {
       room = roomcount.toString();
-      serverGame.roomList[room] = {user1: userSocket.id};
+      roomList[room] = {user1: userSocket.id};
     } else {
-      serverGame.roomList[room].user2 = userSocket.id
+      roomList[room].user2 = userSocket.id
     }
     initcount += 1;
     userSocket.join(room);
     userSocket.in(room).emit('join', room);
     userSocket.on('init', function (room) {
-      serverGame.initGame();
+      game = new serverGame();
+      roomList[room].game = game;
+      roomList[room].game.initGame();
       if (initcount % 2 === 0){
-        userSocket.in(room).broadcast.emit('serverChickens', serverGame.serverChickens, serverGame.serverSpiders);
-        userSocket.in(room).emit('serverChickens', serverGame.serverChickens, serverGame.serverSpiders);
+        userSocket.in(room).broadcast.emit('serverChickens', game.serverChickens, game.serverSpiders);
+        userSocket.in(room).emit('serverChickens', game.serverChickens, game.serverSpiders);
       }
     });
 
     userSocket.on('needchickenpos', function (room, playerpos) {
-      serverGame.playerPosition = playerpos;
-      userSocket.in(room).emit('chickenUpdated', serverGame.serverChickens, serverGame.serverSpiders);
+      roomList[room].game.playerPosition = playerpos;
+      userSocket.in(room).emit('chickenUpdated', roomList[room].game.serverChickens, roomList[room].game.serverSpiders);
     });
 
     userSocket.on('newspider', function (room, x, y) {
       var newSpider = new Spider({
-        iden: serverGame.serverSpiders.length,
+        iden: roomList[room].game.serverSpiders.length,
         posx: x,
         posy: y
       });
-      serverGame.serverSpiders.push(newSpider)
+      roomList[room].game.serverSpiders.push(newSpider)
       userSocket.in(room).emit('newspidercreated', newSpider);
     });
 
     userSocket.on('spiderattack', function (room, index) {
-      serverGame.serverSpiders[index].attacking = true;
+      roomList[room].game.serverSpiders[index].attacking = true;
       setTimeout(function(){
-        serverGame.serverSpiders[index].attacking = false;
-        serverGame.serverSpiders[index].pos = [serverGame.serverSpiders[index].pos[0] - 1/20, serverGame.serverSpiders[index].pos[1] - 1/20];
+        roomList[room].game.serverSpiders[index].attacking = false;
+        roomList[room].game.serverSpiders[index].pos = [roomList[room].game.serverSpiders[index].pos[0] - 1/20, roomList[room].game.serverSpiders[index].pos[1] - 1/20];
       }, 1000);
     });
 
@@ -70,10 +74,10 @@ module.exports = function(io) {
 
     userSocket.on('disconnect', function () {
       var disconUser = userSocket.id;
-      for (var prop in serverGame.roomList) {
-        if (disconUser === serverGame.roomList[prop].user1 || disconUser === serverGame.roomList[prop].user2 ){
+      for (var prop in roomList) {
+        if (disconUser === roomList[prop].user1 || disconUser === roomList[prop].user2 ){
           userSocket.in(prop).broadcast.emit('oppDisconnected', room);
-          if (serverGame.roomList[prop].user2 === undefined) {
+          if (roomList[prop].user2 === undefined) {
             initcount += 1;
           }
         }

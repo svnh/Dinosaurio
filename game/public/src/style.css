@@ -75,7 +75,7 @@ button:hover {
 
 .play {
   top: 65%;
-  left: 50%;
+  left: 75%;
 
   border: 3px solid white;
 
@@ -288,7 +288,7 @@ body {
   animation-name: body;
 }
 
-.fork, .keyboard, .fullScreen, .play {
+.fork, .keyboard, .fullScreen {
   -webkit-animation-duration: 4s;
     -webkit-animation-iteration-count: 1;
     -webkit-animation-timing-function: ease;
@@ -497,7 +497,7 @@ body {
   animation-name: fullScreen;
 }
 
-@-webkit-keyframes play {
+/*@-webkit-keyframes play {
     0% {
       -webkit-transform:  translateY(-1000px)
     }
@@ -559,4 +559,4 @@ body {
   -moz-animation-name: play;
   -o-animation-name: play;
   animation-name: play;
-}
+}*/

@@ -27,7 +27,8 @@ var Game = function() {
 
   this.chickenSound = document.getElementById('cluck');
 
-  var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
+  var socket = this.socket = io.connect(window.location.origin);
+  // var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
 
   var self = this;  
   this.room;
@@ -196,10 +197,10 @@ Game.prototype.loadStage = function(images) {
 
   for (var i = 0; i < this.palmTrees.length; i++){
     var treeBoundingRect = {
-      left: parseInt(this.palmTrees[i].attrs.x) + 24,
-      top: parseInt(this.palmTrees[i].attrs.y) + 24,
-      width: 128,
-      height: 128
+      left: parseInt(this.palmTrees[i].attrs.x + 64),
+      top: parseInt(this.palmTrees[i].attrs.y + 64),
+      width: 80,
+      height: 80
     };
     this.treeBoundingRects.push(treeBoundingRect);
   }

@@ -22,8 +22,8 @@ var Spider = function(options){
 
         var rotation = util.getRadians(this.dir);
 
-        var moveLeft = Math.cos(rotation)/2;
-        var moveTop = Math.sin(rotation)/2;
+        var moveLeft = Math.cos(rotation) * 2;
+        var moveTop = Math.sin(rotation) * 2;
 
         this.pos = [left + moveLeft, top + moveTop];
 

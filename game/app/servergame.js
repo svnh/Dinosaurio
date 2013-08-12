@@ -3,45 +3,44 @@ var Actor = require('./serveractor.js');
 var SmartChicken = require('./smartchickens.js');
 var Spider = require('./serverspider.js');
 
-var serverGame = {
-  serverSpiders: [],
-  serverChickens: [],
-  startTime: new Date().getTime(),
-  lastTime: null,
-  playerPosition: [0,0], 
-  roomList: {}
-}
+var serverGame = function() {
+  this.serverSpiders = [];
+  this.serverChickens = [];
+  this.startTime = new Date().getTime();
+  this.lastTime = null;
+  this.playerPosition = [0,0];
+};
 
-serverGame.initGame = function () {
+serverGame.prototype.initGame = function () {
   for (var i = 0; i < 15; i++) {
-    serverGame.serverChickens[i] = new Actor({
+    this.serverChickens[i] = new Actor({
       iden: i
     })
   }
   for (var i = 15; i < 30; i++) {
-    serverGame.serverChickens[i] = new SmartChicken({
+    this.serverChickens[i] = new SmartChicken({
       iden: i
     })
   }
   for (var i = 0; i < 10; i++) {
-    serverGame.serverSpiders[i] = new Spider({
+    this.serverSpiders[i] = new Spider({
       iden: i
     })
   }
-  serverGame.loop(0);
+  this.loop(0);
 }
 
-serverGame.loop = function (time) {
-  for (var i = 0; i < serverGame.serverChickens.length; i++) {
-    serverGame.serverChickens[i].move(time, serverGame.playerPosition);
+serverGame.prototype.loop = function (time) {
+  for (var i = 0; i < this.serverChickens.length; i++) {
+    this.serverChickens[i].move(time, this.playerPosition);
   }
-  for (var i = 0; i < serverGame.serverSpiders.length; i++) {
-    serverGame.serverSpiders[i].move(time, serverGame.playerPosition);
+  for (var i = 0; i < this.serverSpiders.length; i++) {
+    this.serverSpiders[i].move(time, this.playerPosition);
   }
-
+  var self = this;
   setTimeout(function() {
     lastTime = new Date().getTime();
-    serverGame.loop(lastTime - serverGame.startTime);
+    self.loop(lastTime - self.startTime);
   }, 1000/60);
 };
 
