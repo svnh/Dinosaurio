@@ -26,9 +26,10 @@ var Game = function() {
   this.serverSpiders;
 
   this.chickenSound = document.getElementById('cluck');
+  this.george = document.getElementById('george');
 
-  var socket = this.socket = io.connect(window.location.origin);
-  // var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
+  // var socket = this.socket = io.connect(window.location.origin);
+  var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
 
   var self = this;  
   this.room;
@@ -73,6 +74,7 @@ var Game = function() {
     });
 
     socket.on('dinoCreated', function () {
+      self.george.play();
       self.Opp = new RedDino();
       self.layer.add(self.Opp.dinoObj); 
       self.Opp.dinoObj.start();
@@ -429,14 +431,9 @@ Game.prototype.endGame = function(xCord, yCord) {
   var height = window.innerHeight;
 
   $('.chickenCounter').css('top', '50%');
-  $('.chickenCounter').css('left', '50%');
+  $('.chickenCounter').css('left', '35%');
   $('.oppCounter').css('top', '45%');
-  $('.oppCounter').css('left', '50%');
-
-
-  var self = this;
-  var myChickens = []
-  var theyChickens = []
+  $('.oppCounter').css('left', '35%');
 
   if (this.score < 0) {
     $('.chickenCounter').css('color', 'red'); 
@@ -446,41 +443,26 @@ Game.prototype.endGame = function(xCord, yCord) {
     $('.oppCounter').css('color', 'red'); 
   }
 
+  if (this.score > this.oppScore){
+    $('.chickenCounter').css('font-size', '40px'); 
+    $('.oppCounter').css('font-size', '30px');
+    $('.chickenCounter').css('left', '35%'); 
+    $('.oppCounter').css('left', '38%'); 
+  } else if (this.score < this.oppScore) {
+    $('.chickenCounter').css('font-size', '30px'); 
+    $('.oppCounter').css('font-size', '40px');
+    $('.chickenCounter').css('left', '37%'); 
+    $('.oppCounter').css('left', '36%'); 
+  }
+  var self = this;
   setInterval(function(){
       iden = 1;
       var endChicken = self.endChicken = new Chicken(iden, util.randomCord(), util.randomCord());
-      theyChickens.push(endChicken.chickenObj)
       self.layer.add(endChicken.chickenObj);
       endChicken.chickenObj.start();
-  }, 200);
+  }, 100);
 
-  // if (this.score !== 0){
-  //   for (var i = 0; i < this.score + 1; i++) {
-  //     iden = 1;
-  //     var x = ((width/(this.score)*i))
-  //     if (this.score === 1){
-  //       x = width/2
-  //     }
-  //     var endChicken = self.endChicken = new Chicken(iden, x, height/2);
-  //     myChickens.push(endChicken.chickenObj)
-  //     self.layer.add(endChicken.chickenObj);
-  //     endChicken.chickenObj.start();
-  //   }
-  // }
-  // if (this.oppScore !== 0){
-  //   for (var i = 0; i < this.oppScore + 1; i++) {
-  //     iden = 1;
-  //     var x = ((width/(this.oppScore)*i))
-  //     if (this.oppScore === 1){
-  //       x = width/2
-  //     }
-  //     var endChicken = self.endChicken = new Chicken(iden, x, height/3);
-  //     theyChickens.push(endChicken.chickenObj)
-  //     self.layer.add(endChicken.chickenObj);
-  //     endChicken.chickenObj.start();
-  //   }
-  // }
   setTimeout(function(){
     window.history.go(0)
-  }, 5000);
+  }, 10000);
 };

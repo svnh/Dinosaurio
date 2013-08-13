@@ -64,9 +64,8 @@ button {
 
   color: white;
   border:1px solid #999;
-  font-size:11px;
-  font-weight:700;
-  padding:2px 6px;
+  font-weight: 700;
+  padding: 2px 6px;
 }
 
 button:hover {
@@ -79,7 +78,7 @@ button:hover {
 
   border: 3px solid white;
 
-  font-size: 25px;
+  font-size: 200%;
 }
 
 .wat {
@@ -87,52 +86,48 @@ button:hover {
   left: 20px;
   border: 1px solid white;
 
-  font-size: 15px;
+  font-size: 150%;
 }
 
 .fullScreen {
   top: 10px;
   left: 20px;
-  width: 105px;
 
   border: 1px solid white;
 
-  font-size: 15px;
+  font-size: 150%;
 }
 
 span {
   z-index: 2;
   position: absolute;
   padding: 3px;
-  font-size: 15px;
+  font-size: 150%;
 }
 
 .fight {
-  font-size: 100;
   color: red;
   top: 50%;
   left: 50%;
-  font-size: 500%;
+  font-size: 600%;
 }
 
 .waiting {
   top: 50px;
   left: 75%;
-  font-size: 20px;
+  font-size: 170%;
   display: none;
 }
 
 .chickenCounter {
-  top: 30px;
+  top: 40px;
   left: 20px;
-  width: 300px;
   display: none;
 }
 
 .oppCounter {
-  top: 48px;
+  top: 70px;
   left: 20px;
-  width: 300px;
   display: none;
 }  
 
@@ -141,7 +136,6 @@ span {
 
   top: 40px;
   left: 20px;
-  width: 160px;
 } 
 
 /*sweet scrolling story*/
@@ -289,19 +283,19 @@ body {
 }
 
 .fork, .keyboard, .fullScreen {
-  -webkit-animation-duration: 2s;
+  -webkit-animation-duration: 1.5s;
     -webkit-animation-iteration-count: 1;
     -webkit-animation-timing-function: ease;
     -webkit-animation-fill-mode: both;
-  -moz-animation-duration: 2s;
+  -moz-animation-duration: 1.5s;
     -moz-animation-iteration-count: 1;
     -moz-animation-timing-function: ease;
     -moz-animation-fill-mode: both;
-  -o-animation-duration: 2s;
+  -o-animation-duration: 1.5s;
     -o-animation-iteration-count: 1;
     -o-animation-timing-function: ease;
     -o-animation-fill-mode: both;
-  animation-duration: 2s;
+  animation-duration: 1.5s;
     animation-iteration-count: 1;
     animation-timing-function: ease;
     animation-fill-mode: both;
@@ -372,10 +366,10 @@ body {
 
   @-webkit-keyframes keyboard {
     0% {
-      -webkit-transform:   translateX(-150px)
+      -webkit-transform:   translateX(-400px)
     }
     25% {
-      -webkit-transform:   translateX(-150px)
+      -webkit-transform:   translateX(-400px)
     }
     63% {
       -webkit-transform:   translateX(0px)
@@ -386,10 +380,10 @@ body {
   }
   @-moz-keyframes keyboard {
     0% {
-      -moz-transform:   translateX(-150px)
+      -moz-transform:   translateX(-400px)
     }
     25% {
-      -moz-transform:   translateX(-150px)
+      -moz-transform:   translateX(-400px)
     }
     63% {
       -moz-transform:   translateX(0px)
@@ -400,10 +394,10 @@ body {
   }
   @-o-keyframes keyboard {
     0% {
-      -o-transform:   translateX(-150px)
+      -o-transform:   translateX(-400px)
     }
     25% {
-      -o-transform:   translateX(-150px)
+      -o-transform:   translateX(-400px)
     }
     63% {
       -o-transform:   translateX(0px)
@@ -414,10 +408,10 @@ body {
   }
   @keyframes keyboard {
     0% {
-      transform:   translateX(-150px)
+      transform:   translateX(-400px)
     }
     25% {
-      transform:   translateX(-150px)
+      transform:   translateX(-400px)
     }
     63% {
       transform:   translateX(0px)

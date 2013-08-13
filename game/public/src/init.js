@@ -17,6 +17,6 @@ var wat = function() {
   $('#titlecontent').addClass('titlecontent');
   $('.fight').hide();
   $('.wat').hide();
-  $('.play').css("top", "170px");
+  $('.play').css("top", "30%");
   $('.play').css("left", "20px");  
 };
