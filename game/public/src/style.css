@@ -73,12 +73,12 @@ button:hover {
 }
 
 .play {
-  top: 65%;
-  left: 75%;
+  top: 90%;
+  left: 87%;
 
   border: 3px solid white;
 
-  font-size: 200%;
+  font-size: 250%;
 }
 
 .wat {
@@ -108,7 +108,7 @@ span {
 .fight {
   color: red;
   top: 50%;
-  left: 50%;
+  left: 45%;
   font-size: 600%;
 }
 
@@ -134,7 +134,7 @@ span {
 .keyboard {
   display: ;
 
-  top: 40px;
+  top: 65px;
   left: 20px;
 } 
 
