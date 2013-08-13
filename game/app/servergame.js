@@ -41,7 +41,7 @@ serverGame.prototype.loop = function (time) {
   setTimeout(function() {
     lastTime = new Date().getTime();
     self.loop(lastTime - self.startTime);
-  }, 1000/60);
+  }, 1000/48);
 };
 
 if (typeof module !== 'undefined') {
