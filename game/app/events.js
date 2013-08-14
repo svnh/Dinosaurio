@@ -9,8 +9,8 @@ var game;
 
 module.exports = function(io) {
   io.sockets.on('connection', function (userSocket) {
-    roomcount += 1;
     if (initcount % 2 === 0) {
+      roomcount += 1;
       room = roomcount.toString();
       roomList[room] = {user1: userSocket.id};
     } else {
