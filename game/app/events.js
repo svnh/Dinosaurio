@@ -30,8 +30,10 @@ module.exports = function(io) {
     });
 
     userSocket.on('needchickenpos', function (room, playerpos) {
+      if (roomList[room].game !== undefined) {
       roomList[room].game.playerPosition = playerpos;
       userSocket.in(room).emit('chickenUpdated', roomList[room].game.serverChickens, roomList[room].game.serverSpiders);
+      }
     });
 
     userSocket.on('newspider', function (room, x, y) {
@@ -46,11 +48,13 @@ module.exports = function(io) {
     });
 
     userSocket.on('spiderattack', function (room, index) {
-      roomList[room].game.serverSpiders[index].attacking = true;
-      setTimeout(function(){
-        roomList[room].game.serverSpiders[index].attacking = false;
-        roomList[room].game.serverSpiders[index].pos = [roomList[room].game.serverSpiders[index].pos[0] - 1/20, roomList[room].game.serverSpiders[index].pos[1] - 1/20];
-      }, 1000);
+     if (roomList[room].game.serverSpiders[index] !== undefined) {
+        roomList[room].game.serverSpiders[index].attacking = true;
+        setTimeout(function(){
+          roomList[room].game.serverSpiders[index].attacking = false;
+          roomList[room].game.serverSpiders[index].pos = [roomList[room].game.serverSpiders[index].pos[0] - 1/20, roomList[room].game.serverSpiders[index].pos[1] - 1/20];
+        }, 1000);
+      }
     });
 
     userSocket.on('chickenDown', function (room, chickenIndex) {
