@@ -9,14 +9,14 @@ var game;
 
 module.exports = function(io) {
   io.sockets.on('connection', function (userSocket) {
-    if (initcount % 2 === 0) {
+    initcount += 1;
+    if (initcount % 2 === 1) {
       roomcount += 1;
       room = roomcount.toString();
       roomList[room] = {user1: userSocket.id};
     } else {
       roomList[room].user2 = userSocket.id
     }
-    initcount += 1;
     userSocket.join(room);
     userSocket.in(room).emit('join', room);
     userSocket.on('init', function (room) {
@@ -48,7 +48,7 @@ module.exports = function(io) {
     });
 
     userSocket.on('spiderattack', function (room, index) {
-     if (roomList[room].game.serverSpiders[index] !== undefined) {
+     if (roomList[room].game && roomList[room].game.serverSpiders[index] !== undefined) {
         roomList[room].game.serverSpiders[index].attacking = true;
         setTimeout(function(){
           roomList[room].game.serverSpiders[index].attacking = false;
