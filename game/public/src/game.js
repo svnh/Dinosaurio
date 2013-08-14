@@ -28,7 +28,8 @@ var Game = function() {
   this.chickenSound = document.getElementById('cluck');
   this.george = document.getElementById('george');
 
-  var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
+  var socket = this.socket = io.connect(window.location.origin);
+  // var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
 
   var self = this;  
   this.room;

@@ -24,8 +24,8 @@ module.exports = function(io) {
         game = new serverGame();
         roomList[room].game = game;
         roomList[room].game.initGame();
-        userSocket.in(room).broadcast.emit('serverChickens', game.serverChickens, game.serverSpiders);
-        userSocket.in(room).emit('serverChickens', game.serverChickens, game.serverSpiders);
+        userSocket.in(room).broadcast.emit('serverChickens', roomList[room].game.serverChickens, roomList[room].game.serverSpiders);
+        userSocket.in(room).emit('serverChickens', roomList[room].game.serverChickens, roomList[room].game.serverSpiders);
       }
     });
 
@@ -80,10 +80,12 @@ module.exports = function(io) {
     userSocket.on('disconnect', function () {
       var disconUser = userSocket.id;
       for (var prop in roomList) {
-        if (disconUser === roomList[prop].user1 || disconUser === roomList[prop].user2 ){
-          userSocket.in(prop).broadcast.emit('oppDisconnected', room);
-          if (roomList[prop].user2 === undefined) {
-            initcount += 1;
+        if (roomList.hasOwnProperty(prop)){
+          if (disconUser === roomList[prop].user1 || disconUser === roomList[prop].user2 ){
+            userSocket.in(prop).broadcast.emit('oppDisconnected', room);
+            if (roomList[prop].user2 === undefined) {
+              initcount += 1;
+            }
           }
         }
       }
