@@ -20,10 +20,10 @@ module.exports = function(io) {
     userSocket.join(room);
     userSocket.in(room).emit('join', room);
     userSocket.on('init', function (room) {
-      game = new serverGame();
-      roomList[room].game = game;
-      roomList[room].game.initGame();
       if (initcount % 2 === 0){
+        game = new serverGame();
+        roomList[room].game = game;
+        roomList[room].game.initGame();
         userSocket.in(room).broadcast.emit('serverChickens', game.serverChickens, game.serverSpiders);
         userSocket.in(room).emit('serverChickens', game.serverChickens, game.serverSpiders);
       }
@@ -41,7 +41,8 @@ module.exports = function(io) {
         posy: y
       });
       roomList[room].game.serverSpiders.push(newSpider)
-      userSocket.in(room).emit('newspidercreated', newSpider);
+      userSocket.in(room).broadcast.emit('spidercreated', newSpider);
+      userSocket.in(room).emit('spidercreated', newSpider);
     });
 
     userSocket.on('spiderattack', function (room, index) {

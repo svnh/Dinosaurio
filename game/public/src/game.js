@@ -28,7 +28,6 @@ var Game = function() {
   this.chickenSound = document.getElementById('cluck');
   this.george = document.getElementById('george');
 
-  // var socket = this.socket = io.connect(window.location.origin);
   var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
 
   var self = this;  
@@ -89,16 +88,16 @@ var Game = function() {
         self.Opp.update(dinoupdated[0].x, dinoupdated[0].y, dinoupdated[1]);
     });
 
-    socket.on('newspidercreated', function (serverSpider) {
+    socket.on('spidercreated', function (serverSpider) {
       var iden = self.spidercount;
       var xCord = serverSpider.pos[0];
       var yCord = serverSpider.pos[1];
       var newSpider = self.newSpider = new Spider(iden, xCord, yCord);
-      layer.add(newSpider.spiderObj);
+      self.layer.add(newSpider.spiderObj);
       self.spiders[iden] = newSpider;
       self.serverSpiders[iden] = serverSpider;
       self.newSpider.spiderObj.start();    
-      self.spidercount++;  
+      self.spidercount++;
     });
 
     socket.on('dinochangeanim', function (dinochangeanim) {
@@ -155,11 +154,10 @@ Game.prototype.bulkServerObjLoad = function(serverObjType, gameObj, ClassType){
 }
 
 Game.prototype.loadStage = function(images) {
-  var layer = this.layer;
   var stage = this.stage;
 
   var greenDino = this.greenDino = new GreenDino();
-  layer.add(greenDino.dinoObj);
+  this.layer.add(greenDino.dinoObj);
 
   this.bulkServerObjLoad(this.serverChickens, this.chickens, Chicken);
 
@@ -169,20 +167,20 @@ Game.prototype.loadStage = function(images) {
     var xCord = this.serverSpiders[prop].pos[0];
     var yCord = this.serverSpiders[prop].pos[1];
     newSpider = this.newSpider = new Spider(iden, xCord, yCord);
-    layer.add(newSpider.spiderObj);
+    this.layer.add(newSpider.spiderObj);
     this.spiders[iden] = newSpider;
   }
 
   var palmTree;
   for (var i = 0; i < 5; i++) {
     palmTree = this.palmTree = new Tree(images.palmtree);
-    layer.add(palmTree.treeObj);
+    this.layer.add(palmTree.treeObj);
     this.palmTrees.push(palmTree.treeObj);
     palmTree = this.palmTree = new Tree(images.forward);
-    layer.add(palmTree.treeObj);
+    this.layer.add(palmTree.treeObj);
     this.palmTrees.push(palmTree.treeObj);
     palmTree = this.palmTree = new Tree(images.otpalm);
-    layer.add(palmTree.treeObj);
+    this.layer.add(palmTree.treeObj);
     this.palmTrees.push(palmTree.treeObj);
   }
 
@@ -197,7 +195,7 @@ Game.prototype.loadStage = function(images) {
   }
 
   greenDino.dinoObj.start();
-  keyBindings(this, greenDino, greenDino.dinoObj, 'up', 'left', 'right', 'space', '/');
+  keyBindings(this, greenDino, greenDino.dinoObj, 'up', 'left', 'right', 'a', '/');
   this.socket.emit('dinoCreated', this.room);
 
   for (var i = 0; i < this.palmTrees.length; i++){
