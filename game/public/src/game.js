@@ -337,33 +337,33 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
     }
   }
 
-  for (var instance in this.chickens) {
-    var chickenBoundingRect = {
-      left: parseInt(this.chickens[instance].chickenObj.attrs.x) + 24,
-      top: parseInt(this.chickens[instance].chickenObj.attrs.y) + 24,
-      width: 32,
-      height: 32
-    };
-    for (var index in this.spiders) {
-      var spiderBoundingRect = {
-        left: parseInt(this.spiders[index].spiderObj.attrs.x) + 24,
-        top: parseInt(this.spiders[index].spiderObj.attrs.y) + 24,
-        width: 32,
-        height: 32
-      };
-      if (util.theyAreColliding(chickenBoundingRect, spiderBoundingRect)) {
-        if (this.chickens[instance] !== undefined) {
-          this.chickenSound.play();
-          var deadChicken = this.serverChickens[instance];
-          delete this.serverChickens[instance];
-          this.chickens[instance].chickenObj.remove()
-          delete this.chickens[instance];
-          this.socket.emit('chickenDown', this.room, instance);
-          this.socket.emit('spiderattack', this.room, index);
-        }
-      }
-    }
-  }
+  // for (var instance in this.chickens) {
+  //   var chickenBoundingRect = {
+  //     left: parseInt(this.chickens[instance].chickenObj.attrs.x) + 24,
+  //     top: parseInt(this.chickens[instance].chickenObj.attrs.y) + 24,
+  //     width: 32,
+  //     height: 32
+  //   };
+  //   for (var index in this.spiders) {
+  //     var spiderBoundingRect = {
+  //       left: parseInt(this.spiders[index].spiderObj.attrs.x) + 24,
+  //       top: parseInt(this.spiders[index].spiderObj.attrs.y) + 24,
+  //       width: 32,
+  //       height: 32
+  //     };
+  //     if (util.theyAreColliding(chickenBoundingRect, spiderBoundingRect)) {
+  //       if (this.chickens[instance] !== undefined) {
+  //         this.chickenSound.play();
+  //         var deadChicken = this.serverChickens[instance];
+  //         delete this.serverChickens[instance];
+  //         this.chickens[instance].chickenObj.remove()
+  //         delete this.chickens[instance];
+  //         this.socket.emit('chickenDown', this.room, instance);
+  //         this.socket.emit('spiderattack', this.room, index);
+  //       }
+  //     }
+  //   }
+  // }
 
   for (var index in this.spiders) {
     var spiderBoundingRect = {
