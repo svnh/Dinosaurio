@@ -1,6 +1,6 @@
 {
   "name": "DinosaurSprites",
-  "version": "0.0.0-32",
+  "version": "0.0.0-33",
   "description": "",
   "main": "/game/app.js",
   "scripts": {

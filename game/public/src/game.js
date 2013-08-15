@@ -28,8 +28,8 @@ var Game = function() {
   this.chickenSound = document.getElementById('cluck');
   this.george = document.getElementById('george');
 
-  // var socket = this.socket = io.connect(window.location.origin);
-  var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
+  var socket = this.socket = io.connect(window.location.origin);
+  // var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
 
   var self = this;  
   this.room;
@@ -111,7 +111,6 @@ var Game = function() {
     });
 
     socket.on('oppDisconnected', function (room) {
-      console.log(room)
       self.endGame();
     });
 
@@ -392,11 +391,11 @@ Game.prototype.gameLoop = function(time) {
         this.chickens[prop].update(this, this.serverChickens[prop]);
       }
     }
-    for (var prop in this.serverSpiders) {
-      if (this.spiders[prop]) {
-        this.spiders[prop].update(this, this.serverSpiders[prop]);
-      }
-    }
+    // for (var prop in this.spiders) {
+    //   if (this.spiders[prop]) {
+    //     this.spiders[prop].update(this, this.serverSpiders[prop]);
+    //   }
+    // }
     
     this.resizer();
     this.checkBoundaries();
@@ -411,7 +410,6 @@ Game.prototype.gameLoop = function(time) {
 };
 
 Game.prototype.killChicken = function(chickenIndex){
-    
   if (this.chickens[chickenIndex] !== undefined) {
     delete this.serverChickens[chickenIndex];
     this.chickens[chickenIndex].chickenObj.remove()
