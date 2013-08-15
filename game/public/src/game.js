@@ -380,7 +380,7 @@ Game.prototype.gameLoop = function(time) {
   if (this.greenDino !== undefined){
     var remainingChickens = _.size(this.chickens);
 
-    this.collisionHandler(this.greenDino, this.serverChickens);
+    // this.collisionHandler(this.greenDino, this.serverChickens);
     this.greenDino.update(this, time);
 
     var playerPosition = [this.greenDino.dinoObj.attrs.x, this.greenDino.dinoObj.attrs.y];
@@ -391,11 +391,11 @@ Game.prototype.gameLoop = function(time) {
         this.chickens[prop].update(this, this.serverChickens[prop]);
       }
     }
-    // for (var prop in this.spiders) {
-    //   if (this.spiders[prop]) {
-    //     this.spiders[prop].update(this, this.serverSpiders[prop]);
-    //   }
-    // }
+    for (var prop in this.serverSpiders) {
+      if (this.spiders[prop]) {
+        this.spiders[prop].update(this, this.serverSpiders[prop]);
+      }
+    }
     
     this.resizer();
     this.checkBoundaries();

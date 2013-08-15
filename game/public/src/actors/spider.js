@@ -10,7 +10,7 @@ var Spider = function(iden, randomX, randomY){
       frames: 8
     },
     hit: {
-      start: 145,
+      start: 144,
       frames: 7
     }
   };

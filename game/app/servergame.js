@@ -4,8 +4,8 @@ var SmartChicken = require('./smartchickens.js');
 var Spider = require('./serverspider.js');
 
 var serverGame = function() {
-  this.serverSpiders = [];
   this.serverChickens = [];
+  this.serverSpiders = [];
   this.startTime = new Date().getTime();
   this.lastTime = null;
   this.playerPosition = [0,0];
@@ -41,7 +41,7 @@ serverGame.prototype.loop = function (time) {
   setTimeout(function() {
     lastTime = new Date().getTime();
     self.loop(lastTime - self.startTime);
-  }, 1000/48);
+  }, 1000/60);
 };
 
 if (typeof module !== 'undefined') {
