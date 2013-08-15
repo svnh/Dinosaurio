@@ -28,8 +28,7 @@ var Game = function() {
   this.chickenSound = document.getElementById('cluck');
   this.george = document.getElementById('george');
 
-  var socket = this.socket = io.connect(window.location.origin);
-  // var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
+  var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
 
   var self = this;  
   this.room;
@@ -335,44 +334,81 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
           this.socket.emit('counterChange', this.room, this.score);
         }
       }
-    } for (var index in this.spiders) {
-      var spiderBoundingRect = {
-        left: parseInt(this.spiders[index].spiderObj.attrs.x) + 24,
-        top: parseInt(this.spiders[index].spiderObj.attrs.y) + 24,
-        width: 32,
-        height: 32
-      };
-      var playerLargeBoundingRect = {
-        left: parseInt(this.greenDino.dinoObj.attrs.x + 64),
-        top: parseInt(this.greenDino.dinoObj.attrs.y + 64),
-        width: 64,
-        height: 64
-      };
-      if (util.theyAreColliding(playerLargeBoundingRect, spiderBoundingRect)) {
-        if (this.notKilling) {
-          this.score -= 1;
-          this.notKilling = false;
-          var self = this;
-          setTimeout(function(){
-            self.notKilling = true;
-          }, 200);
-        }
-        $('.chickenCounter').text('MY SUSTENANCE ' + this.score)
-        this.socket.emit('counterChange', this.room, this.score);
-        this.socket.emit('spiderattack', this.room, index);
-      } 
-      if (util.theyAreColliding(chickenBoundingRect, spiderBoundingRect)) {
-        if (this.chickens[instance] !== undefined) {
-          this.chickenSound.play();
-          var deadChicken = this.serverChickens[instance];
-          delete this.serverChickens[instance];
-          this.chickens[instance].chickenObj.remove()
-          delete this.chickens[instance];
-          this.socket.emit('chickenDown', this.room, instance);
-          this.socket.emit('spiderattack', this.room, index);
-        }
-      }
     }
+  }
+
+  // for (var instance in this.chickens) {
+  //   var chickenBoundingRect = {
+  //     left: parseInt(this.chickens[instance].chickenObj.attrs.x) + 24,
+  //     top: parseInt(this.chickens[instance].chickenObj.attrs.y) + 24,
+  //     width: 32,
+  //     height: 32
+  //   };
+  //   for (var index in this.spiders) {
+  //     var spiderBoundingRect = {
+  //       left: parseInt(this.spiders[index].spiderObj.attrs.x) + 24,
+  //       top: parseInt(this.spiders[index].spiderObj.attrs.y) + 24,
+  //       width: 32,
+  //       height: 32
+  //     };
+  //     var playerLargeBoundingRect = {
+  //       left: parseInt(this.greenDino.dinoObj.attrs.x + 64),
+  //       top: parseInt(this.greenDino.dinoObj.attrs.y + 64),
+  //       width: 64,
+  //       height: 64
+  //     };
+  //     if (util.theyAreColliding(playerLargeBoundingRect, spiderBoundingRect)) {
+  //       if (this.notKilling) {
+  //         this.score -= 1;
+  //         this.notKilling = false;
+  //         var self = this;
+  //         setTimeout(function(){
+  //           self.notKilling = true;
+  //         }, 200);
+  //       }
+  //       $('.chickenCounter').text('MY SUSTENANCE ' + this.score)
+  //       this.socket.emit('counterChange', this.room, this.score);
+  //       this.socket.emit('spiderattack', this.room, index);
+  //     } 
+  //     if (util.theyAreColliding(chickenBoundingRect, spiderBoundingRect)) {
+  //       if (this.chickens[instance] !== undefined) {
+  //         this.chickenSound.play();
+  //         var deadChicken = this.serverChickens[instance];
+  //         delete this.serverChickens[instance];
+  //         this.chickens[instance].chickenObj.remove()
+  //         delete this.chickens[instance];
+  //         this.socket.emit('chickenDown', this.room, instance);
+  //         this.socket.emit('spiderattack', this.room, index);
+  //       }
+  //     }
+  //   }
+  // }
+  for (var index in this.spiders) {
+    var spiderBoundingRect = {
+      left: parseInt(this.spiders[index].spiderObj.attrs.x) + 24,
+      top: parseInt(this.spiders[index].spiderObj.attrs.y) + 24,
+      width: 32,
+      height: 32
+    };
+    var playerLargeBoundingRect = {
+      left: parseInt(this.greenDino.dinoObj.attrs.x + 64),
+      top: parseInt(this.greenDino.dinoObj.attrs.y + 64),
+      width: 64,
+      height: 64
+    };
+    if (util.theyAreColliding(playerLargeBoundingRect, spiderBoundingRect)) {
+      if (this.notKilling) {
+        this.score -= 1;
+        this.notKilling = false;
+        var self = this;
+        setTimeout(function(){
+          self.notKilling = true;
+        }, 200);
+      }
+      $('.chickenCounter').text('MY SUSTENANCE ' + this.score)
+      this.socket.emit('counterChange', this.room, this.score);
+      this.socket.emit('spiderattack', this.room, index);
+    } 
   }
 };
 
@@ -380,7 +416,7 @@ Game.prototype.gameLoop = function(time) {
   if (this.greenDino !== undefined){
     var remainingChickens = _.size(this.chickens);
 
-    // this.collisionHandler(this.greenDino, this.serverChickens);
+    this.collisionHandler(this.greenDino, this.serverChickens);
     this.greenDino.update(this, time);
 
     var playerPosition = [this.greenDino.dinoObj.attrs.x, this.greenDino.dinoObj.attrs.y];
