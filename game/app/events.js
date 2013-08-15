@@ -31,8 +31,8 @@ module.exports = function(io) {
 
     userSocket.on('needchickenpos', function (room, playerpos) {
       if (roomList[room].game !== undefined) {
-      roomList[room].game.playerPosition = playerpos;
-      userSocket.in(room).emit('chickenUpdated', roomList[room].game.serverChickens, roomList[room].game.serverSpiders);
+        roomList[room].game.playerPosition = playerpos;
+        userSocket.in(room).emit('chickenUpdated', roomList[room].game.serverChickens, roomList[room].game.serverSpiders);
       }
     });
 

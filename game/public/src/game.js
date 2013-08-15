@@ -110,9 +110,8 @@ var Game = function() {
       self.oppScore = counterChange;
     });
 
-    socket.on('oppDisconnected', function () {
-    window.gameLoop=function(){return false;};
-    window.collisionHandler=function(){return false;};
+    socket.on('oppDisconnected', function (room) {
+      console.log(room)
       self.endGame();
     });
 
@@ -406,8 +405,6 @@ Game.prototype.gameLoop = function(time) {
   if (remainingChickens > 0){
     requestAnimationFrame(this.gameLoop);
   } else {
-    window.gameLoop=function(){return false;};
-    window.collisionHandler=function(){return false;};
     var self = this;
     setTimeout(function(){self.endGame()}, 300)    
   }
@@ -423,6 +420,8 @@ Game.prototype.killChicken = function(chickenIndex){
 };
 
 Game.prototype.endGame = function(xCord, yCord) {
+  window.gameLoop=function(){return false;};
+  window.collisionHandler=function(){return false;};
   delete this.greenDino;
   this.layer.removeChildren();
 
