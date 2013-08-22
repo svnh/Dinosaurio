@@ -6,11 +6,11 @@ aaand it's [(a)live](http://dinosaurio.jit.su  "Dino")
 
 Stack
 --------
-*Node.js/Express
-*Kinetic.js (and HTML5 canvas)  
-*Socket.IO
-*Mousetrap
-*ImageMagick
+*Node.js/Express   
+*Kinetic.js (and HTML5 canvas)     
+*Socket.IO   
+*Mousetrap   
+*ImageMagick   
 
 What it is
 --------
