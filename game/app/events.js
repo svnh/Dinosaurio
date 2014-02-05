@@ -8,6 +8,7 @@ var roomList = {};
 var game;
 
 module.exports = function(io) {
+
   io.sockets.on('connection', function (userSocket) {
     initcount += 1;
     if (initcount % 2 === 1) {
@@ -91,4 +92,5 @@ module.exports = function(io) {
       }
     });
   });
+
 }
