@@ -36,8 +36,3 @@ based my animation sequences off of their direction and action in the original f
 images, and there are eight directions for each image. When a new actor is instantiated, they are endowed with the ability
 to move based on these animations in through the 'getAnimArray' function in 'public/src/getanimations.js'. Their direction
 and coordinates are synced constantly, so that the animation is always current.
-
-
-Struggles
---------
-Establishing connections between users and then ensuring that all data is synced between using Socket.IO was an endeavor in itself. I initially intended for the game to work as a giant dino fragfest, but I decided to use a pairing system instead because I wanted to further explore Socket.IO.
