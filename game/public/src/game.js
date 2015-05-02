@@ -28,9 +28,9 @@ var Game = function() {
   this.chickenSound = document.getElementById('cluck');
   this.george = document.getElementById('george');
 
-  var socket = this.socket = io.connect('http://dinosaurio.jit.su/');
+  var socket = this.socket = io.connect('https://dinosaur-io.herokuapp.com/');
 
-  var self = this;  
+  var self = this;
   this.room;
 
   var background = document.getElementById('background');
@@ -64,7 +64,7 @@ var Game = function() {
       self.serverChickens = serverChickens;
       self.serverSpiders = serverSpiders;
     });
-    
+
     socket.on('killedChicken', function (chickenIndex) {
       self.chickenSound.play();
       self.killChicken(chickenIndex);
@@ -75,14 +75,14 @@ var Game = function() {
     socket.on('dinoCreated', function () {
       self.george.play();
       self.Opp = new RedDino();
-      self.layer.add(self.Opp.dinoObj); 
+      self.layer.add(self.Opp.dinoObj);
       self.Opp.dinoObj.start();
     });
 
     socket.on('dinoupdated', function (dinoupdated) {
       if (self.Opp === undefined) {
         self.Opp = new RedDino();
-        self.layer.add(self.Opp.dinoObj); 
+        self.layer.add(self.Opp.dinoObj);
         self.Opp.dinoObj.start();
       }
         self.Opp.update(dinoupdated[0].x, dinoupdated[0].y, dinoupdated[1]);
@@ -96,14 +96,14 @@ var Game = function() {
       self.layer.add(newSpider.spiderObj);
       self.spiders[iden] = newSpider;
       self.serverSpiders[iden] = serverSpider;
-      self.newSpider.spiderObj.start();    
+      self.newSpider.spiderObj.start();
       self.spidercount++;
     });
 
     socket.on('dinochangeanim', function (dinochangeanim) {
         self.Opp.dinoObj.setAnimation(dinochangeanim);
     });
-    
+
     socket.on('counterChange', function (counterChange) {
       $('.oppCounter').text('THEY SUSTAIN ' + counterChange);
       self.oppScore = counterChange;
@@ -301,7 +301,7 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
   for (var i = 0; i < this.palmTrees.length; i++){
     if(util.theyAreColliding(playerBoundingRect, this.treeBoundingRects[i])){
       if (this.greenDino.dinoObj.getAnimation() === 'attacking_'+this.greenDino.directions[this.greenDino.dinoObj.attrs.dir]) {
-        if (!this.addingSpider) { 
+        if (!this.addingSpider) {
           this.socket.emit('newspider', this.room, this.greenDino.dinoObj.attrs.x, this.greenDino.dinoObj.attrs.y);
           this.addingSpider = true;
           var self = this;
@@ -390,7 +390,7 @@ Game.prototype.collisionHandler = function(GreenDino, chickens, stage){
       $('.chickenCounter').text('MY SUSTENANCE ' + this.score)
       this.socket.emit('counterChange', this.room, this.score);
       this.socket.emit('spiderattack', this.room, index);
-    } 
+    }
   }
 };
 
@@ -414,7 +414,7 @@ Game.prototype.gameLoop = function(time) {
         this.spiders[prop].update(this, this.serverSpiders[prop]);
       }
     }
-    
+
     this.resizer();
     this.checkBoundaries();
     this.translateScreen();
@@ -423,7 +423,7 @@ Game.prototype.gameLoop = function(time) {
     requestAnimationFrame(this.gameLoop);
   } else {
     var self = this;
-    setTimeout(function(){self.endGame()}, 300)    
+    setTimeout(function(){self.endGame()}, 300)
   }
 };
 
@@ -450,23 +450,23 @@ Game.prototype.endGame = function(xCord, yCord) {
   $('.oppCounter').css('left', '35%');
 
   if (this.score < 0) {
-    $('.chickenCounter').css('color', 'red'); 
+    $('.chickenCounter').css('color', 'red');
   }
 
   if (this.oppScore < 0) {
-    $('.oppCounter').css('color', 'red'); 
+    $('.oppCounter').css('color', 'red');
   }
 
   if (this.score > this.oppScore){
-    $('.chickenCounter').css('font-size', '40px'); 
+    $('.chickenCounter').css('font-size', '40px');
     $('.oppCounter').css('font-size', '30px');
-    $('.chickenCounter').css('left', '35%'); 
-    $('.oppCounter').css('left', '38%'); 
+    $('.chickenCounter').css('left', '35%');
+    $('.oppCounter').css('left', '38%');
   } else if (this.score < this.oppScore) {
-    $('.chickenCounter').css('font-size', '30px'); 
+    $('.chickenCounter').css('font-size', '30px');
     $('.oppCounter').css('font-size', '40px');
-    $('.chickenCounter').css('left', '37%'); 
-    $('.oppCounter').css('left', '36%'); 
+    $('.chickenCounter').css('left', '37%');
+    $('.oppCounter').css('left', '36%');
   }
   var self = this;
   setInterval(function(){

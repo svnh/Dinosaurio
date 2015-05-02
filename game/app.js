@@ -6,8 +6,10 @@
 
   app.use(express.static(__dirname + '/public/'), { maxAge: 1 });
 
-  server.listen(8080);
-  var events = require('./app/events');
-  events(io);
-
+  var port = process.env.PORT || 3000;
+  server.listen(port, function() {
+    console.log('Expres server listening on port', port);
+    var events = require('./app/events');
+    events(io);
+  });
 })();
