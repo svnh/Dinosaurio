@@ -30,7 +30,7 @@
       <source src="./sounds/cluck.wav" />
     </audio>
 
-    <audio id="george" preload="auto">
+    <audio id="george" preload="auto" loop>
       <source src="./sounds/george.mp3" />
     </audio>
 
@@ -65,7 +65,7 @@
       <button class="play" onclick="init();">PLAY</button>
       <button class="wat" onclick="wat();">WAT</button>
       <span class="waiting">waiting for opponent</span>
-      <span class="keyboard">⇡ move <br> ⇠ rotate left <br> ⇢ rotate right <br> a: attack</span>
+      <span class="keyboard">⇡ move <br> ⇠ rotate left <br> ⇢ rotate right <br> a / space: attack</span>
       <div id="container">
         <div id="background"></div>
         <div id="game"></div>
@@ -74,7 +74,7 @@
 
   <script>
     var sound = document.getElementById('bite');
-    sound.play();
+    sound.play().catch(function(){});
   </script>
 
   </body>

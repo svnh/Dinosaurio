@@ -174,11 +174,11 @@ span {
   z-index: 2;
   position: absolute;
   top: 100%;
-  -webkit-animation: scroll 100s linear 4s infinite;
-  -moz-animation: scroll 100s linear 4s infinite;
-  -ms-animation: scroll 100s linear 4s infinite;
-  -o-animation: scroll 100s linear 4s infinite;
-  animation: scroll 100s linear 4s infinite;
+  -webkit-animation: scroll 100s linear 0s infinite;
+  -moz-animation: scroll 100s linear 0s infinite;
+  -ms-animation: scroll 100s linear 0s infinite;
+  -o-animation: scroll 100s linear 0s infinite;
+  animation: scroll 100s linear 0s infinite;
 }
 
 @-webkit-keyframes scroll {

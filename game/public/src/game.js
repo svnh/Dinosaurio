@@ -28,7 +28,7 @@ var Game = function() {
   this.chickenSound = document.getElementById('cluck');
   this.george = document.getElementById('george');
 
-  var socket = this.socket = io.connect('https://dinosaur-io.herokuapp.com/');
+  var socket = this.socket = io();
 
   var self = this;
   this.room;
@@ -193,7 +193,7 @@ Game.prototype.loadStage = function(images) {
   }
 
   greenDino.dinoObj.start();
-  keyBindings(this, greenDino, greenDino.dinoObj, 'up', 'left', 'right', 'a', '/');
+  keyBindings(this, greenDino, greenDino.dinoObj, 'up', 'left', 'right', ['a', 'space'], '/');
   this.socket.emit('dinoCreated', this.room);
 
   for (var i = 0; i < this.palmTrees.length; i++){

@@ -8,7 +8,7 @@ var serverGame = function() {
   this.serverSpiders = [];
   this.startTime = new Date().getTime();
   this.lastTime = null;
-  this.playerPosition = [0,0];
+  this.playerPositions = {};
 };
 
 serverGame.prototype.initGame = function () {
@@ -30,12 +30,27 @@ serverGame.prototype.initGame = function () {
   this.loop(0);
 }
 
+// Each player reports their own position, so actors react to whichever dino is closest.
+serverGame.prototype.nearestPlayer = function (pos) {
+  var nearest = [0,0];
+  var nearestDistance = Infinity;
+  for (var id in this.playerPositions) {
+    var playerPos = this.playerPositions[id];
+    var distance = Math.pow(playerPos[0] - pos[0], 2) + Math.pow(playerPos[1] - pos[1], 2);
+    if (distance < nearestDistance) {
+      nearestDistance = distance;
+      nearest = playerPos;
+    }
+  }
+  return nearest;
+};
+
 serverGame.prototype.loop = function (time) {
   for (var i = 0; i < this.serverChickens.length; i++) {
-    this.serverChickens[i].move(time, this.playerPosition);
+    this.serverChickens[i].move(time, this.nearestPlayer(this.serverChickens[i].pos));
   }
   for (var i = 0; i < this.serverSpiders.length; i++) {
-    this.serverSpiders[i].move(time, this.playerPosition);
+    this.serverSpiders[i].move(time, this.nearestPlayer(this.serverSpiders[i].pos));
   }
   var self = this;
   setTimeout(function() {

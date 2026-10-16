@@ -19,21 +19,21 @@ module.exports = function(io) {
       roomList[room].user2 = userSocket.id
     }
     userSocket.join(room);
-    userSocket.in(room).emit('join', room);
+    userSocket.emit('join', room);
     userSocket.on('init', function (room) {
       if (initcount % 2 === 0){
         game = new serverGame();
         roomList[room].game = game;
         roomList[room].game.initGame();
-        userSocket.in(room).broadcast.emit('serverChickens', roomList[room].game.serverChickens, roomList[room].game.serverSpiders);
-        userSocket.in(room).emit('serverChickens', roomList[room].game.serverChickens, roomList[room].game.serverSpiders);
+        userSocket.to(room).emit('serverChickens', roomList[room].game.serverChickens, roomList[room].game.serverSpiders);
+        userSocket.emit('serverChickens', roomList[room].game.serverChickens, roomList[room].game.serverSpiders);
       }
     });
 
     userSocket.on('needchickenpos', function (room, playerpos) {
       if (roomList[room].game !== undefined) {
-        roomList[room].game.playerPosition = playerpos;
-        userSocket.in(room).emit('chickenUpdated', roomList[room].game.serverChickens, roomList[room].game.serverSpiders);
+        roomList[room].game.playerPositions[userSocket.id] = playerpos;
+        userSocket.emit('chickenUpdated', roomList[room].game.serverChickens, roomList[room].game.serverSpiders);
       }
     });
 
@@ -44,8 +44,8 @@ module.exports = function(io) {
         posy: y
       });
       roomList[room].game.serverSpiders.push(newSpider)
-      userSocket.in(room).broadcast.emit('spidercreated', newSpider);
-      userSocket.in(room).emit('spidercreated', newSpider);
+      userSocket.to(room).emit('spidercreated', newSpider);
+      userSocket.emit('spidercreated', newSpider);
     });
 
     userSocket.on('spiderattack', function (room, index) {
@@ -59,23 +59,23 @@ module.exports = function(io) {
     });
 
     userSocket.on('chickenDown', function (room, chickenIndex) {
-        userSocket.in(room).broadcast.emit('killedChicken', chickenIndex);
+        userSocket.to(room).emit('killedChicken', chickenIndex);
     });
 
     userSocket.on('dinoCreated', function (room) {
-      userSocket.in(room).broadcast.emit('dinoCreated', room);
+      userSocket.to(room).emit('dinoCreated', room);
     });
 
     userSocket.on('dinoupdated', function (room, dinoupdated) {
-      userSocket.in(room).broadcast.emit('dinoupdated', dinoupdated);
+      userSocket.to(room).emit('dinoupdated', dinoupdated);
     });
 
     userSocket.on('dinochangeanim', function (room, dinochangeanim) {
-      userSocket.in(room).broadcast.emit('dinochangeanim', dinochangeanim);
+      userSocket.to(room).emit('dinochangeanim', dinochangeanim);
     });
 
     userSocket.on('counterChange', function (room, counterChange) {
-      userSocket.in(room).broadcast.emit('counterChange', counterChange);
+      userSocket.to(room).emit('counterChange', counterChange);
     });
 
     userSocket.on('disconnect', function () {
@@ -83,7 +83,7 @@ module.exports = function(io) {
       for (var prop in roomList) {
         if (roomList.hasOwnProperty(prop)){
           if (disconUser === roomList[prop].user1 || disconUser === roomList[prop].user2 ){
-            userSocket.in(prop).broadcast.emit('oppDisconnected', room);
+            userSocket.to(prop).emit('oppDisconnected', room);
             if (roomList[prop].user2 === undefined) {
               initcount += 1;
             }

@@ -1,4 +1,12 @@
+var startMusic = function() {
+  var music = document.getElementById('george');
+  if (music.paused) {
+    music.play().catch(function(){});
+  }
+};
+
 var init = function() {
+  startMusic();
   $('#titles').addClass('titles');
   $('#titlecontent').addClass('titlecontent');
   $('.play').hide();
@@ -13,6 +21,7 @@ var init = function() {
 };
 
 var wat = function() {
+  startMusic();
   $('#titles').addClass('titles');
   $('#titlecontent').addClass('titlecontent');
   $('.fight').hide();

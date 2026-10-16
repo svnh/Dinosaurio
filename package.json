@@ -2,9 +2,9 @@
   "name": "DinosaurSprites",
   "version": "0.0.0-44",
   "description": "",
-  "main": "/game/app.js",
+  "main": "game/app.js",
   "scripts": {
-    "test": "node /tests/util.js",
+    "test": "mocha tests/util.js",
     "start": "node ./game/app.js"
   },
   "repository": {
@@ -16,16 +16,16 @@
   "bugs": {
     "url": "https://github.com/svnh/Dinosaurio/issues"
   },
-  "dependencies": {
-    "express": ">=3.11.0",
-    "socket.io": "~0.9.16"
-  },
   "subdomain": "dinosaurio",
   "engines": {
-    "node": "0.8.x"
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.22.3",
+    "socket.io": "^4.8.4"
   },
   "devDependencies": {
-    "chai": "~1.7.2",
-    "mocha": "~1.12.0"
+    "chai": "^4.5.0",
+    "mocha": "^12.0.3"
   }
 }
